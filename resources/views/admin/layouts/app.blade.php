@@ -119,10 +119,16 @@
             </li>
             <li class="menu-item">
               <a href="{{ route ('admin.kehadiran.index')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-detail"></i>
+                <i class="menu-icon tf-icons bx bx-task"></i>
                 <div data-i18n="Tables">Absensi User</div>
               </a>
             </li>
+            <li class="menu-item">
+              <a href="{{ route('admin.users.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-user"></i>
+                  <div data-i18n="Tables">Management User</div>
+              </a>
+          </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>

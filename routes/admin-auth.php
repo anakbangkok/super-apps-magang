@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     })->name('admin.dashboard');
 
     Route::get('/admin/kehadiran', [KehadiranController::class, 'adminIndex'])->name('admin.kehadiran.index');
+
+    Route::resource('admin/users', AdminUserController::class)->names('admin.users');
 
 
     Route::post('logout', [LoginController::class, 'destroy'])->name('admin.logout');

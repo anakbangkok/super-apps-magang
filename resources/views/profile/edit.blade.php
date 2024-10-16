@@ -26,7 +26,7 @@
 
     <div class="tab-content mt-4">
         <div class="tab-pane fade show active" id="profile" role="tabpanel">
-            <form method="POST" action="{{ route('profile.update') }}">
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
 
@@ -40,6 +40,14 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email" 
                            value="{{ auth()->user()->email }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="profile_photo" class="form-label">Profile Photo</label>
+                    <input type="file" class="form-control" id="profile_photo" name="profile_photo" accept="image/*">
+                    @if (auth()->user()->profile_photo)
+                        <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" alt="Profile Photo" class="mt-2" style="max-width: 150px;">
+                    @endif
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save Changes</button>
