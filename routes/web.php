@@ -83,6 +83,8 @@ Route::middleware(['auth:admin'])->group(function () {
 
     // Rute untuk admin jurnal
     Route::get('/admin/journals', [JournalController::class, 'adminIndex'])->name('journal.admin');
+    Route::delete('/journals/{id}', [JournalController::class, 'destroy'])->name('journal.admin.destroy');
+
     // Route::resource('/admin/journals', JournalController::class)->only(['index', 'create', 'store']);
 });
 

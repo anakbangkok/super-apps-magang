@@ -52,4 +52,18 @@ class JournalController extends Controller
         return view('journal.admin', compact('journals'));
     }
     
+    public function destroy($id)
+    {
+        // Pastikan hanya admin yang bisa menghapus jurnal
+        if (!Auth::guard('admin')->check() || !Auth::guard('admin')->user()->is_admin) {}
+    
+        // Temukan jurnal berdasarkan ID
+        $journal = Journal::findOrFail($id);
+    
+        // Hapus jurnal
+        $journal->delete();
+    
+        return redirect()->route('journal.admin')->with('success', 'Jurnal berhasil dihapus');
+    }
+    
 }
