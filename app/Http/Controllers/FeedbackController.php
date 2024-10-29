@@ -51,6 +51,20 @@ class FeedbackController extends Controller
         $feedbacks = Feedback::all();
         return view('feedback.mentor', compact('feedbacks'));
     }
+
+    public function reply(Request $request, $id)
+{
+    $request->validate([
+        'reply' => 'required|string',
+    ]);
+
+    $feedback = Feedback::findOrFail($id);
+    $feedback->reply = $request->reply;
+    $feedback->save();
+
+    return redirect()->route('feedback.admin')->with('success', 'Balasan berhasil dikirim!');
+}
+
     
 
 

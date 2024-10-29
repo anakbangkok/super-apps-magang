@@ -3,11 +3,11 @@
 @section('title', 'Edit Tim Web')
 
 @section('content')
-<div class="container">
-    <h2>Edit Data Tim Web</h2>
+<div class="container my-5">
+    <h2 class="mb-4">Edit Data Tim Web</h2>
 
     <!-- Form Edit Tim Web -->
-    <form action="{{ route('tim_web.update', $tim_web->id) }}" method="POST">
+    <form action="{{ route('tim_web.update', $tim_web->id) }}" method="POST" class="p-4 border rounded shadow-sm" style="background-color: #f9f9f9;">
         @csrf
         @method('PUT')
 

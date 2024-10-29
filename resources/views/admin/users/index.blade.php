@@ -3,10 +3,52 @@
 @section('title', 'User Management')
 
 @section('content')
-    <div class="container py-5" style="background-color: white; border-radius: 8px;">
-        <h2 class="mb-4">Daftar Manajemen Pengguna</h2>
 
-        <!-- Flash Messages -->
+    <style>
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination .page-link {
+            color: #F44335;
+            background-color: white;
+            border: 1px solid #F44335;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #c62828;
+            color: white;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #F44335;
+            color: white;
+            border: 1px solid #F44335;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: white;
+            border: 1px solid #dee2e6;
+        }
+
+        .badge {
+            font-size: 1.2em;
+            padding: 0.5em;
+        }
+
+        /* Tambahan untuk mengubah ukuran tombol */
+        .btn-small {
+            padding: 0.2em 0.5em;
+            font-size: 0.8em;
+            line-height: 1.5;
+        }
+    </style>
+
+    <div class="container py-5">
+        <h2>Daftar Manajemen Pengguna</h2>
+
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -14,20 +56,46 @@
             </div>
         @endif
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Tambah Pengguna Baru
-            </a>
-        </div>
+        <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Tambah Pengguna</a>
+
+        <!-- Form Pencarian -->
+        <form method="GET" action="{{ route('admin.users.index') }}" class="row mb-4">
+            <div class="col-md-3 mb-2">
+                <input type="text" name="searchName" class="form-control" placeholder="Cari Nama" value="{{ request('searchName') }}">
+            </div>
+            <div class="col-md-3 mb-2">
+                <input type="text" name="searchEmail" class="form-control" placeholder="Cari Email" value="{{ request('searchEmail') }}">
+            </div>
+            <div class="col-md-3 mb-2">
+                <select name="searchPenugasan" class="form-select">
+                    <option value="">Semua Penugasan</option>
+                    @foreach ($penugasans as $penugasan)
+                        <option value="{{ $penugasan->id }}" {{ request('searchPenugasan') == $penugasan->id ? 'selected' : '' }}>
+                            {{ $penugasan->nama_unit_bisnis }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <select name="searchStatus" class="form-select">
+                    <option value="">Semua Status</option>
+                    <option value="Aktif" {{ request('searchStatus') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                    <option value="Belum Masuk" {{ request('searchStatus') == 'Belum Masuk' ? 'selected' : '' }}>Belum Masuk</option>
+                    <option value="Selesai" {{ request('searchStatus') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                </select>
+            </div>
+            <div class="col-md-6 d-flex gap-2 mb-2">
+                <input type="date" name="startDate" class="form-control" value="{{ request('startDate') }}">
+                <input type="date" name="endDate" class="form-control" value="{{ request('endDate') }}">
+                <button type="submit" class="btn btn-primary">Cari</button>
+                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Reset</a>
+            </div>
+        </form>
 
         <div class="table-responsive">
-
-
-            <!-- Tabel Data -->
-            <table id="userTable" class="table table-bordered table-hover display nowrap" style="width:100%">
-                <thead class="table-light">
+            <table id="usersTable" class="table table-striped table-bordered nowrap" style="width:100%">
+                <thead>
                     <tr>
-                        <th>No.</th>
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Instansi</th>
@@ -35,159 +103,75 @@
                         <th>Mentor</th>
                         <th>Tanggal Mulai</th>
                         <th>Tanggal Selesai</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $user)
+                    @forelse ($users as $user)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->instansi ? $user->instansi->nama_instansi : 'N/A' }}</td>
-                            <!-- Menampilkan nama instansi -->
-                            <td>{{ $user->penugasan ? $user->penugasan->nama_unit_bisnis : 'N/A' }}</td>
-                            <!-- Menampilkan nama penugasan -->
-                            <td>{{ $user->mentor ? $user->mentor->nama : 'N/A' }}</td> <!-- Menampilkan nama mentor -->
-                            <td>{{ $user->start_date }}</td> <!-- Menampilkan tanggal mulai magang -->
-                            <td>{{ $user->end_date }}</td> <!-- Menampilkan tanggal selesai magang -->
+                            <td>{{ $user->instansi->nama_instansi ?? 'N/A' }}</td>
+                            <td>{{ $user->penugasan->nama_unit_bisnis ?? 'N/A' }}</td>
+                            <td>{{ $user->mentor->name ?? 'N/A' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($user->start_date)->format('d-m-Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($user->end_date)->format('d-m-Y') }}</td>
                             <td>
-                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning btn-sm mb-1">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}"
-                                    class="d-inline">
+                                @php $now = now()->toDateString(); @endphp
+                                @if (!$user->start_date || !$user->end_date)
+                                    <span data-bs-toggle="tooltip" title="Data tidak ditemukan" class="badge bg-warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </span>
+                                @elseif ($now < $user->start_date)
+                                    <span data-bs-toggle="tooltip" title="Belum masuk" class="badge bg-secondary">
+                                        <i class="fas fa-clock"></i>
+                                    </span>
+                                @elseif ($now >= $user->start_date && $now <= $user->end_date)
+                                    <span data-bs-toggle="tooltip" title="Aktif" class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                @else
+                                    <span data-bs-toggle="tooltip" title="Selesai" class="badge bg-danger">
+                                        <i class="fas fa-flag-checkered"></i>
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="d-flex flex-column">
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning btn-small mb-2">Edit</a>
+                                <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Are you sure you want to delete this user?')">
-                                        <i class="bi bi-trash"></i> Hapus
-                                    </button>
+                                    <button type="submit" class="btn btn-danger btn-small" onclick="return confirm('Yakin ingin menghapus pengguna ini?')">Hapus</button>
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="9" class="text-center">Tidak ada data ditemukan</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
+
+        {{ $users->links() }} <!-- Pagination links -->
     </div>
 
-    <!-- CSS dan JS DataTables + DateTime -->
-    @push('styles')
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.4/css/dataTables.dateTime.min.css">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-        <style>
-            body {
-                background-color: #f8f9fa;
-            }
-
-            .container {
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-
-            .table-hover tbody tr:hover {
-                background-color: #f1f1f1;
-            }
-        </style>
-    @endpush
-
-    @push('scripts')
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/datetime/1.5.4/js/dataTables.dateTime.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-        <script>
-            let minDate, maxDate;
-
-            // Initialize the DataTable
-            $(document).ready(function() {
-                // Inisialisasi DateTime Picker
-                minDate = new DateTime('#min', {
-                    format: 'YYYY-MM-DD'
-                });
-                maxDate = new DateTime('#max', {
-                    format: 'YYYY-MM-DD'
-                });
-
-                // Inisialisasi DataTables
-                let table = $('#userTable').DataTable({
-                    responsive: true,
-                    columnDefs: [{
-                        targets: [5, 6],
-                        render: $.fn.dataTable.render.moment('YYYY-MM-DD')
-                    }]
-                });
-
-                // Custom filtering function which will search data in column five between two values
-                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    let min = minDate.date() ? minDate.date().toISOString() : null;
-                    let max = maxDate.date() ? maxDate.date().toISOString() : null;
-                    let date = new Date(data[5]); // Adjust index if necessary
-
-                    if (
-                        (min === null && max === null) ||
-                        (min === null && date <= max) ||
-                        (min <= date && max === null) ||
-                        (min <= date && date <= max)
-                    ) {
-                        return true;
-                    }
-                    return false;
-                });
-
-                // Refilter the table on change
-                $('#min, #max').on('change', function() {
-                    table.draw();
-                });
-
-                // Custom search functionality for specific columns
-                $('#search').on('keyup', function() {
-                    let searchTerm = $(this).val();
-
-                    $.ajax({
-                        url: '{{ route('admin.users.search') }}',
-                        type: 'GET',
-                        data: {
-                            query: searchTerm
-                        },
-                        success: function(data) {
-                            let tableBody = '';
-                            $.each(data, function(index, user) {
-                                tableBody += `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${user.email}</td>
-                                <td>${user.gender.charAt(0).toUpperCase() + user.gender.slice(1)}</td>
-                                <td>${user.school}</td>
-                                <td>${user.address}</td>
-                                <td>${user.internship_start}</td>
-                                <td>${user.internship_end}</td>
-                                <td>
-                                    <a href="/admin/users/${user.id}/edit" class="btn btn-warning btn-sm mb-1">
-                                        <i class="bi bi-pencil-square"></i> Edit
-                                    </a>
-                                    <form method="POST" action="/admin/users/${user.id}" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this user?')">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        `;
-                            });
-                            $('#userTable tbody').html(tableBody);
-                        }
-                    });
-                });
+    <script>
+        $(document).ready(function() {
+            $('#usersTable').DataTable({
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/Indonesian.json' // Ganti dengan bahasa sesuai kebutuhan
+                }
             });
-        </script>
-    @endpush
-
+            
+            // Inisialisasi tooltip
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 
 @endsection

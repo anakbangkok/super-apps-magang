@@ -6,22 +6,69 @@ use App\Models\User;
 use App\Models\Mentor;
 use App\Models\Penugasan;
 use App\Models\Instansi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
-    public function index()
-    {
-        // Retrieve users with their related instansi, penugasan, and mentor
-        $users = User::with('instansi', 'penugasan', 'mentor')->get();
-        return view('admin.users.index', compact('users'));
+// Di dalam controller
+public function index(Request $request)
+{
+    $searchName = $request->input('searchName');
+    $searchEmail = $request->input('searchEmail');
+    $searchPenugasan = $request->input('searchPenugasan');
+    $searchStatus = $request->input('searchStatus');
+    $startDate = $request->input('startDate');
+    $endDate = $request->input('endDate');
+
+    $query = User::with(['instansi', 'penugasan', 'mentor']);
+
+    if ($searchName) {
+        $query->where('name', 'like', '%' . $searchName . '%');
     }
+    if ($searchEmail) {
+        $query->where('email', 'like', '%' . $searchEmail . '%');
+    }
+    if ($searchPenugasan) {
+        $query->where('penugasan_id', $searchPenugasan);
+    }
+    if ($searchStatus) {
+        $now = now()->toDateString(); // Dapatkan tanggal sekarang
+
+        // Filter pengguna berdasarkan status
+        switch ($searchStatus) {
+            case 'Aktif':
+                $query->where('start_date', '<=', $now)->where('end_date', '>=', $now);
+                break;
+            case 'Belum Masuk':
+                $query->where('start_date', '>', $now);
+                break;
+            case 'Selesai':
+                $query->where('end_date', '<', $now);
+                break;
+        }
+    }
+    if ($startDate && $endDate) {
+        $query->whereBetween('start_date', [$startDate, $endDate]);
+    } elseif ($startDate) {
+        $query->where('start_date', '>=', $startDate);
+    } elseif ($endDate) {
+        $query->where('end_date', '<=', $endDate);
+    }
+
+    $users = $query->paginate(10);
+    $penugasans = Penugasan::all();
+
+    return view('admin.users.index', compact('users', 'penugasans'));
+}
+
+    
 
     public function create()
     {
-        // Retrieve all related data for the dropdowns
+        // Ambil semua data terkait untuk dropdown
         $instansis = Instansi::all();
         $penugasans = Penugasan::all();
         $mentors = Mentor::all();
@@ -31,7 +78,7 @@ class AdminUserController extends Controller
 
     public function store(Request $request)
     {
-        // Validate incoming request data
+        // Validasi data permintaan yang masuk
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -43,7 +90,7 @@ class AdminUserController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Create a new user with the validated data
+        // Buat pengguna baru dengan data yang divalidasi
         User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
@@ -52,7 +99,7 @@ class AdminUserController extends Controller
             'mentor_id' => $validatedData['mentor'],
             'start_date' => $validatedData['start_date'],
             'end_date' => $validatedData['end_date'],
-            'password' => Hash::make($validatedData['password']), // Hash password
+            'password' => Hash::make($validatedData['password']),
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dibuat!');
@@ -61,7 +108,7 @@ class AdminUserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        // Retrieve related data for the edit form
+        // Ambil data terkait untuk form edit
         $instansis = Instansi::all();
         $penugasans = Penugasan::all();
         $mentors = Mentor::all();
@@ -73,7 +120,7 @@ class AdminUserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Validate incoming request data
+        // Validasi data permintaan yang masuk
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
@@ -84,7 +131,7 @@ class AdminUserController extends Controller
             'end_date' => 'required|date',
         ]);
 
-        // Update user with the validated data
+        // Perbarui pengguna dengan data yang divalidasi
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -105,4 +152,35 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus!');
     }
+
+    public function dashboard()
+    {
+        $belumMasuk = User::where('start_date', '>', now()->toDateString())->count();
+        $aktif = User::where('start_date', '<=', now()->toDateString())
+                     ->where('end_date', '>=', now()->toDateString())->count();
+        $selesai = User::where('end_date', '<', now()->toDateString())->count();
+        $belumDiisi = User::whereNull('start_date')->whereNull('end_date')->count();
+        
+        return view('admin.dashboard', compact('belumMasuk', 'aktif', 'selesai', 'belumDiisi'));
+    }
+
+    public function updatestatus()
+    {
+        $today = Carbon::today();
+    
+        if ($today < $this->start_date) {
+            $this->status = 'Belum Masuk';
+        } elseif ($today >= $this->start_date && $today <= $this->end_date) {
+            $this->status = 'Aktif';
+        } else {
+            $this->status = 'Selesai';
+        }
+    
+        $this->save();
+    }
+
+
+    
+    
+
 }

@@ -1,5 +1,5 @@
 <section class="container my-5 mx-auto">
-    <h1 class="mb-4 text-right" style="font-family: 'Arial', sans-serif;">Update Password</h1>
+    <h1 class="mb-4 text-right" style="font-family: 'Arial', sans-serif;">Perbarui Kata Sandi</h1>
 
     <div class="alert alert-info" style="background-color: #e9ecef; color: #0c5460;">
         <strong>Info:</strong> Pastikan kata sandi Anda kuat dan unik untuk keamanan akun.

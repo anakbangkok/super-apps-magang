@@ -1,5 +1,5 @@
-<div class="feedback-form">
-    <h2>Berikan Umpan Balik Anda</h2>
+<div class="feedback-form p-4 border rounded shadow-sm" style="background-color: #f9f9f9;">
+    <h2 class="mb-4">Berikan Umpan Balik Anda</h2>
     <form action="{{ route('feedback.store') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -18,17 +18,17 @@
     </form>
 </div>
 
-
 <style>
-    .feedback-card {
+    .feedback-form {
         border-radius: 15px; /* Membuat sudut kartu lebih bulat */
         border: 1px solid #e0e0e0; /* Menambahkan batas lembut */
         background-color: #f9f9f9; /* Latar belakang kartu */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan untuk efek kedalaman */
     }
 
     .form-label {
-        font-weight: bold; /* Membuat label lebih tebal */
-        color: #333; /* Warna label */
+        font-weight: ; /* Membuat label lebih tebal */
+        color: #566a7f; /* Warna label */
     }
 
     .form-control {

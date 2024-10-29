@@ -3,9 +3,9 @@
 @section('title', 'Edit Instansi')
 
 @section('content')
-<div class="container">
-    <h2>Edit Instansi</h2>
-    <form action="{{ route('instansi.update', $instansi) }}" method="POST">
+<div class="container my-5 mx-auto">
+    <h2 class="mb-4 text-right" style="font-family: 'Arial', sans-serif;">Edit Instansi</h2>
+    <form action="{{ route('instansi.update', $instansi) }}" method="POST" class="p-4 border rounded shadow-sm" style="background-color: #f9f9f9;">
         @csrf
         @method('PUT')
         <div class="mb-3">

@@ -18,6 +18,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
+        <!-- Tambahkan link Google Fonts di sini -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .app-brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            color: #333;
+            text-transform: capitalize; /* Membuat huruf pertama menjadi kapital */
+        }
+    </style>
 
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
@@ -56,16 +67,22 @@
                             <img src="{{ asset('assets/img/logo/logo-rumah-mesin.png') }}" alt="App Logo"
                                 style="width: 50px; height: auto;" />
                         </span>
-                        <span class="app-brand-text demo menu-text fw-bolder ms-2">Super Apps</span>
+                        </head>
+                        <body>
+                            <!-- Tulis teks dalam huruf kecil untuk melihat efeknya -->
+                            <span class="app-brand-text demo menu-text fw-bolder ms-2">super apps</span>
+                        </body>
+                        </html>
                     </a>
-            
-                    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+
+                    <a href="javascript:void(0);"
+                        class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
                         <i class="bx bx-chevron-left bx-sm align-middle"></i>
                     </a>
                 </div>
-            
+
                 <div class="menu-inner-shadow"></div>
-            
+
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
                     <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
@@ -74,28 +91,28 @@
                             <div data-i18n="Analytics">Halaman Utama</div>
                         </a>
                     </li>
-            
+
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Pages</span>
                     </li>
-            
+
                     {{-- <!-- Absensi Pengguna -->
                     <li class="menu-item {{ request()->routeIs('admin.kehadiran.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.kehadiran.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-task"></i>
                             <div data-i18n="Tables">Absensi Pengguna</div>
                         </a>
-                    </li>
-            
+                    </li> --}}
+                    
                     <!-- Manajemen Pengguna -->
-                    <li class="menu-item {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
-                        <a href="{{ route('admin.users.index') }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('mentor.users.user') ? 'active' : '' }}">
+                        <a href="{{ route('mentor.users.user') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-group"></i>
-                            <div data-i18n="Tables">Manajemen Pengguna</div>
+                            <div data-i18n="Tables">Rekap Pengguna</div>
                         </a>
                     </li>
-            
-                    <!-- Instansi -->
+
+                    {{--  <!-- Instansi -->
                     <li class="menu-item {{ request()->routeIs('instansi.index') ? 'active' : '' }}">
                         <a href="{{ route('instansi.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-building"></i>
@@ -142,19 +159,20 @@
                             <div data-i18n="Pengajuan Izin">Kelola Pengajuan Izin</div>
                         </a>
                     </li> --}}
-            
+
                     <!-- Feedback -->
-                    <li class="menu-item {{ request()->routeIs('feedback.admin') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->routeIs('feedback.mentor') ? 'active' : '' }}">
                         <a href="{{ route('feedback.mentor') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
-                            <div>Feedback</div>
+                            <div>Masukan</div>
                         </a>
                     </li>
                 </ul>
-            
+
                 <!-- Logout -->
                 <div class="logout-container py-2">
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="menu-link">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        class="menu-link">
                         <i class="menu-icon tf-icons bx bx-power-off"></i>
                         <div data-i18n="Logout" class="ms-2">Keluar</div>
                     </a>
@@ -223,7 +241,7 @@
                                     <div class="dropdown-divider"></div>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('admin.profile.edit') }}">
+                                <a class="dropdown-item" href="{{ route('mentor.profile.edit') }}">
                                     <i class="bx bx-user me-2"></i>
                                     <span class="align-middle">Profil Saya</span>
                                 </a>

@@ -31,6 +31,19 @@
                                 <i class="bx bx-trash"></i> Hapus
                             </button>
                         </form>
+                    
+                        <form action="{{ route('feedback.reply', $feedback->id) }}" method="POST" class="mt-2">
+                            @csrf
+                            <div class="input-group">
+                                <input type="text" name="reply" class="form-control" placeholder="Balas umpan balik...">
+                                <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+                            </div>
+                        </form>
+                        @if($feedback->reply)
+                            <div class="mt-2">
+                                <strong>Balasan:</strong> {{ $feedback->reply }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

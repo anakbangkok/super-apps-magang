@@ -59,7 +59,7 @@
                            value="{{ auth()->user()->email }}" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Perbarui Profil</button>
+                <button type="submit" class="btn btn-primary w-100 mt-2">Simpan Perubahan</button>
             </form>
         </div>
 
@@ -69,21 +69,21 @@
                 @method('PUT')
 
                 <div class="mb-3">
-                    <label for="current_password" class="form-label">Password Saat Ini</label>
+                    <label for="current_password" class="form-label">Kata Sandi Saat Ini</label>
                     <input type="password" class="form-control" id="current_password" name="current_password" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="new_password" class="form-label">Password Baru</label>
+                    <label for="new_password" class="form-label">Kata Sandi Baru</label>
                     <input type="password" class="form-control" id="new_password" name="new_password" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="new_password_confirmation" class="form-label">Konfirmasi Password Baru</label>
+                    <label for="new_password_confirmation" class="form-label">Konfirmasi Kata Sandi Baru</label>
                     <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Ganti Password</button>
+                <button type="submit" class="btn btn-primary w-100 mt-2">Simpan Perubahan</button>
             </form>
         </div>
 
@@ -96,7 +96,7 @@
                     <p>Anda yakin ingin menghapus akun ini? Semua data akan hilang dan tidak bisa dipulihkan.</p>
                 </div>
 
-                <button type="submit" class="btn btn-danger">Hapus Akun</button>
+                <button type="submit" class="btn btn-danger w-100 mt-2">Hapus Akun</button>
             </form>
         </div>
     </div>

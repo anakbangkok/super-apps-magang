@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h2>Ajukan Izin</h2>
+<div class="container my-5">
+    <h2 class="mb-4">Ajukan Izin</h2>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -11,7 +11,7 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('pengajuan_izin.store') }}" method="POST">
+    <form action="{{ route('pengajuan_izin.store') }}" method="POST" class="p-4 border rounded shadow-sm" style="background-color: #f9f9f9;">
         @csrf
         <div class="mb-3">
             <label for="durasi" class="form-label">Durasi</label>
@@ -48,10 +48,9 @@
     
         <button type="submit" class="btn btn-primary">Ajukan Izin</button>
     </form>
-    
 
     <h2 class="mt-5">Daftar Pengajuan Izin</h2>
-    <table class="table">
+    <table class="table table-striped mt-3">
         <thead>
             <tr>
                 <th>No</th>
@@ -95,4 +94,3 @@
         }
     }
 </script>
-

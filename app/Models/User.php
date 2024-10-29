@@ -50,24 +50,17 @@ class User extends Authenticatable
     /**
      * Define the relationship to the Instansi model.
      */
-    public function instansi()
-    {
-        return $this->belongsTo(Instansi::class, 'instansi_id'); // 'instansi_id' adalah foreign key
+    public function instansi() {
+        return $this->belongsTo(Instansi::class);
     }
-
-    /**
-     * Define the relationship to the Penugasan model.
-     */
+    
     public function penugasan()
     {
-        return $this->belongsTo(Penugasan::class, 'penugasan_id'); // 'penugasan_id' adalah foreign key di tabel 'users'
+        return $this->belongsTo(Penugasan::class, 'penugasan_id');
     }
-
-    /**
-     * Define the relationship to the Mentor model.
-     */
-    public function mentor()
-    {
-        return $this->belongsTo(Mentor::class, 'mentor_id'); // 'mentor_id' adalah foreign key di tabel 'users'
+    
+    public function mentor() {
+        return $this->belongsTo(Mentor::class);
     }
+    
 }

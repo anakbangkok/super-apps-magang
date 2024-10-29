@@ -3,11 +3,11 @@
 @section('title', 'Tambah Tim Web')
 
 @section('content')
-<div class="container">
-    <h2>Tambah Data Tim Web</h2>
+<div class="container my-5">
+    <h2 class="mb-4">Tambah Data Tim Web</h2>
 
     <!-- Form Tambah Tim Web -->
-    <form action="{{ route('tim_web.store') }}" method="POST">
+    <form action="{{ route('tim_web.store') }}" method="POST" class="p-4 border rounded shadow-sm" style="background-color: #f9f9f9;">
         @csrf
 
         <div class="mb-3">

@@ -19,6 +19,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Tambahkan link Google Fonts di sini -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .app-brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            color: #333;
+            text-transform: capitalize; /* Membuat huruf pertama menjadi kapital */
+        }
+    </style>
+
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
 
@@ -34,6 +48,8 @@
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+
 
     <!-- Select2 CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
@@ -56,7 +72,12 @@
                             <img src="{{ asset('assets/img/logo/logo-rumah-mesin.png') }}" alt="App Logo"
                                 style="width: 50px; height: auto;" />
                         </span>
-                        <span class="app-brand-text demo menu-text fw-bolder ms-2">Super Apps</span>
+                        </head>
+                        <body>
+                            <!-- Tulis teks dalam huruf kecil untuk melihat efeknya -->
+                            <span class="app-brand-text demo menu-text fw-bolder ms-2">super apps</span>
+                        </body>
+                        </html>
                     </a>
             
                     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -88,7 +109,7 @@
                     </li>
             
                     <!-- Manajemen Pengguna -->
-                    <li class="menu-item {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->routeIs('admin.users.index','admin.users.create') ? 'active' : '' }}">
                         <a href="{{ route('admin.users.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-group"></i>
                             <div data-i18n="Tables">Manajemen Pengguna</div>
@@ -96,7 +117,7 @@
                     </li>
             
                     <!-- Instansi -->
-                    <li class="menu-item {{ request()->routeIs('instansi.index') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->routeIs('instansi.index','instansi.create') ? 'active' : '' }}">
                         <a href="{{ route('instansi.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-building"></i>
                             <div data-i18n="Tables">Instansi</div>
@@ -104,7 +125,7 @@
                     </li>
             
                     <!-- Penugasan -->
-                    <li class="menu-item {{ request()->routeIs('penugasan.index') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->routeIs('penugasan.index','penugasan.create') ? 'active' : '' }}">
                         <a href="{{ route('penugasan.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book-content"></i>
                             <div data-i18n="Tables">Penugasan</div>
@@ -136,7 +157,7 @@
                     </li>
 
                     <!-- Mentor -->
-                    <li class="menu-item {{ request()->routeIs('mentor.index') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->routeIs('mentors.index','mentors.create') ? 'active' : '' }}">
                         <a href="{{ route('mentors.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-user"></i>
                             <div data-i18n="Tables">Mentor</div>
@@ -158,6 +179,22 @@
                             <div>Masukan</div>
                         </a>
                     </li>
+                    <!-- Feedback -->
+                    {{-- <li class="menu-item {{ request()->routeIs('feedback.admin') ? 'active' : '' }}">
+                        <a href="{{ route('feedback.admin') }}" class="menu-link position-relative">
+                            <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
+                            <div>Masukan</div>
+
+                            <!-- Bubble Notifikasi -->
+                            @if ($unreadFeedbackCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $unreadFeedbackCount }}
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                            @endif
+                        </a>
+                    </li> --}}
+
                 </ul>
             
                 <!-- Logout -->
@@ -307,6 +344,7 @@
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    
     <style>
         .menu-item.active .menu-link {
             background-color: #007bff;
@@ -337,6 +375,14 @@
         .logout-container .menu-icon {
             color: #f00;
             /* Change icon color */
+        }
+        .btn-primary {
+        background-color: #F44335 !important;
+        border-color: #F44335 !important;
+        }
+        .btn-primary:hover {
+            background-color: #c62828 !important;
+            border-color: #c62828 !important;
         }
     </style>
 

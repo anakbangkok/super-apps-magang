@@ -44,7 +44,7 @@ class KehadiranController extends Controller
             'user_id' => Auth::id(),
             'shift' => $request->shift, // 'pagi' atau 'sore'
             'date' => now()->toDateString(),
-            'check_in' => now(), // Simpan sebagai objek Carbon
+            'check_in' => now(),
             'location' => $request->location,
         ]);
 
@@ -55,7 +55,7 @@ class KehadiranController extends Controller
     {
         $kehadiran = Kehadiran::findOrFail($id);
         $kehadiran->update([
-            'check_out' => now(), // Simpan sebagai objek Carbon
+            'check_out' => now(), 
             'location' => $request->location,
         ]);
 
