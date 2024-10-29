@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class FeedbackController extends Controller
 {
@@ -34,9 +35,17 @@ class FeedbackController extends Controller
 
     public function admin()
     {
-        $feedbacks = Feedback::all(); // Mengambil semua feedback
-        return view('feedback.admin', compact('feedbacks'));
+        $feedbacks = Feedback::all();  // Mengambil semua feedback
+    
+        // Hitung feedback yang belum dibaca
+        $unreadFeedbackCount = Feedback::where('is_read', false)->count();
+    
+        // Tandai semua feedback sebagai dibaca
+        Feedback::where('is_read', false)->update(['is_read' => true]);
+    
+        return view('feedback.admin', compact('feedbacks', 'unreadFeedbackCount'));
     }
+    
 
     public function destroy($id)
     {
@@ -53,17 +62,25 @@ class FeedbackController extends Controller
     }
 
     public function reply(Request $request, $id)
-{
-    $request->validate([
-        'reply' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'reply' => 'required|string',
+        ]);
 
-    $feedback = Feedback::findOrFail($id);
-    $feedback->reply = $request->reply;
-    $feedback->save();
+        $feedback = Feedback::findOrFail($id);
+        $feedback->reply = $request->reply;
+        $feedback->save();
 
-    return redirect()->route('feedback.admin')->with('success', 'Balasan berhasil dikirim!');
-}
+        return redirect()->route('feedback.admin')->with('success', 'Balasan berhasil dikirim!');
+    }
+
+    public function boot()
+    {
+        View::composer('*', function ($view) {
+            $unreadFeedbackCount = Feedback::where('is_read', false)->count();
+            $view->with('unreadFeedbackCount', $unreadFeedbackCount);
+        });
+    }
 
     
 

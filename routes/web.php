@@ -43,7 +43,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
     
     Route::resource('journals', JournalController::class)->only(['index', 'create', 'store']);
-
 });
 
 // Group rute dengan middleware auth:admin
@@ -81,6 +80,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('admin/mentor/{mentor}/edit', [MentorController::class, 'edit'])->name('mentor.edit');
     Route::put('admin/mentor/{mentor}', [MentorController::class, 'update'])->name('mentor.update');
     Route::delete('admin/mentor/{mentor}', [MentorController::class, 'destroy'])->name('mentor.destroy');
+
+    // Rute untuk admin jurnal
+    Route::get('/admin/journals', [JournalController::class, 'adminIndex'])->name('journal.admin');
+    // Route::resource('/admin/journals', JournalController::class)->only(['index', 'create', 'store']);
 });
 
 // Group rute dengan middleware auth:mentor

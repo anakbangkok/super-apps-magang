@@ -4,23 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Journal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JournalController extends Controller
 {
+    // Method untuk menampilkan jurnal pengguna yang sedang login
     public function index()
     {
         // Ambil jurnal hanya untuk pengguna yang sedang login
-        $journals = Journal::where('user_id', auth()->id())->get(); 
-        
+        $journals = Journal::where('user_id', Auth::id())->get();
+
         return view('journal.index', compact('journals'));
     }
 
+    // Method untuk menampilkan halaman form pembuatan jurnal
     public function create()
     {
-        // Tidak perlu mengambil jurnal di sini, cukup kembalikan tampilan untuk menambah jurnal
+        // Kembalikan tampilan untuk menambah jurnal
         return view('journal.create');
     }
 
+    // Method untuk menyimpan data jurnal baru
     public function store(Request $request)
     {
         $request->validate([
@@ -32,8 +36,20 @@ class JournalController extends Controller
         ]);
 
         // Tambahkan ID pengguna saat membuat jurnal
-        Journal::create(array_merge($request->all(), ['user_id' => auth()->id()]));
+        Journal::create(array_merge($request->all(), ['user_id' => Auth::id()]));
 
         return redirect()->route('journals.index')->with('success', 'Jurnal berhasil ditambahkan');
     }
+
+    // Method untuk menampilkan semua jurnal ke halaman admin
+    public function adminIndex()
+    {
+        // Pastikan hanya admin yang bisa mengakses
+        if (!Auth::user() || !Auth::user()->is_admin) {}
+
+        // Ambil semua jurnal bersama dengan data pengguna
+        $journals = Journal::with('user')->get();
+        return view('journal.admin', compact('journals'));
+    }
+    
 }

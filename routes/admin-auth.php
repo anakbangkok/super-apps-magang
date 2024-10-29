@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\PengajuanIzinUserController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\JournalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KehadiranController;
 
@@ -36,6 +37,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::post('/admin/pengajuan-izin/{pengajuanIzin}/reject', [PengajuanIzinUserController::class, 'reject'])->name('pengajuan_izin.reject');
 
     Route::post('feedback/{id}/reply', [FeedbackController::class, 'reply'])->name('feedback.reply');
+
+    Route::get('/admin/journals', [JournalController::class, 'adminIndex'])->name('journal.admin');
 
 
 

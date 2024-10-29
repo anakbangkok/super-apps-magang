@@ -156,6 +156,15 @@
                         </ul>
                     </li>
 
+
+                    <!-- Aktivitas Harian -->
+                    <li class="menu-item {{ request()->routeIs('journal.admin') ? 'active' : '' }}">
+                        <a href="{{ route('journal.admin') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-user"></i>
+                            <div data-i18n="Tables">Aktivitas Harian</div>
+                        </a>
+                    </li>
+
                     <!-- Mentor -->
                     <li class="menu-item {{ request()->routeIs('mentors.index','mentors.create') ? 'active' : '' }}">
                         <a href="{{ route('mentors.index') }}" class="menu-link">
@@ -171,29 +180,32 @@
                             <div data-i18n="Pengajuan Izin">Kelola Pengajuan Izin</div>
                         </a>
                     </li>
-            
+{{--             
                     <!-- Feedback -->
                     <li class="menu-item {{ request()->routeIs('feedback.admin') ? 'active' : '' }}">
                         <a href="{{ route('feedback.admin') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
                             <div>Masukan</div>
                         </a>
-                    </li>
-                    <!-- Feedback -->
-                    {{-- <li class="menu-item {{ request()->routeIs('feedback.admin') ? 'active' : '' }}">
-                        <a href="{{ route('feedback.admin') }}" class="menu-link position-relative">
-                            <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
-                            <div>Masukan</div>
-
-                            <!-- Bubble Notifikasi -->
-                            @if ($unreadFeedbackCount > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    </li> --}}
+                    <li class="menu-item {{ request()->routeIs('feedback.admin') ? 'active' : '' }}">
+                        <a href="{{ route('feedback.admin') }}" class="menu-link d-flex align-items-center position-relative">
+                            <i class="menu-icon tf-icons bx bx-message-square-dots feedback-icon"></i>
+                    
+                            @if($unreadFeedbackCount > 0)
+                                <span class="notification-badge">
                                     {{ $unreadFeedbackCount }}
-                                    <span class="visually-hidden">unread messages</span>
                                 </span>
                             @endif
+                    
+                            <div class="ms-2">Masukan</div>
                         </a>
-                    </li> --}}
+                    </li>
+                    
+                    
+                    
+
+                    
 
                 </ul>
             
@@ -384,6 +396,27 @@
             background-color: #c62828 !important;
             border-color: #c62828 !important;
         }
+        .feedback-icon {
+            font-size: 24px;
+            position: relative;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #F44335;
+            color: white;
+            font-size: 0.75rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            z-index: 1;
+        }
     </style>
 
     <!-- Select2 JS -->
@@ -392,8 +425,8 @@
         $(document).ready(function() {
             // Inisialisasi Select2
             $('.select2').select2({
-                // placeholder: "Pilih Penugasan", // Placeholder jika ingin ditambahkan
-                allowClear: true // Memungkinkan user untuk menghapus pilihan
+
+                allowClear: true
             });
         });
     </script>
