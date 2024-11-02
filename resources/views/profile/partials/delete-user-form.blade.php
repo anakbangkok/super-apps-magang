@@ -1,7 +1,7 @@
 <section class="container my-5 mx-auto" style="max-width: 600px;">
     <h1 class="mb-4 text-right" style="font-family: 'Arial', sans-serif;">Hapus Akun</h1>
 
-    <div class="alert alert-warning" style="background-color: #fff3cd; color: #856404;">
+    <div class="alert alert-warning" style="background-color: #fff3c; color: #856404;">
         <strong>Peringatan:</strong> Setelah akun Anda dihapus, semua data akan hilang secara permanen. Pastikan Anda sudah mengunduh informasi yang ingin disimpan.
     </div>
 
@@ -14,7 +14,7 @@
     <div class="modal fade" id="confirmUserDeletionModal" tabindex="-1" aria-labelledby="confirmUserDeletionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content shadow">
-                <form method="POST" action="{{ route('profile.destroy') }}">
+                <form method="POST" action="{{ route('admin.profile.destroy') }}">
                     @csrf
                     @method('delete')
 
@@ -30,7 +30,7 @@
                             Setelah akun Anda dihapus, semua data akan hilang secara permanen. Masukkan kata sandi Anda untuk mengonfirmasi penghapusan.
                         </p>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="password" class="form-label">Kata Sandi</label>
                             <input 
                                 type="password" 
@@ -45,7 +45,7 @@
                                     {{ $errors->userDeletion->first('password') }}
                                 </div>
                             @endif
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="modal-footer">

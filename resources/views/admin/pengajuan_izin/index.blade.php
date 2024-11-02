@@ -42,6 +42,7 @@
                     <th>Durasi</th>
                     <th>Tanggal Mulai</th>
                     <th>Tanggal Selesai</th>
+                    <th>Keterangan</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
@@ -53,8 +54,9 @@
                         <td>{{ optional($izin->user)->name ?? 'Tidak Diketahui' }}</td>
                         <td>{{ $izin->jenis_izin }}</td>
                         <td>{{ $izin->durasi }}</td>
-                        <td>{{ $izin->tanggal_mulai }}</td>
-                        <td>{{ $izin->tanggal_selesai ?? '-' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($izin->tanggal_mulai)->translatedFormat('d F Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($izin->tanggal_selesai ?? '-')->translatedFormat('d F Y') }}</td>
+                        <td>{{ $izin->keterangan }}</td>
                         <td>
                             <span class="badge bg-{{ $izin->status == 'menunggu' ? 'warning' : ($izin->status == 'disetujui' ? 'success' : 'danger') }}">
                                 {{ ucfirst($izin->status) }}

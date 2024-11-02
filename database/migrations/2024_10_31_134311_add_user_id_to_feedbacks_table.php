@@ -9,20 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('feedbacks', function (Blueprint $table) {
-            if (!Schema::hasColumn('feedbacks', 'is_read')) {
-                $table->boolean('is_read')->default(0);
-            }
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
-    
-    public function down()
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('feedbacks', function (Blueprint $table) {
-            $table->dropColumn('is_read');
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
-    }    
-    
+    }
 };
+

@@ -31,17 +31,25 @@
                                     </div>
 
                                     <!-- Password -->
-                                    <div class="form-floating mb-4">
+                                    <div class="form-floating mb-4 position-relative">
                                         <x-text-input id="password" class="form-control" type="password" name="password" required placeholder="Password" />
                                         <label for="password">Kata Sandi</label>
                                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                        <!-- Eye Icon for Password -->
+                                        <span id="togglePassword" class="position-absolute" style="right: 10px; top: 15px; cursor: pointer;">
+                                            <i class="fas fa-eye" id="eyeIconPassword"></i>
+                                        </span>
                                     </div>
 
                                     <!-- Confirm Password -->
-                                    <div class="form-floating mb-4">
+                                    <div class="form-floating mb-4 position-relative">
                                         <x-text-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" required placeholder="Confirm Password" />
                                         <label for="password_confirmation">Konfirmasi Kata Sandi</label>
                                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                        <!-- Eye Icon for Confirm Password -->
+                                        <span id="toggleConfirmPassword" class="position-absolute" style="right: 10px; top: 15px; cursor: pointer;">
+                                            <i class="fas fa-eye" id="eyeIconConfirmPassword"></i>
+                                        </span>
                                     </div>
 
                                     <div class="text-center">
@@ -62,4 +70,34 @@
             </div>
         </div>
     </main>
-</x-guest-layout>
+
+    <!-- Load Font Awesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle Password Visibility
+            const togglePassword = document.querySelector('#togglePassword');
+            const passwordInput = document.querySelector('#password');
+            const eyeIconPassword = document.querySelector('#eyeIconPassword');
+
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                eyeIconPassword.classList.toggle('fa-eye');
+                eyeIconPassword.classList.toggle('fa-eye-slash');
+            });
+
+            // Toggle Confirm Password Visibility
+            const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+            const confirmPasswordInput = document.querySelector('#password_confirmation');
+            const eyeIconConfirmPassword = document.querySelector('#eyeIconConfirmPassword');
+
+            toggleConfirmPassword.addEventListener('click', () => {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                eyeIconConfirmPassword.classList.toggle('fa-eye');
+                eyeIconConfirmPassword.classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
+</x-layout>

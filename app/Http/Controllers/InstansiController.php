@@ -43,4 +43,5 @@ class InstansiController extends Controller
         $instansi->delete();
         return redirect()->route('instansi.index')->with('success', 'Instansi berhasil dihapus!');
     }
+    
 }

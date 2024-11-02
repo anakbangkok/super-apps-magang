@@ -10,6 +10,12 @@ class Feedback extends Model
     use HasFactory;
 
     protected $table = 'feedbacks';
-    protected $fillable = ['name', 'email', 'message'];
+    protected $fillable = ['message', 'name', 'email', 'user_id', 'is_read'];
+
+    // Relasi dengan User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
 

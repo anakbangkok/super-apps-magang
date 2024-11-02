@@ -21,14 +21,16 @@ Route::prefix('admin')->middleware('guest:admin')->group(function () {
 
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    // Route::get('/dashboard', function () {
+    //     return view('admin.dashboard');
+    // })->name('admin.dashboard');
 
     Route::get('/admin/dashboard', [AdminUserController::class, 'dashboard'])->name('admin.dashboard');
 
 
     Route::get('/admin/kehadiran', [KehadiranController::class, 'adminIndex'])->name('admin.kehadiran.index');
+
+
 
     Route::resource('admin/users', AdminUserController::class)->names('admin.users');
 

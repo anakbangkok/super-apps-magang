@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Kehadiran extends Model
 {
@@ -25,12 +26,19 @@ class Kehadiran extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function adminIndex()
+    // Aksesors untuk memformat tanggal
+    public function getFormattedDateAttribute()
     {
-        // Mengambil semua data absensi dengan relasi user
-        $kehadirans = Kehadiran::with('user')->get();
-        return view('admin.kehadiran.index', compact('kehadirans'));
+        return Carbon::parse($this->date)->translatedFormat('d-F-Y'); 
     }
 
-}
+    public function getFormattedCheckInAttribute()
+    {
+        return $this->check_in ? Carbon::parse($this->check_in)->setTimezone('Asia/Jakarta')->format('H:i') : '-';
+    }
 
+    public function getFormattedCheckOutAttribute()
+    {
+        return $this->check_out ? Carbon::parse($this->check_out)->setTimezone('Asia/Jakarta')->format('H:i') : '-';
+    }
+}

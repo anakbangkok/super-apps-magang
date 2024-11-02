@@ -42,7 +42,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $tim_sosmed->pekerjaan_hari_ini }}</td>
                 <td>{{ $tim_sosmed->keterangan }}</td>
-                <td>{{ $tim_sosmed->tanggal }}</td>
+                <td>{{  \Carbon\Carbon::parse($tim_sosmed->tanggal)->translatedFormat('d F Y')  }}</td>
                 <td>
                     <a href="{{ route('tim_sosmed.edit', $tim_sosmed->id) }}" class="btn btn-warning btn-sm" title="Edit">Edit</a>
                     <form action="{{ route('tim_sosmed.destroy', $tim_sosmed->id) }}" method="POST" class="d-inline">

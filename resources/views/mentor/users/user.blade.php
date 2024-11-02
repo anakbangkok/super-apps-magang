@@ -6,38 +6,37 @@
 
 <style>
     .pagination {
-        justify-content: center; /* Menyelaraskan pagination di tengah */
-        margin-top: 20px; /* Menambah jarak atas */
+        justify-content: center;
+        margin-top: 20px;
     }
 
     .pagination .page-link {
-        color: #F44335; /* Ubah warna teks untuk link normal */
-        background-color: white; /* Ubah warna latar untuk link normal */
-        border: 1px solid #F44335; /* Ubah warna border */
+        color: #F44335;
+        background-color: white;
+        border: 1px solid #F44335;
     }
 
     .pagination .page-link:hover {
-        background-color: #c62828; /* Ubah warna latar saat hover (lebih gelap) */
-        color: white; /* Ubah warna teks saat hover */
+        background-color: #c62828;
+        color: white;
     }
 
     .pagination .page-item.active .page-link {
-        background-color: #F44335; /* Ubah warna latar untuk item aktif */
-        color: white; /* Ubah warna teks untuk item aktif */
-        border: 1px solid #F44335; /* Border item aktif */
+        background-color: #F44335;
+        color: white;
+        border: 1px solid #F44335;
     }
 
     .pagination .page-item.disabled .page-link {
-        color: #6c757d; /* Warna untuk link yang dinonaktifkan */
-        background-color: white; /* Warna latar untuk link yang dinonaktifkan */
-        border: 1px solid #dee2e6; /* Border untuk link yang dinonaktifkan */
+        color: #6c757d;
+        background-color: white;
+        border: 1px solid #dee2e6;
     }
 </style>
 
 <div class="container py-5" style="background-color: white; border-radius: 8px;">
     <h2 class="mb-4">Daftar Manajemen Pengguna</h2>
 
-    <!-- Flash Messages -->
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -45,7 +44,6 @@
         </div>
     @endif
 
-    <!-- Form Pencarian -->
     <form method="GET" action="{{ route('mentor.users.user') }}" class="row mb-4">
         <div class="col-md-3 mb-2">
             <input type="text" name="searchName" class="form-control" placeholder="Cari Nama" value="{{ request('searchName') }}">
@@ -75,7 +73,7 @@
             <input type="date" name="startDate" class="form-control" value="{{ request('startDate') }}">
             <input type="date" name="endDate" class="form-control" value="{{ request('endDate') }}">
             <button type="submit" class="btn btn-primary">Cari</button>
-            <a href="{{ route('mentor.users.user') }}" class="btn btn-secondary">Reset</a> <!-- Tombol Reset -->
+            <a href="{{ route('mentor.users.user') }}" class="btn btn-secondary">Reset</a>
         </div>
     </form>
 
@@ -103,8 +101,8 @@
                         <td>{{ $user->instansi->nama_instansi ?? 'N/A' }}</td>
                         <td>{{ $user->penugasan->nama_unit_bisnis ?? 'N/A' }}</td>
                         <td>{{ $user->mentor->name ?? 'N/A' }}</td>
-                        <td>{{ $user->start_date }}</td>
-                        <td>{{ $user->end_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($user->start_date)->translatedFormat('d F Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($user->end_date)->translatedFormat('d F Y') }}</td>
                         <td>
                             @php $now = now()->toDateString(); @endphp
                             @if (!$user->start_date || !$user->end_date)
@@ -133,7 +131,7 @@
                 </span>
             </div>
             <div>
-                {{ $users->links('vendor.pagination.bootstrap-5') }} <!-- Menampilkan pagination -->
+                {{ $users->links('vendor.pagination.bootstrap-5') }}
             </div>
         </div>
         

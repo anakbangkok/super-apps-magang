@@ -16,6 +16,7 @@
                 <label for="min-date" class="form-label">Tanggal Mulai:</label>
                 <input type="date" id="min-date" class="form-control">
             </div>
+            
             <div class="col-md-4">
                 <label for="max-date" class="form-label">Tanggal Akhir:</label>
                 <input type="date" id="max-date" class="form-control">
@@ -41,9 +42,15 @@
                         <td>{{ $kehadiran->user->name }}</td>
                         <td>{{ $kehadiran->date }}</td>
                         <td>{{ $kehadiran->shift }}</td>
-                        <td>{{ $kehadiran->check_in ?? '-' }}</td>
-                        <td>{{ $kehadiran->check_out ?? '-' }}</td>
-                        <td>{{ $kehadiran->location }}</td>
+                        <td>{{ $kehadiran->check_in ? $kehadiran->check_in->format('H:i') : '-' }}</td>
+                        <td>{{ $kehadiran->check_out ? $kehadiran->check_out->format('H:i') : '-' }}</td>
+                        <td class="text">
+                            @if ($kehadiran->location === 'kantor')
+                                <span class="badge bg-success">Kantor</span>
+                            @else
+                                <span class="badge bg-danger">Luar Kantor</span>
+                            @endif
+                        </td>
                         <td>
                             <form action="{{ route('kehadirans.destroy', $kehadiran->id) }}" method="POST" style="display: inline;">
                                 @csrf

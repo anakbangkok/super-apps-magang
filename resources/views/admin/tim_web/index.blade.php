@@ -47,7 +47,7 @@
                     <td>{{ $tim_web->jumlah_artikel }}</td>
                     <td>{{ $tim_web->jumlah_kata }}</td>
                     <td>{{ $tim_web->keterangan }}</td>
-                    <td>{{ $tim_web->tanggal }}</td>
+                    <td>{{  \Carbon\Carbon::parse($tim_web->tanggal)->translatedFormat('d F Y')  }}</td>
                     <td>
                         <a href="{{ route('tim_web.edit', $tim_web->id) }}" class="btn btn-warning btn-sm" title="Edit">
                             Edit

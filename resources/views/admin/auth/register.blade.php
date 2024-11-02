@@ -31,17 +31,27 @@
                                     </div>
 
                                     <!-- Password -->
-                                    <div class="form-floating mb-4">
+                                    <div class="form-floating mb-4 position-relative">
                                         <x-text-input id="password" class="form-control" type="password" name="password" required placeholder="Password" />
                                         <label for="password">Kata Sandi</label>
                                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
+
+                                        <!-- Eye Icon -->
+                                        <span id="togglePassword" class="position-absolute" style="right: 10px; top: 15px; cursor: pointer;">
+                                            <i class="fas fa-eye" id="eyeIcon"></i>
+                                        </span>
                                     </div>
 
                                     <!-- Confirm Password -->
-                                    <div class="form-floating mb-4">
+                                    <div class="form-floating mb-4 position-relative">
                                         <x-text-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" required placeholder="Confirm Password" />
                                         <label for="password_confirmation">Konfirmasi Kata Sandi</label>
                                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+
+                                        <!-- Eye Icon for Confirm Password -->
+                                        <span id="toggleConfirmPassword" class="position-absolute" style="right: 10px; top: 15px; cursor: pointer;">
+                                            <i class="fas fa-eye" id="confirmEyeIcon"></i>
+                                        </span>
                                     </div>
 
                                     <div class="text-center">
@@ -52,7 +62,7 @@
 
                                     <p class="mt-3 text-sm text-center">
                                         Sudah terdaftar?
-                                        <a href="{{ route('admin.login') }}" class="text-danger font-weight-bold">Masuk</a> <!-- Ubah warna tautan menjadi merah -->
+                                        <a href="{{ route('admin.login') }}" class="text-danger font-weight-bold">Masuk</a>
                                     </p>
                                 </form>
                             </div>
@@ -62,4 +72,34 @@
             </div>
         </div>
     </main>
-</x-guest-layout>
+
+    <!-- Load Font Awesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle Password Visibility for Password Field
+            const togglePassword = document.querySelector('#togglePassword');
+            const passwordInput = document.querySelector('#password');
+            const eyeIcon = document.querySelector('#eyeIcon');
+
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                eyeIcon.classList.toggle('fa-eye');
+                eyeIcon.classList.toggle('fa-eye-slash');
+            });
+
+            // Toggle Password Visibility for Confirm Password Field
+            const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+            const confirmPasswordInput = document.querySelector('#password_confirmation');
+            const confirmEyeIcon = document.querySelector('#confirmEyeIcon');
+
+            toggleConfirmPassword.addEventListener('click', () => {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                confirmEyeIcon.classList.toggle('fa-eye');
+                confirmEyeIcon.classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
+</x-layout>

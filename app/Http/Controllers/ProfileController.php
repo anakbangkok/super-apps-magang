@@ -68,26 +68,17 @@ class ProfileController extends Controller
     /**
      * Menghapus akun user.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy()
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
 
-        $user = $request->user();
+
+        $user = Auth()->user();
 
         Auth::logout();
 
-        // Hapus foto profil jika ada
-        if ($user->profile_photo && Storage::exists($user->profile_photo)) {
-            Storage::delete($user->profile_photo);
-        }
-
         $user->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return redirect()->route('login')->with('success', 'Akun Anda telah dihapus!');
     }
+
 }

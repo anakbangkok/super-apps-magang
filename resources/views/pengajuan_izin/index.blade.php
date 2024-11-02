@@ -22,6 +22,11 @@
             </select>
         </div>
     
+        <div class="mb-3">
+            <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
+            <input type="date" name="tanggal_mulai" class="form-control" required>
+        </div>
+
         <div class="mb-3" id="tanggalSelesaiDiv" style="display: none;">
             <label for="tanggal_selesai" class="form-label">Tanggal Selesai (Opsional)</label>
             <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control">
@@ -33,12 +38,8 @@
                 <option value="sakit">Sakit</option>
                 <option value="keluarga">Keluarga</option>
                 <option value="kegiatan_sekolah">Kegiatan Sekolah</option>
+                <option value="lain-lain">Lain-lain</option>
             </select>
-        </div>
-    
-        <div class="mb-3">
-            <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
-            <input type="date" name="tanggal_mulai" class="form-control" required>
         </div>
     
         <div class="mb-3">
@@ -56,6 +57,7 @@
                 <th>No</th>
                 <th>Jenis Izin</th>
                 <th>Durasi</th>
+                <th>Keterangan</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -65,6 +67,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $izin->jenis_izin }}</td>
                 <td>{{ $izin->durasi }}</td>
+                <td>{{ $izin->keterangan }}</td>
                 <td>
                     @if ($izin->status == 'disetujui')
                         <span class="badge bg-success">Disetujui</span>

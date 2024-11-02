@@ -24,17 +24,16 @@
                                     </div>
 
                                     <!-- Password Input -->
-                                    <div class="form-floating mb-4">
+                                    <div class="form-floating mb-4 position-relative">
                                         <x-text-input id="password" class="form-control" type="password" name="password" required placeholder="Password" />
                                         <label for="password">Kata Sandi</label>
                                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                        
+                                        <!-- Eye Icon -->
+                                        <span id="togglePassword" class="position-absolute" style="right: 10px; top: 15px; cursor: pointer;">
+                                            <i class="fas fa-eye" id="eyeIcon"></i>
+                                        </span>
                                     </div>
-
-                                    <!-- Remember Me -->
-                                    {{-- <!-- <div class="form-check mb-4">
-                                        <input id="remember_me" type="checkbox" class="form-check-input" name="remember">
-                                        <label for="remember_me" class="form-check-label text-danger">{{ __('Remember me') }}</label>
-                                    </div>  --}}
 
                                     <div class="text-center">
                                         <x-primary-button class="btn bg-danger w-100 py-2 mb-3" style="border-radius: 10px; font-weight: 500;">
@@ -62,4 +61,20 @@
             </div>
         </div>
     </main>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+        const eyeIcon = document.querySelector('#eyeIcon');
+
+        togglePassword.addEventListener('click', () => {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            // Toggle the eye slash icon
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </x-layout>

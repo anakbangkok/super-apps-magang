@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>@yield('title', 'Admin')</title>
+    <title>@yield('title', 'Mentor')</title>
     <!-- Boxicons CSS -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <!-- Favicon -->
@@ -70,7 +70,7 @@
                         </head>
                         <body>
                             <!-- Tulis teks dalam huruf kecil untuk melihat efeknya -->
-                            <span class="app-brand-text demo menu-text fw-bolder ms-2">super apps</span>
+                            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: capitalize;">super apps</span>
                         </body>
                         </html>
                     </a>
@@ -84,8 +84,8 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
-                    <!-- Dashboard -->
-                    <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                   <!-- Dashboard -->
+                    <li class="menu-item {{ request()->routeIs('mentor.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('mentor.dashboard') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Halaman Utama</div>

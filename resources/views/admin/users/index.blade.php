@@ -38,7 +38,6 @@
             padding: 0.5em;
         }
 
-        /* Tambahan untuk mengubah ukuran tombol */
         .btn-small {
             padding: 0.2em 0.5em;
             font-size: 0.8em;
@@ -58,7 +57,6 @@
 
         <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Tambah Pengguna</a>
 
-        <!-- Form Pencarian -->
         <form method="GET" action="{{ route('admin.users.index') }}" class="row mb-4">
             <div class="col-md-3 mb-2">
                 <input type="text" name="searchName" class="form-control" placeholder="Cari Nama" value="{{ request('searchName') }}">
@@ -115,8 +113,8 @@
                             <td>{{ $user->instansi->nama_instansi ?? 'N/A' }}</td>
                             <td>{{ $user->penugasan->nama_unit_bisnis ?? 'N/A' }}</td>
                             <td>{{ $user->mentor->name ?? 'N/A' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($user->start_date)->format('d-m-Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($user->end_date)->format('d-m-Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($user->start_date)->translatedFormat('d F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($user->end_date)->translatedFormat('d F Y') }}</td>
                             <td>
                                 @php $now = now()->toDateString(); @endphp
                                 @if (!$user->start_date || !$user->end_date)
@@ -155,18 +153,17 @@
             </table>
         </div>
 
-        {{ $users->links() }} <!-- Pagination links -->
+        {{ $users->links() }}
     </div>
 
     <script>
         $(document).ready(function() {
             $('#usersTable').DataTable({
                 language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/Indonesian.json' // Ganti dengan bahasa sesuai kebutuhan
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.5/i18n/Indonesian.json'
                 }
             });
-            
-            // Inisialisasi tooltip
+
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);

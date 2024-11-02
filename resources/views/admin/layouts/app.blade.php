@@ -75,7 +75,7 @@
                         </head>
                         <body>
                             <!-- Tulis teks dalam huruf kecil untuk melihat efeknya -->
-                            <span class="app-brand-text demo menu-text fw-bolder ms-2">super apps</span>
+                            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: capitalize;">super apps</span>
                         </body>
                         </html>
                     </a>
@@ -160,7 +160,7 @@
                     <!-- Aktivitas Harian -->
                     <li class="menu-item {{ request()->routeIs('journal.admin') ? 'active' : '' }}">
                         <a href="{{ route('journal.admin') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-user"></i>
+                            <i class="menu-icon tf-icons bx bx-notepad"></i>
                             <div data-i18n="Tables">Aktivitas Harian</div>
                         </a>
                     </li>
@@ -430,3 +430,5 @@
             });
         });
     </script>
+
+    

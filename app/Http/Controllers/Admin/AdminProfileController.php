@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin; 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdminProfileController extends Controller
 {
@@ -71,10 +73,21 @@ class AdminProfileController extends Controller
 
     public function destroy()
     {
+        // Validasi kata sandi sebelum menghapus akun
+        // $request->validate([
+        //     'current_password' => 'required|string',
+        // ]);
 
         $admin = auth()->user();
+
+        // Verifikasi kata sandi saat ini
+        // if (!Hash::check($request->current_password, $admin->password)) {
+        //     return back()->withErrors(['current_password' => 'Kata Sandi saat ini tidak sesuai!']);
+        // }
+
+        Auth::logout();
         $admin->delete();
 
-        return redirect()->route('login')->with('success', 'Akun Anda telah dihapus!');
+        return redirect()->route('admin.login')->with('success', 'Akun Anda telah dihapus!');
     }
 }

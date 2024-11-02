@@ -69,9 +69,9 @@
                                 style="width: 50px; height: auto;" />
                         </span>
                         </head>
-                        <body>
+                        <body> 
                             <!-- Tulis teks dalam huruf kecil untuk melihat efeknya -->
-                            <span class="app-brand-text demo menu-text fw-bolder ms-2">super apps</span>
+                            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: capitalize;">Super Apps</span>
                         </body>
                         </html>
                     </a>
@@ -192,7 +192,8 @@
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
                                         <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                            alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                                            alt="User Avatar" class="avatar-img" />
+
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -325,6 +326,14 @@
             color: #f00;
             /* Change icon color */
         }
+
+        .avatar-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; /* Membuat foto bundar */
+            object-fit: cover; /* Memastikan foto menyesuaikan container tanpa terdistorsi */
+        }
+
     </style>
     <!-- Select2 JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -338,7 +347,11 @@
         });
     </script>
 
-   
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 </body>
 

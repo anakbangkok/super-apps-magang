@@ -12,7 +12,8 @@
             <table class="table table-bordered">
                 <thead class="table-light">
                     <tr>
-                        <th>ID</th>
+                        <th>No</th>
+                        <th>Tanggal</th>
                         <th>Nama</th>
                         <th>Email</th>
                         <th>NIK</th>
@@ -21,9 +22,10 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @foreach ($mentors as $mentor)
+                    @foreach ($mentors as $index=> $mentor)
                         <tr>
-                            <td class="text-center">{{ $mentor->id }}</td>
+                        <td>{{ $index + 1 }}</td> 
+                        <td>{{ \Carbon\Carbon::parse($mentor->date)->translatedformat('d F Y') }}</td>
                             <td>{{ $mentor->name }}</td>
                             <td>{{ $mentor->email }}</td>
                             <td>{{ $mentor->nik }}</td>

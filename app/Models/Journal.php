@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Journal extends Model
 {
@@ -27,5 +28,12 @@ class Journal extends Model
     {
         return $this->belongsTo(User::class);
     }
-}
 
+    
+    public function getFormattedDateAttribute()
+    {
+  
+        setlocale(LC_TIME, 'id_ID.UTF-8');
+        return Carbon::parse($this->date)->translatedFormat('j F Y');
+    }
+}
