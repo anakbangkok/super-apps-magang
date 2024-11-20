@@ -1,0 +1,213 @@
+/* Styling untuk input pencarian DataTables */
+.dataTables_filter input {
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    width: auto;
+    margin-left: 15px;
+    transition: all 0.3s ease;
+    text-align: center; /* Menambahkan text center */
+}
+
+.dataTables_filter input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    text-align: center; /* Menambahkan text center */
+}
+
+.dataTables_filter label {
+    font-weight: 600;
+    color: #67798C;
+    margin-right: 10px;
+    vertical-align: middle; /* Pastikan label sejajar vertikal dengan input */
+    text-align: center; /* Menambahkan text center */
+}
+
+/* Styling untuk ikon pencarian (opsional) */
+.dataTables_filter input::placeholder {
+    color: #aaa;
+}
+
+/* Menambahkan margin pada kontainer pagination */
+.dataTables_paginate {
+    margin-top: 10px;  /* Menambahkan jarak atas pada pagination */
+    margin-bottom: 10px;  /* Menambahkan jarak bawah pada pagination */
+    text-align: center;  /* Menyelaraskan pagination ke tengah */
+}
+
+/* Menambahkan margin pada elemen pagination (seperti tombol angka) */
+.dataTables_paginate a,
+.dataTables_paginate span {
+    margin-left: 5px; /* Menambahkan jarak kiri antar elemen pagination */
+    margin-right: 5px; /* Menambahkan jarak kanan antar elemen pagination */
+    padding: 5px 10px;  /* Padding tambahan untuk tombol pagination */
+}
+
+/* Styling tombol pagination */
+.dataTables_paginate .paginate_button {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    color: #007bff;
+    transition: all 0.3s ease;
+    text-align: center; /* Menambahkan text center */
+}
+
+/* Hover effect pada tombol pagination */
+.dataTables_paginate .paginate_button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Menambahkan margin pada dropdown "entries per page" */
+.dataTables_length {
+    margin-top: 5px;   /* Menambahkan jarak atas */
+    margin-bottom: 5px;  /* Menambahkan jarak bawah */
+    padding-left: 10px;   /* Menambahkan jarak kiri */
+    padding-right: 15px;  /* Menambahkan jarak kanan */
+    vertical-align: middle;  /* Menyelaraskan dropdown dengan elemen lainnya */
+    text-align: center; /* Menambahkan text center */
+}
+
+.dataTables_length select {
+    margin-left: 10px;  /* Menambahkan jarak kiri antara dropdown dan teks */
+    padding: 5px 10px;  /* Menambahkan padding pada dropdown */
+    border-radius: 4px; /* Menambahkan sudut melengkung pada dropdown */
+    border: 1px solid #ccc; /* Warna border dropdown */
+}
+
+/* Menambahkan margin pada bagian "Showing x to y of z entries" */
+.dataTables_info {
+    margin-top: 10px;  /* Menambahkan jarak atas */
+    margin-bottom: 10px;  /* Menambahkan jarak bawah */
+    font-size: 14px;   /* Ukuran font sedikit lebih besar agar lebih mudah dibaca */
+    padding-left: 10px;   /* Menambahkan jarak kiri */
+    padding-right: 10px;  /* Menambahkan jarak kanan */
+    text-align: center; /* Menambahkan text center */
+}
+
+/* Menambahkan margin pada tabel */
+.table-responsive {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px; /* Menambahkan margin bawah pada tabel */
+    
+}
+
+/* Styling untuk tabel */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    vertical-align: middle; /* Menyelaraskan teks vertikal di dalam sel */
+}
+
+.table th {
+    background-color: #ffffff;
+    font-weight: 600;
+}
+
+.table td {
+    background-color: #ffffff;
+}
+
+/* Styling untuk header tabel */
+.table-light {
+    background-color: #f8f9fa;
+}
+
+/* Menambahkan margin pada kontainer modal */
+.modal-dialog {
+    margin-top: 50px;
+}
+
+/* Styling untuk modal */
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd;
+}
+
+/* Perbaikan agar "Showing x to y of z entries" lebih sejajar */
+.dataTables_info {
+    display: inline-block;
+    vertical-align: middle; /* Menyelaraskan teks vertikal */
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.card {
+    width: auto;
+    border-radius: 2px;
+}
+
+.button-action {
+    width: 80px; /* Ukuran lebar tetap */
+    text-align: center;
+    max-height: fit-content;
+    margin-top: 4px; /* Tambahkan margin atas */
+}
+
+
+/* Responsif: Menambahkan scroll horizontal pada tabel tanpa menyembunyikan fitur */
+@media (max-width: 768px) {
+    /* Menambahkan scroll horizontal pada tabel */
+    .table-responsive {
+        overflow-x: auto; /* Memungkinkan scroll horizontal */
+        -webkit-overflow-scrolling: touch; /* Memperbaiki scroll pada perangkat iOS */
+        text-align: center; /* Menambahkan text center */
+    }
+
+    /* Menambahkan padding untuk elemen filter, length, paginate */
+    .dataTables_filter,
+    .dataTables_length,
+    .dataTables_paginate,
+    .dataTables_info {
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    /* Menyelaraskan elemen-elemen DataTables secara horizontal */
+    .dataTables_filter input,
+    .dataTables_length select,
+    .dataTables_paginate {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+        text-align: center; /* Menambahkan text center */
+    }
+
+    /* Mengatur lebar untuk input pencarian agar tidak terlalu besar */
+    .dataTables_filter input {
+        width: 50%;
+    }
+
+    /* Menambahkan jarak antara pagination dan tabel */
+    .dataTables_paginate {
+        text-align: right;
+        margin-top: 10px;
+    }
+
+    .dataTables_info {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        text-align: center; /* Menambahkan text center */
+    }
+}

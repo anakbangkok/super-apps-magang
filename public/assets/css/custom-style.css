@@ -1,0 +1,10 @@
+/* Custom Styles */
+.menu-item.active > .menu-link {
+          background-color: #4caf50;  /* Green background for active item */
+          color: white;               /* White text color */
+      }
+      
+      .menu-item > .menu-link {
+          transition: background-color 0.3s, color 0.3s;
+      }
+      

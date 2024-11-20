@@ -1,0 +1,107 @@
+<x-layout bodyClass="bg-gray-100">
+    <main class="main-content mt-0">
+        <div class="page-header align-items-start min-vh-100"
+            style="background-image: url('https://vacuumsealer.id/wp-content/uploads/2023/10/kunjungan-industri-di-jogja-1.jpg'); background-size: cover; background-position: center;">
+            <span class="mask bg-gradient-light opacity-8"></span>
+            <div class="container my-auto">
+                <div class="row">
+                    <div class="col-lg-4 col-md-8 col-12 mx-auto">
+                        <div class="card z-index-0 shadow-lg border-0 fadeIn3 fadeInBottom" style="border-radius: 15px;">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-danger shadow-info border-radius-lg py-4">
+                                    <h4 class="text-white font-weight-bold text-center mt-2"> Halaman Daftar </h4>
+                                </div>
+                            </div>
+                            <div class="card-body px-5">
+                                <form method="POST" action="{{ route('register') }}">
+                                    @csrf
+
+                                    <div class="row mb-4">
+                                        <!-- Name Input -->
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <x-text-input id="name" class="form-control" type="text" name="name" :value="old('name')" required autofocus placeholder="John Doe" />
+                                                <label for="name">Nama</label>
+                                                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <!-- Email Input -->
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required placeholder="name@example.com" />
+                                                <label for="email">Email</label>
+                                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-floating mb-4 position-relative">
+                                        <x-text-input id="password" class="form-control" type="password" name="password" required placeholder="Password" />
+                                        <label for="password">Kata Sandi</label>
+                                        <span id="togglePassword" class="position-absolute" style="right: 10px; top: 15px; cursor: pointer;">
+                                            <i class="fas fa-eye" id="eyeIconPassword"></i>
+                                        </span>
+                                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                    </div>
+
+                                    <div class="form-floating mb-4 position-relative">
+                                        <x-text-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" required placeholder="Confirm Password" />
+                                        <label for="password_confirmation">Konfirmasi Kata Sandi</label>
+                                        <span id="toggleConfirmPassword" class="position-absolute" style="right: 10px; top: 15px; cursor: pointer;">
+                                            <i class="fas fa-eye" id="eyeIconConfirmPassword"></i>
+                                        </span>
+                                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                    </div>
+
+                                    <div class="text-center">
+                                        <x-primary-button class="btn bg-danger w-100 py-2 mb-3" style="border-radius: 10px; font-weight: 500;">
+                                            {{ __('Daftar') }}
+                                        </x-primary-button>
+                                    </div>
+
+                                    <p class="mt-3 text-sm text-center">
+                                        Sudah terdaftar?
+                                        <a href="{{ route('login') }}" class="text-danger font-weight-bold">Masuk</a>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</x-layout>
+
+<!-- Load Font Awesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle Password Visibility
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+        const eyeIconPassword = document.querySelector('#eyeIconPassword');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            eyeIconPassword.classList.toggle('fa-eye');
+            eyeIconPassword.classList.toggle('fa-eye-slash');
+        });
+
+        // Toggle Confirm Password Visibility
+        const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+        const confirmPasswordInput = document.querySelector('#password_confirmation');
+        const eyeIconConfirmPassword = document.querySelector('#eyeIconConfirmPassword');
+
+        toggleConfirmPassword.addEventListener('click', () => {
+            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordInput.setAttribute('type', type);
+            eyeIconConfirmPassword.classList.toggle('fa-eye');
+            eyeIconConfirmPassword.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
