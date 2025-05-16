@@ -15,11 +15,6 @@ class TimSosmedController extends Controller
         return view('admin.tim_sosmed.index', compact('tim_sosmeds'));
     }
 
-    public function create()
-    {
-        return view('admin.tim_sosmed.create');
-    }
-
     public function store(Request $request)
     {
         // Validasi input data

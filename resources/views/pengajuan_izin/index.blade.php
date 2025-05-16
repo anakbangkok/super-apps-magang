@@ -39,7 +39,7 @@
             <select name="jenis_izin" class="form-select" required>
                 <option value="sakit">Sakit</option>
                 <option value="keluarga">Keluarga</option>
-                <option value="kegiatan_sekolah">Kegiatan Sekolah</option>
+                <option value="kegiatan sekolah">Kegiatan Sekolah</option>
                 <option value="lain-lain">Lain-lain</option>
             </select>
         </div>

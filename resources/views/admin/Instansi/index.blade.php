@@ -26,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @php $no = 1; @endphp <!-- Inisialisasi nomor urut -->
+                        @php $no = 1; @endphp
                         @foreach ($instansis as $instansi)
                             <tr>
                                 <td class="text-center">{{ $no++ }}</td> <!-- Menampilkan nomor urut di tengah -->
@@ -34,25 +34,24 @@
                                 <td class="text-center">
                                     <a href="{{ route('instansi.edit', $instansi) }}"
                                         class="btn btn-warning btn-sm">Edit</a>
-                                    <form id="deleteInstansiForm" action="{{ route('instansi.destroy', $instansi) }}" method="POST"
+                                    <form id="deleteInstansiForm-{{ $instansi->id }}" action="{{ route('instansi.destroy', $instansi) }}" method="POST"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#confirmDeleteModal">
+                                            data-bs-target="#confirmDeleteModal-{{ $instansi->id }}">
                                             Hapus
                                         </button>
-
                                     </form>
                                     <!-- Modal Konfirmasi Penghapusan -->
-                                    <div class="modal fade" id="confirmDeleteModal" tabindex="-1"
-                                        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="confirmDeleteModal-{{ $instansi->id }}" tabindex="-1"
+                                        aria-labelledby="confirmDeleteModalLabel-{{ $instansi->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content shadow">
                                                 <div class="modal-header"
                                                     style="background-color: #f8d7da; color: #721c24;">
-                                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi
-                                                        Penghapusan</h5>
+                                                    <h5 class="modal-title" id="confirmDeleteModalLabel-{{ $instansi->id }}">
+                                                        Konfirmasi Penghapusan</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Tutup"></button>
                                                 </div>
@@ -62,13 +61,14 @@
                                                 <div class="modal-footer">
                                                     <!-- Tombol untuk mengirim form penghapusan -->
                                                     <button type="button" class="btn btn-danger"
-                                                        onclick="document.getElementById('deleteInstansiForm').submit();">Ya, Hapus</button>
+                                                        onclick="document.getElementById('deleteInstansiForm-{{ $instansi->id }}').submit();">
+                                                        Ya, Hapus
+                                                    </button>
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Batal</button>
                                                 </div>
                                             </div>
-                                        </div>  
-                                        
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

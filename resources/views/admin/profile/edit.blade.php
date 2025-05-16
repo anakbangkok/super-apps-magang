@@ -12,6 +12,26 @@
             </div>
         @endif
 
+        @if (session('status'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+
+
         <ul class="nav nav-tabs mb-4" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
@@ -72,40 +92,55 @@
                     @csrf
                     @method('PUT')
 
+                    <!-- Kata Sandi Saat Ini -->
                     <div class="mb-3">
                         <label for="current_password" class="form-label">Kata Sandi Saat Ini</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="current_password" name="current_password"
-                                required>
+                            <input type="password" class="form-control @error('current_password') is-invalid @enderror"
+                                id="current_password" name="current_password" required>
                             <button type="button" class="btn btn-outline-secondary"
                                 onclick="togglePassword('current_password', this)">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </div>
+                        @error('current_password')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
+                    <!-- Kata Sandi Baru -->
                     <div class="mb-3">
                         <label for="new_password" class="form-label">Kata Sandi Baru</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="new_password" name="new_password" required>
+                            <input type="password" class="form-control @error('new_password') is-invalid @enderror"
+                                id="new_password" name="new_password" required>
                             <button type="button" class="btn btn-outline-secondary"
                                 onclick="togglePassword('new_password', this)">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </div>
+                        @error('new_password')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
+                    <!-- Konfirmasi Kata Sandi Baru -->
                     <div class="mb-3">
                         <label for="new_password_confirmation" class="form-label">Konfirmasi Kata Sandi Baru</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="new_password_confirmation"
-                                name="new_password_confirmation" required>
+                            <input type="password"
+                                class="form-control @error('new_password_confirmation') is-invalid @enderror"
+                                id="new_password_confirmation" name="new_password_confirmation" required>
                             <button type="button" class="btn btn-outline-secondary"
                                 onclick="togglePassword('new_password_confirmation', this)">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </div>
+                        @error('new_password_confirmation')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
+
 
                     <button type="submit" class="btn btn-primary w-100 mt-2">Simpan Perubahan</button>
                 </form>
@@ -117,55 +152,54 @@
                     <h1 class="mb-4 text-right" style="font-family: 'Arial', sans-serif;">Hapus Akun</h1>
 
                     <div class="alert alert-warning" style="background-color: #fff3cd; color: #856404;">
-                        <strong>Peringatan:</strong> Setelah akun Anda dihapus, semua data akan hilang secara permanen. Pastikan Anda sudah mengunduh informasi yang ingin disimpan.
+                        <strong>Peringatan:</strong> Setelah akun Anda dihapus, semua data akan hilang secara permanen.
+                        Pastikan Anda sudah mengunduh informasi yang ingin disimpan.
                     </div>
 
                     <!-- Trigger Button -->
-                    <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#confirmUserDeletionModal">
+                    <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
+                        data-bs-target="#confirmUserDeletionModal">
                         Hapus Akun
                     </button>
 
                     <!-- Modal Konfirmasi Hapus Akun -->
-                    <div class="modal fade" id="confirmUserDeletionModal" tabindex="-1" aria-labelledby="confirmUserDeletionModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="confirmUserDeletionModal" tabindex="-1"
+                        aria-labelledby="confirmUserDeletionModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content shadow">
-                                <form id="deleteAccountForm" action="{{ route('admin.profile.destroy') }}" method="POST">
+                                <form id="deleteAccountForm" action="{{ route('admin.profile.destroy') }}"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
 
                                     <div class="modal-header" style="background-color: #f8d7da; color: #721c24;">
-                                        <h5 class="modal-title" id="confirmUserDeletionModalLabel">Apakah Anda yakin ingin menghapus akun?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                        <h5 class="modal-title" id="confirmUserDeletionModalLabel">Apakah Anda yakin ingin
+                                            menghapus akun?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
                                     </div>
 
                                     <div class="modal-body">
                                         <p class="text-muted">
                                             Setelah akun Anda dihapus, semua data akan hilang secara permanen.
                                         </p>
+                                    </div>
 
-                                        {{-- <div class="mb-3">
-                                            <label for="current_password" class="form-label">Kata Sandi</label>
-                                            <input 
-                                                type="password" 
-                                                class="form-control @error('current_password') is-invalid @enderror" 
-                                                id="current_password" 
-                                                name="current_password" 
-                                                placeholder="Kata Sandi" 
-                                                required
-                                            >
-                                            @error('current_password')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div> --}}
+                                                                        <!-- Field Password untuk Verifikasi -->
+                                    <div class="mb-3 mx-3">
+                                        <label for="current_password" class="form-label">Kata Sandi Saat Ini</label>
+                                        <input type="password" class="form-control" id="current_password"
+                                            name="current_password" required>
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-danger" form="deleteAccountForm">Hapus Akun</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-danger" form="deleteAccountForm">Hapus
+                                            Akun</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Batal</button>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>

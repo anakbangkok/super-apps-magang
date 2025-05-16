@@ -12,6 +12,34 @@
             </div>
         @endif
 
+        {{-- Notifikasi jika berhasil --}}
+        @if (session('status') === 'password-updated')
+            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                Kata sandi berhasil diperbarui.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        {{-- Notifikasi jika validasi gagal --}}
+        @if ($errors->updatePassword->any())
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <strong>Terjadi kesalahan:</strong>
+                <ul class="mb-0">
+                    @foreach ($errors->updatePassword->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('status') == 'password-not-updated')
+            <div class="alert alert-warning mt-2">Password baru tidak boleh sama dengan password lama.</div>
+        @endif
+
+
+
+
         <ul class="nav nav-tabs mb-4" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
@@ -81,14 +109,16 @@
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Tanggal Masuk Magang</label>
                         <input type="date" class="form-control" id="start_date" name="start_date"
-                            value="{{ old('start_date', auth()->user()->start_date) }}" required readonly>
+                            value="{{ old('end_date', $user->start_date ? \Carbon\Carbon::parse($user->start_date)->format('Y-m-d') : '') }}"
+                            required readonly>
                     </div>
 
                     <!-- Tanggal Selesai Magang Field -->
                     <div class="mb-3">
                         <label for="end_date" class="form-label">Tanggal Selesai Magang</label>
                         <input type="date" class="form-control" id="end_date" name="end_date"
-                            value="{{ old('end_date', auth()->user()->end_date) }}" required readonly>
+                            value="{{ old('end_date', $user->end_date ? \Carbon\Carbon::parse($user->end_date)->format('Y-m-d') : '') }}"
+                            required readonly>
                     </div>
 
                     <!-- Nama Mentor Field -->
@@ -126,36 +156,31 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="new_password" class="form-label">KATA SANDI BARU</label>
+                        <label for="password" class="form-label">KATA SANDI BARU</label>
                         <div class="input-group">
-                            <input type="password" class="form-control @error('new_password') is-invalid @enderror"
-                                id="new_password" name="new_password" required>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                id="password" name="password" required>
                             <button type="button" class="btn btn-outline-secondary"
-                                onclick="togglePassword('new_password', this)">
+                                onclick="togglePassword('password', this)">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </div>
-                        @error('new_password')
+                        @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="mb-4">
-                        <label for="new_password_confirmation" class="form-label">KONFIRMASI KATA SANDI BARU</label>
+                        <label for="password_confirmation" class="form-label">KONFIRMASI KATA SANDI BARU</label>
                         <div class="input-group">
-                            <input type="password"
-                                class="form-control @error('new_password_confirmation') is-invalid @enderror"
-                                id="new_password_confirmation" name="new_password_confirmation" required>
+                            <input type="password" class="form-control" id="password_confirmation"
+                                name="password_confirmation" required>
                             <button type="button" class="btn btn-outline-secondary"
-                                onclick="togglePassword('new_password_confirmation', this)">
+                                onclick="togglePassword('password_confirmation', this)">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </div>
-                        @error('new_password_confirmation')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
-
                     <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
                 </form>
             </div>

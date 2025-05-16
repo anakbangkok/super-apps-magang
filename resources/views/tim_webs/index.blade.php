@@ -20,31 +20,37 @@
             </div>
         </div>
 
-        <a href="{{ route('tim_webs.create') }}" class="btn btn-primary mb-3">Tambah Data Tim Web</a>
-
-        <div class="row mb-4">
-            <div class="col-md-3 mb-2">
-                <input type="date" name="startDate" class="form-control" placeholder="Tanggal Mulai">
-            </div>
-            <div class="col-md-3 mb-2">
-                <input type="date" name="endDate" class="form-control" placeholder="Tanggal Akhir">
-            </div>
-        </div>
+        {{-- <a href="{{ route('tim_webs.create') }}" class="btn btn-primary mb-3">Tambah Data Tim Web</a> --}}
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         <div class="card shadow">
-            <h5 class="card-header text-right">Daftar Tim Web</h5>
+
+            <div class="d-flex justify-content-between align-items-center mx-3 mb-4 mt-4">
+                <a href="{{ route('tim_webs.create') }}" class="btn btn-primary">Tambah Data Tim Web</a>
+
+                <div class="d-flex gap-2">
+                    <div style="width: 185px;">
+                        <label for="min-date" class="form-label">Tanggal Mulai:</label>
+                        <input type="date" id="min-date" class="form-control">
+                    </div>
+                    <div style="width: 185px;">
+                        <label for="max-date" class="form-label">Tanggal Akhir:</label>
+                        <input type="date" id="max-date" class="form-control">
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive text-nowrap">
                 <table id="tim-web-table" class="table">
                     <thead class="table-light">
                         <tr class="text-center">
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Jumlah Artikel Hari Ini</th>
-                            <th>Jumlah Kata Hari Ini</th>
+                            <th>Jumlah Artikel</th>
+                            <th>Jumlah Kata</th>
                             <th>Keterangan</th>
                             <th>Tanggal</th>
                             <th>Aksi</th>
@@ -58,7 +64,9 @@
                                 <td>{{ $tim_web->jumlah_artikel }}</td>
                                 <td>{{ $tim_web->jumlah_kata }}</td>
                                 <td>{{ $tim_web->keterangan }}</td>
-                                <td>{{ $tim_web->formatted_tanggal }}</td>
+                                <td data-order="{{ \Carbon\Carbon::parse($tim_web->tanggal)->format('Y-m-d') }}">
+                                    {{ \Carbon\Carbon::parse($tim_web->tanggal)->translatedFormat('d F Y') }}
+                                </td>
                                 <td>
                                     <a href="{{ route('tim_webs.edit', $tim_web->id) }}" class="btn btn-warning btn-sm"
                                         title="Edit">Edit</a>
@@ -122,35 +130,36 @@
                 ]
 
             });
-            $('input[name="startDate"], input[name="endDate"]').on('change', function() {
-                var startDate = $('input[name="startDate"]').val();
-                var endDate = $('input[name="endDate"]').val();
 
-                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    var dataDate = new Date(data[5]); // Kolom Tanggal (index 5)
-                    var normalizedDataDate = new Date(dataDate.toDateString()); // Hanya tanggal
-
-                    // Konversi input menjadi tanggal tanpa waktu
-                    var normalizedStartDate = startDate ? new Date(new Date(startDate)
-                        .toDateString()) : null;
-                    var normalizedEndDate = endDate ? new Date(new Date(endDate).toDateString()) :
-                        null;
-
-                    // Filter logika
-                    if (
-                        (!normalizedStartDate || normalizedDataDate >= normalizedStartDate) &&
-                        (!normalizedEndDate || normalizedDataDate <= normalizedEndDate)
-                    ) {
-                        return true;
-                    }
-                    return false;
-                });
-
-                table.draw();
-
-                // Hapus filter sebelumnya untuk mencegah duplikasi
-                $.fn.dataTable.ext.search.pop();
+            // Event listener hanya untuk filter tanggal
+            $('#min-date, #max-date').on('change input', function() {
+                table.draw(); // Redraw the table when the filter is applied
             });
+
+            // Custom search function hanya untuk filter tanggal
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                var tableRow = $(table.row(dataIndex).node());
+                var date = tableRow.find('td:eq(5)').data(
+                    'order'); // Ganti indeks sesuai posisi kolom tanggal
+
+                var minDate = $('#min-date').val();
+                var maxDate = $('#max-date').val();
+
+                console.log("min:", minDate, "max:", maxDate, "date:", date);
+
+                if (
+                    (minDate === '' || date >= minDate) &&
+                    (maxDate === '' || date <= maxDate)
+                ) {
+                    return true;
+                }
+                return false;
+            });
+
+            // Inisialisasi DataTable setelah filter
+            var table = $('#tim-web-table').DataTable();
+
+
         });
     </script>
 @endsection

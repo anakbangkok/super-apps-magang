@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
-        <!-- Tambahkan link Google Fonts di sini -->
+    <!-- Tambahkan link Google Fonts di sini -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
     <style>
         .app-brand-text {
@@ -26,7 +26,8 @@
             font-size: 1.5rem;
             letter-spacing: 0.5px;
             color: #333;
-            text-transform: capitalize; /* Membuat huruf pertama menjadi kapital */
+            text-transform: capitalize;
+            /* Membuat huruf pertama menjadi kapital */
         }
     </style>
 
@@ -68,51 +69,86 @@
                                 style="width: 50px; height: auto;" />
                         </span>
                         </head>
+
                         <body>
                             <!-- Tulis teks dalam huruf kecil untuk melihat efeknya -->
-                            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: capitalize;">super apps</span>
+                            <span class="app-brand-text demo menu-text fw-bolder ms-2"
+                                style="text-transform: capitalize;">super apps</span>
                         </body>
-                        </html>
-                    </a>
 
-                    <a href="javascript:void(0);"
-                        class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-                        <i class="bx bx-chevron-left bx-sm align-middle"></i>
-                    </a>
-                </div>
+</html>
+</a>
 
-                <div class="menu-inner-shadow"></div>
+<a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+    <i class="bx bx-chevron-left bx-sm align-middle"></i>
+</a>
+</div>
 
-                <ul class="menu-inner py-1">
-                   <!-- Dashboard -->
-                    <li class="menu-item {{ request()->routeIs('mentor.dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('mentor.dashboard') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Halaman Utama</div>
-                        </a>
-                    </li>
+<div class="menu-inner-shadow"></div>
 
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Pages</span>
-                    </li>
+<ul class="menu-inner py-1">
+    <!-- Dashboard -->
+    <li class="menu-item {{ request()->routeIs('mentor.dashboard') ? 'active' : '' }}">
+        <a href="{{ route('mentor.dashboard') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Analytics">Halaman Utama</div>
+        </a>
+    </li>
 
-                    {{-- <!-- Absensi Pengguna -->
+    <li class="menu-header small text-uppercase">
+        <span class="menu-header-text">Pages</span>
+    </li>
+
+    {{-- <!-- Absensi Pengguna -->
                     <li class="menu-item {{ request()->routeIs('admin.kehadiran.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.kehadiran.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-task"></i>
                             <div data-i18n="Tables">Absensi Pengguna</div>
                         </a>
                     </li> --}}
-                    
-                    <!-- Manajemen Pengguna -->
-                    <li class="menu-item {{ request()->routeIs('mentor.users.user') ? 'active' : '' }}">
-                        <a href="{{ route('mentor.users.user') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-group"></i>
-                            <div data-i18n="Tables">Rekap Pengguna</div>
-                        </a>
-                    </li>
 
-                    {{--  <!-- Instansi -->
+    <!-- Manajemen Pengguna -->
+    <li class="menu-item {{ request()->routeIs('mentor.users.user') ? 'active' : '' }}">
+        <a href="{{ route('mentor.users.user') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-group"></i>
+            <div data-i18n="Tables">Rekap Pengguna</div>
+        </a>
+    </li>
+
+    <!-- Laporan Harian -->
+    <li
+        class="menu-item {{ request()->routeIs('mentor.tim_webs.index') || request()->routeIs('mentor.tim_sosmeds.index') ? 'open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-folder"></i>
+            <div data-i18n="Laporan Harian">Laporan Harian</div>
+        </a>
+        <ul class="menu-sub">
+            <!-- Tim Web -->
+            <li class="menu-item {{ request()->routeIs('mentor.tim_webs.index') ? 'active' : '' }}">
+                <a href="{{ route('mentor.tim_webs.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                    <div data-i18n="Tim Web">Tim Web</div>
+                </a>
+            </li>
+            <!-- Tim Sosmed -->
+            <li class="menu-item {{ request()->routeIs('mentor.tim_sosmeds.index') ? 'active' : '' }}">
+                <a href="{{ route('mentor.tim_sosmeds.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                    <div data-i18n="Tim Sosmed">Tim Sosmed</div>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="menu-item {{ request()->routeIs('journal.mentor') ? 'active' : '' }}">
+        <a href="{{ route('journal.mentor') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-notepad"></i>
+            <div data-i18n="Tables">Aktivitas Harian</div>
+        </a>
+    </li>
+
+
+    {{--  <!-- Instansi -->
                     <li class="menu-item {{ request()->routeIs('instansi.index') ? 'active' : '' }}">
                         <a href="{{ route('instansi.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-building"></i>
@@ -160,204 +196,202 @@
                         </a>
                     </li> --}}
 
-                    <!-- Feedback -->
-                    <li class="menu-item {{ request()->routeIs('feedback.mentor') ? 'active' : '' }}">
-                        <a href="{{ route('feedback.mentor') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
-                            <div>Masukan</div>
-                        </a>
-                    </li>
-                </ul>
+    <!-- Feedback -->
+    <li class="menu-item {{ request()->routeIs('masukan.mentor') ? 'active' : '' }}">
+        <a href="{{ route('masukan.mentor') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
+            <div>Masukan</div>
+        </a>
+    </li>
+</ul>
 
-                <!-- Logout -->
-                <div class="logout-container py-2">
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                        class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-power-off"></i>
-                        <div data-i18n="Logout" class="ms-2">Keluar</div>
-                    </a>
-                    <form id="logout-form" action="{{ route('mentor.logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div>
-            </aside>
-            <!-- / Menu -->
+<!-- Logout -->
+<div class="logout-container py-2">
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="menu-link">
+        <i class="menu-icon tf-icons bx bx-power-off"></i>
+        <div data-i18n="Logout" class="ms-2">Keluar</div>
+    </a>
+    <form id="logout-form" action="{{ route('mentor.logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+</div>
+</aside>
+<!-- / Menu -->
 
-            <!-- Layout container -->
-            <div class="layout-page">
-                <!-- Navbar -->
+<!-- Layout container -->
+<div class="layout-page">
+    <!-- Navbar -->
 
-                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-                    id="layout-navbar">
-                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                            <i class="bx bx-menu bx-sm"></i>
-                        </a>
-                    </div>
-
-                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                        <!-- Search -->
-                        <div class="navbar-nav align-items-center">
-                            <div class="nav-item d-flex align-items-center">
-                                <i class="bx bx-search fs-4 lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none" placeholder="Cari..."
-                                    aria-label="Cari..." />
-                            </div>
-                        </div>
-                        <!-- /Search -->
-
-                        <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-                            <!-- User -->
-                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
-                                    data-bs-toggle="dropdown">
-                                    <div class="avatar avatar-online">
-                                        <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                            alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 me-3">
-                                                    <div class="avatar avatar-online">
-                                                        <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                                            alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex-grow-1">
-                                                    <span
-                                                        class="fw-semibold d-block">{{ auth()->user()->name }}</span>
-                                                    <small class="text-muted">
-                                                        Mentor
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('mentor.profile.edit') }}">
-                                    <i class="bx bx-user me-2"></i>
-                                    <span class="align-middle">Profil Saya</span>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="bx bx-power-off me-2"></i>
-                                    <span class="align-middle">Keluar</span>
-                                </a>
-                            </li>
-
-                            <form id="logout-form" action="{{ route('mentor.logout') }}" method="POST"
-                                style="display: none;">
-                                @csrf
-                            </form>
-                        </ul>
-                        </li>
-                        <!--/ User -->
-                        </ul>
-                    </div>
-                </nav>
-
-                <!-- / Navbar -->
-
-                <!-- Content -->
-                <main class="py-4">
-                    @yield('content')
-                </main>
-                <!-- / Content -->
-
-
-                <div class="content-backdrop fade"></div>
-            </div>
-            <!-- Content wrapper -->
+    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+        id="layout-navbar">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+            </a>
         </div>
-        <!-- / Layout page -->
-    </div>
 
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-    </div>
-    <!-- / Layout wrapper -->
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
-    <!-- endbuild -->
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            <!-- Search -->
+            <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                    <input type="text" class="form-control border-0 shadow-none" placeholder="Cari..."
+                        aria-label="Cari..." />
+                </div>
+            </div>
+            <!-- /Search -->
 
-    <!-- Vendors JS -->
-    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
 
-    <!-- Main JS -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                        data-bs-toggle="dropdown">
+                        <div class="avatar avatar-online">
+                            <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
+                                alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar avatar-online">
+                                            <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
+                                                alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                                        </div>
+                                    </div>
 
-    <!-- Page JS -->
-    <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
+                                        <small class="text-muted">
+                                            Mentor
+                                        </small>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{{ route('mentor.profile.edit') }}">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">Profil Saya</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Keluar</span>
+                    </a>
+                </li>
 
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+                <form id="logout-form" action="{{ route('mentor.logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </ul>
+            </li>
+            <!--/ User -->
+            </ul>
+        </div>
+    </nav>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- / Navbar -->
 
-    <!-- Select2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <!-- Content -->
+    <main class="py-4">
+        @yield('content')
+    </main>
+    <!-- / Content -->
 
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-    <style>
-        .menu-item.active .menu-link {
-            background-color: #007bff;
-            /* Change this to your desired color */
-            color: #ffffff;
-            /* Text color */
-        }
 
-        .menu-item.active .menu-icon {
-            color: #F4473A;
-            /* Change icon color when active */
-        }
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
+</div>
+<!-- / Layout page -->
+</div>
 
-        .logout-container {
-            border-top: 1px solid #ddd;
-            /* Optional: add a top border for separation */
-            padding: 1rem;
-            /* Add padding for spacing */
-            margin-top: auto;
-            /* Push the logout button to the bottom */
-        }
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+<!-- endbuild -->
 
-        .logout-container .menu-link {
-            color: #f00;
-            /* Change the color of the logout link */
-        }
+<!-- Vendors JS -->
+<script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
 
-        .logout-container .menu-icon {
-            color: #f00;
-            /* Change icon color */
-        }
-    </style>
+<!-- Main JS -->
+<script src="{{ asset('assets/js/main.js') }}"></script>
 
-    <!-- Select2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Inisialisasi Select2
-            $('.select2').select2({
-                // placeholder: "Pilih Penugasan", // Placeholder jika ingin ditambahkan
-                allowClear: true // Memungkinkan user untuk menghapus pilihan
-            });
+<!-- Page JS -->
+<script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<style>
+    .menu-item.active .menu-link {
+        background-color: #007bff;
+        /* Change this to your desired color */
+        color: #ffffff;
+        /* Text color */
+    }
+
+    .menu-item.active .menu-icon {
+        color: #F4473A;
+        /* Change icon color when active */
+    }
+
+    .logout-container {
+        border-top: 1px solid #ddd;
+        /* Optional: add a top border for separation */
+        padding: 1rem;
+        /* Add padding for spacing */
+        margin-top: auto;
+        /* Push the logout button to the bottom */
+    }
+
+    .logout-container .menu-link {
+        color: #f00;
+        /* Change the color of the logout link */
+    }
+
+    .logout-container .menu-icon {
+        color: #f00;
+        /* Change icon color */
+    }
+</style>
+
+<!-- Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Inisialisasi Select2
+        $('.select2').select2({
+            // placeholder: "Pilih Penugasan", // Placeholder jika ingin ditambahkan
+            allowClear: true // Memungkinkan user untuk menghapus pilihan
         });
-    </script>
+    });
+</script>

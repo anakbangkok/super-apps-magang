@@ -40,10 +40,9 @@
                 <div class="col-md-4">
                     <label for="nama-filter" class="form-label">Filter Nama:</label>
                     <select id="nama-filter" class="form-control select2" placeholder="Cari Nama...">
-                        <option value="">Pilih Nama</option>
-                        @foreach ($tim_webs as $tim_web)
+                        <option value="">Semua Nama</option>
+                        @foreach ($tim_webs->unique('user_id') as $tim_web)
                             <option value="{{ $tim_web->user->name }}">{{ $tim_web->user->name }}</option>
-                            <!-- Menampilkan nama user -->
                         @endforeach
                     </select>
                 </div>
@@ -69,7 +68,12 @@
                                 <td>{{ $tim_web->jumlah_artikel }}</td>
                                 <td>{{ $tim_web->jumlah_kata }}</td>
                                 <td>{{ $tim_web->keterangan }}</td>
-                                <td>{{ \Carbon\Carbon::parse($tim_web->tanggal)->translatedformat('d F Y') }}</td>
+                                {{-- <!-- <td data-order="{{ $tim_web->tanggal }}">
+                                    {{ \Carbon\Carbon::parse($tim_web->tanggal)->translatedFormat('d F Y') }}
+                                </td> --> --}}
+                                <td data-order="{{ \Carbon\Carbon::parse($tim_web->tanggal)->format('Y-m-d') }}">
+                                    {{ \Carbon\Carbon::parse($tim_web->tanggal)->translatedFormat('d F Y') }}
+                                </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <a href="{{ route('tim_web.edit', $tim_web->id) }}"
@@ -184,27 +188,24 @@
 
                 // Custom search function for filtering based on date and name
                 $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    var date = data[5]; // Column date (index starts from 0)
-                    var nama = data[1].toLowerCase(); // Column name (index starts from 0)
-
-                    // Parsing date from table (assumed format: d F Y)
-                    var tableDate = moment(date, 'D MMMM YYYY').format('YYYY-MM-DD');
+                    var tableRow = $(table.row(dataIndex).node());
+                    var date = tableRow.find('td:eq(5)').data('order'); // Ambil dari data-order
+                    var nama = data[1].toLowerCase(); // Kolom nama
 
                     var minDate = $('#min-date').val();
                     var maxDate = $('#max-date').val();
                     var namaFilter = $('#nama-filter').val()?.toLowerCase();
 
-                    // Filter based on date and name
                     if (
-                        (minDate === '' || tableDate >= minDate) &&
-                        (maxDate === '' || tableDate <= maxDate) &&
+                        (minDate === '' || date >= minDate) &&
+                        (maxDate === '' || date <= maxDate) &&
                         (namaFilter === '' || nama.includes(namaFilter))
                     ) {
                         return true;
                     }
                     return false;
-                    // Baris diterima jika tidak ada filter yang gagal
                 });
+
 
                 // Hitung jumlah kata berdasarkan nama yang difilter
                 $('#nama-filter').on('change', function() {

@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Models\Feedback;
+use App\Models\Masukan;
 use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
 
         View::composer('*', function ($view) {
-            $unreadFeedbackCount = Feedback::where('is_read', false)->count();
+            $unreadFeedbackCount = Masukan::where('is_read', false)->count();
             $view->with('unreadFeedbackCount', $unreadFeedbackCount);
         });
     }

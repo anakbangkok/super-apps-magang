@@ -139,14 +139,14 @@
         </style>
 
         <script>
-            // Koordinat target lokasi baru
+
             const TARGET_LAT = -7.845969;
             const TARGET_LNG = 110.362230;
 
-            // Radius dalam meter
+
             const RADIUS = 1000;
 
-            // Fungsi untuk menghitung jarak menggunakan rumus Haversine
+
             function calculateDistance(lat1, lon1, lat2, lon2) {
                 const R = 6371000;
                 const dLat = toRad(lat2 - lat1);
@@ -158,12 +158,11 @@
                 return R * c;
             }
 
-            // Konversi derajat ke radian
+
             function toRad(value) {
                 return value * Math.PI / 180;
             }
-
-            // Dapatkan lokasi pengguna dan cek apakah dekat dengan target
+            
             function getLocationWithCheck(inputId) {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {

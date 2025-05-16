@@ -14,28 +14,11 @@
                             </div>
                             <div class="card-body px-5">
                                 <div class="mb-4 text-sm text-gray-600">
-                                    {{ __('Lupa kata sandi? Tidak masalah. Cukup beri tahu kami alamat email Anda dan kami akan mengirimkan tautan untuk menyetel ulang kata sandi yang akan memungkinkan Anda memilih kata sandi baru.') }}
+                                    {{ __('Lupa kata sandi itu hal yang wajar kok! Jangan panik ya. Untuk meresetnya, kamu bisa langsung hubungi mentor kamu. Mereka siap membantu! Semangat belajarnya!') }}
                                 </div>
 
                                 <!-- Session Status -->
                                 <x-auth-session-status class="mb-4" :status="session('status')" />
-
-                                <form method="POST" action="{{ route('password.email') }}">
-                                    @csrf
-
-                                    <!-- Email Address -->
-                                    <div class="form-floating mb-4">
-                                        <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus placeholder="name@example.com" />
-                                        <label for="email">Email</label>
-                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                                    </div>
-
-                                    <div class="text-center">
-                                        <x-primary-button class="btn bg-danger w-100 py-2 mb-3" style="border-radius: 10px; font-weight: 500;">
-                                            {{ __('Reset Kata Sandi') }}
-                                        </x-primary-button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>

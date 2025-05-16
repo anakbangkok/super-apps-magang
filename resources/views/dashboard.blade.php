@@ -14,9 +14,10 @@
 </head>
 
 @section('content')
+
     {{-- Notifikasi Selamat Datang --}}
     <div id="notification" class="alert alert-success alert-dismissible fade show"
-        style="max-width: 80%; width: auto; position: fixed; top: 20px; right: 20px;">
+        style="max-width: 80%; width: auto; position: fixed; top: 20px; right: 20px; z-index: 9999;">
         <div class="d-flex justify-content-between">
             <span>Selamat datang di dashboard <b>{{ auth()->user()->name }}</b></span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -24,11 +25,7 @@
     </div>
 
     <div class="container my-4">
-        <h3 class="text-center">
-            Peringkat SEO Teratas
-        </h3>
-
-        {{-- Cek posisi peringkat --}}
+        <h3 class="text-center">Peringkat SEO Teratas</h3>
         @if ($userRankPosition > 3)
             <div class="alert alert-info alert-dismissible fade show mt-4 text-center" role="alert">
                 <strong>Pesan!</strong> Kamu berada di peringkat {{ $userRankPosition }}. Ayo lebih semangat lagi untuk
@@ -46,16 +43,15 @@
         <div class="row">
             @foreach ($topUsers->take(3) as $index => $user)
                 <div class="col-12 col-md-4 mb-4">
-                    <div class="card border-{{ $index == 0 ? 'gold' : ($index == 1 ? 'silver' : 'brown') }} p-3 shadow-lg">
+                    <div class="card border-0 p-3 shadow-lg"
+                        style="border-top: 5px solid {{ $index == 0 ? 'gold' : ($index == 1 ? 'silver' : '#cd7f32') }};">
                         <div class="d-flex align-items-center">
                             <!-- Foto Profil dengan Border -->
                             <div class="position-relative">
                                 <img src="{{ $user->profile_photo ? asset('storage/' . $user->profile_photo) : asset('assets/img/avatars/default.jpg') }}"
                                     alt="Foto Profil"
-                                    style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%;  
-                                           border: 4px solid 
+                                    style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%; border: 4px solid 
                                            {{ $index == 0 ? 'gold' : ($index == 1 ? 'silver' : '#cd7f32') }};">
-
                                 <!-- Ikon Mahkota di Atas Foto -->
                                 <div class="position-absolute" style="top: -18px; left: 50%; transform: translateX(-50%);">
                                     @if ($index == 0)
@@ -86,7 +82,8 @@
                                 <p class="card-text text-muted" style="font-size: 11pt; margin-bottom: 5px;">
                                     {{ $user->instansi_name }}</p>
                                 <h6 class="card-text text-muted" style="margin-bottom: 0; font-size: 10pt">Total Kata:
-                                    <strong>{{ $user->total_kata }}</strong></h6>
+                                    <strong>{{ $user->total_kata }}</strong>
+                                </h6>
                             </div>
                         </div>
                     </div>
@@ -94,109 +91,90 @@
             @endforeach
         </div>
 
+        <!-- Kolom Pengumuman -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 p-3">
+                    <h5 class="text-center">Pengumuman</h5>
 
+                    @if ($acara->isEmpty())
+                        <p class="text-muted text-center">Belum Ada Pengumuman Terbaru</p>
+                    @else
+                        @foreach ($acara as $event)
+                            <div class="card mb-3 p-2 d-flex flex-row align-items-center gap-3" data-bs-toggle="modal"
+                                data-bs-target="#eventModal{{ $event->id }}" style="cursor: pointer;">
 
+                                <div class="card-body p-0" style="flex: 1; min-height: 100px;">
+                                    <h6 class="mb-1">{{ $event->judul }}</h6>
+                                    <p class="mb-1 text-muted">
+                                        {{ Str::words($event->deskripsi, 6, '...') }}
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>Tanggal:</strong>
+                                        {{ \Carbon\Carbon::parse($event->tanggal)->format('d M Y') }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <strong>Lokasi:</strong> {{ $event->lokasi ?? 'Tidak ada lokasi' }}
+                                    </p>
+                                </div>
 
+                                @if ($event->gambar)
+                                    <img src="{{ asset('storage/' . $event->gambar) }}" class="img-fluid"
+                                        style="object-fit: cover; width: 100px; height: 100px; border-radius: 8px;"
+                                        alt="Acara">
+                                @endif
+                            </div>
 
+                            <!-- Modal -->
+                            <div class="modal fade" id="eventModal{{ $event->id }}" tabindex="-1"
+                                aria-labelledby="eventModalLabel{{ $event->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="eventModalLabel{{ $event->id }}">
+                                                {{ $event->judul }}
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Tutup"></button>
+                                        </div>
+                                        <div class="modal-body d-flex flex-column align-items-center text-center">
+                                            @if ($event->gambar)
+                                                <img src="{{ asset('storage/' . $event->gambar) }}" class="img-fluid mb-3"
+                                                    style="max-height: 300px; border-radius: 8px;" alt="Gambar Acara">
+                                            @endif
+                                            <p class="mb-2">{{ $event->deskripsi }}</p>
+                                            <p><strong>Tanggal:</strong>
+                                                {{ \Carbon\Carbon::parse($event->tanggal)->format('d M Y') }}</p>
+                                            <p><strong>Lokasi:</strong> {{ $event->lokasi ?? 'Tidak ada lokasi' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
 
+            {{-- <div class="col-md-6 mb-4">
+                <div class="card h-100 p-3">
+                    jika ingin menambahkan grafik
+                </div>
+            </div> --}}
+        </div>
+    </div>
 
+@endsection
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var notification = document.getElementById('notification');
+        setTimeout(function() {
+            notification.classList.add('fade-out');
+        }, 3000);
 
-
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var notification = document.getElementById('notification');
-
-                // Tambahkan kelas fade-out setelah 3 detik
-                setTimeout(function() {
-                    notification.classList.add('fade-out');
-                }, 3000); // Tampilkan selama 3 detik sebelum mulai pudar
-
-                // Hapus elemen setelah pemudaran selesai
-                setTimeout(function() {
-                    notification.style.display = 'none';
-                }, 3500); // Hapus setelah 3.5 detik
-            });
-        </script>
-
-        <style>
-            /* Hover Card */
-            .card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-                transition: all 0.3s ease-in-out;
-            }
-
-            /* Rotasi Ikon */
-            .card-body i {
-                transition: transform 0.3s ease-in-out;
-            }
-
-            .card-body i:hover {
-                transform: rotate(360deg);
-            }
-
-            /* Notifikasi */
-            #notification {
-                display: block;
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                max-width: 1000px;
-                width: auto;
-                padding: 15px 40px 15px 15px;
-                background-color: #28a745;
-                color: #fff;
-                border-radius: 5px;
-                z-index: 1100;
-                opacity: 1;
-                animation: slideDown 0.5s forwards;
-            }
-
-            #notification .btn-close {
-                position: absolute;
-                top: 50%;
-                right: 5px;
-                transform: translateY(-50%);
-                color: #fff;
-            }
-
-            /* Animasi Notifikasi */
-            @keyframes slideDown {
-                from {
-                    top: -100px;
-                }
-
-                to {
-                    top: 20px;
-                }
-            }
-
-            /* Shadow besar */
-            .shadow-lg {
-                box-shadow: 0 0 40px rgba(0, 0, 0, 0.2) !important;
-            }
-
-            /* Flexbox dalam Card */
-            .card-body {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            /* Margin kanan untuk ikon */
-            .card-body .fas {
-                margin-right: 15px;
-            }
-
-            /* Responsif untuk Notifikasi */
-            @media (max-width: 576px) {
-                #notification {
-                    top: 10px;
-                    right: 10px;
-                    padding: 10px 20px;
-                }
-            }
-        </style>
-    @endsection
+        setTimeout(function() {
+            notification.style.display = 'none';
+        }, 3500);
+    });
+</script>

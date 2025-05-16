@@ -18,9 +18,23 @@ class PasswordController extends Controller
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password'],
             'password' => ['required', Password::defaults(), 'confirmed'],
+        ], [
+            'current_password.required' => 'Kata sandi saat ini wajib diisi.',
+            'current_password.current_password' => 'Kata sandi saat ini tidak sesuai.',
+            'password.required' => 'Kata sandi baru wajib diisi.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
-        $request->user()->update([
+        $user = $request->user();
+
+        // Cek apakah password baru sama dengan password lama
+        if (Hash::check($validated['password'], $user->password)) {
+            return back()->withErrors([
+                'password' => 'Password baru tidak boleh sama dengan password lama.',
+            ]);
+        }
+
+        $user->update([
             'password' => Hash::make($validated['password']),
         ]);
 

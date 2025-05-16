@@ -9,36 +9,41 @@ use Illuminate\Support\Facades\Auth;
 
 class TimWebUserController extends Controller
 {
-    // Menampilkan data TimWeb dengan filter nama dan jumlah artikel/kata hari ini
     public function index(Request $request)
     {
         // Mendapatkan tanggal hari ini
         $today = Carbon::today()->toDateString();
-    
-        // Menghitung jumlah artikel dan kata hari ini berdasarkan tanggal input
+
+        // Menghitung jumlah artikel dan kata hari ini berdasarkan dimana tanggal input
         $jumlahArtikel = TimWeb::where('user_id', Auth::id())
-            ->where('tanggal', $today)
+            ->wheredate('tanggal', $today)
             ->sum('jumlah_artikel');
-    
+
         $jumlahKata = TimWeb::where('user_id', Auth::id())
             ->where('tanggal', $today)
             ->sum('jumlah_kata');
-    
+
         // Menghitung total jumlah artikel dan kata keseluruhan tanpa batasan tanggal
         $totalJumlahArtikel = TimWeb::where('user_id', Auth::id())->sum('jumlah_artikel');
         $totalJumlahKata = TimWeb::where('user_id', Auth::id())->sum('jumlah_kata');
-    
-        // Mengambil semua data untuk ditampilkan di DataTables
-        $tim_webs = TimWeb::with('user') // Relasi dengan tabel user untuk mendapatkan nama user
+
+        $tim_webs = TimWeb::with('user')
             ->where('user_id', Auth::id())
             ->get()
             ->map(function ($item) {
                 $item->formatted_tanggal = Carbon::parse($item->tanggal)->translatedFormat('d F Y');
                 return $item;
             });
-    
-        return view('tim_webs.index', compact('tim_webs', 'jumlahArtikel', 'jumlahKata', 'totalJumlahArtikel', 'totalJumlahKata'));
+
+        return view('tim_webs.index', compact(
+            'tim_webs',
+            'jumlahArtikel',
+            'jumlahKata',
+            'totalJumlahArtikel',
+            'totalJumlahKata',
+        ));
     }
+
 
 
     // Menampilkan form untuk membuat data TimWeb

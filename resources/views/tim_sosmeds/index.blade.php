@@ -8,18 +8,7 @@
     <div class="container">
         <h2>Data Tim Sosmed</h2>
 
-        <!-- Tombol tambah data -->
-        <a href="{{ route('tim_sosmeds.create') }}" class="btn btn-primary mb-3">Tambah Data Tim Sosmed</a>
-
-        <!-- Filter Tanggal -->
-        <div class="row mb-4">
-            <div class="col-md-3 mb-2">
-                <input type="date" name="startDate" class="form-control" placeholder="Tanggal Mulai">
-            </div>
-            <div class="col-md-3 mb-2">
-                <input type="date" name="endDate" class="form-control" placeholder="Tanggal Akhir">
-            </div>
-        </div>
+        {{-- <a href="{{ route('tim_sosmeds.create') }}" class="btn btn-primary mb-3">Tambah Data Tim Sosmed</a> --}}
 
         <!-- Notifikasi sukses -->
         @if (session('success'))
@@ -28,14 +17,29 @@
 
         <!-- Tabel Data -->
         <div class="card shadow">
-            <h5 class="card-header text-right">Daftar Tim Sosmed</h5>
+            {{-- <h5 class="card-header text-right">Daftar Tim Sosmed</h5> --}}
+            <div class="d-flex justify-content-between align-items-center mx-3 mb-4 mt-4">
+                <a href="{{ route('tim_sosmeds.create') }}" class="btn btn-primary">Tambah Data Tim Sosmed</a>
+
+                <div class="d-flex gap-2">
+                    <div style="width: 185px;">
+                        <label for="min-date" class="form-label">Tanggal Mulai:</label>
+                        <input type="date" id="min-date" class="form-control">
+                    </div>
+                    <div style="width: 185px;">
+                        <label for="max-date" class="form-label">Tanggal Akhir:</label>
+                        <input type="date" id="max-date" class="form-control">
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive text-nowrap">
                 <table id="tim-sosmed-table" class="table">
                     <thead class="table-light">
                         <tr class="text-center">
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Pekerjaan Hari Ini</th>
+                            <th>Pekerjaan</th>
                             <th>Keterangan</th>
                             <th>Tanggal</th>
                             <th>Aksi</th>
@@ -48,7 +52,9 @@
                                 <td>{{ $tim_sosmed->user->name }}</td>
                                 <td>{{ $tim_sosmed->pekerjaan_hari_ini }}</td>
                                 <td>{{ $tim_sosmed->keterangan }}</td>
-                                <td>{{ $tim_sosmed->formatted_tanggal }}</td>
+                                <td data-order="{{ \Carbon\Carbon::parse($tim_sosmed->tanggal)->format('Y-m-d') }}">
+                                    {{ \Carbon\Carbon::parse($tim_sosmed->tanggal)->translatedFormat('d F Y') }}
+                                </td>
                                 <td>
                                     <a href="{{ route('tim_sosmeds.edit', $tim_sosmed->id) }}"
                                         class="btn btn-warning btn-sm" title="Edit">Edit</a>
@@ -120,30 +126,29 @@
                     ]
                 });
 
-                $('input[name="startDate"], input[name="endDate"]').on('change', function() {
-                    var startDate = $('input[name="startDate"]').val();
-                    var endDate = $('input[name="endDate"]').val();
+                // Event listener hanya untuk filter tanggal
+                $('#min-date, #max-date').on('change input', function() {
+                    table.draw(); // Redraw the table when the filter is applied
+                });
 
-                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                        var dataDate = new Date(data[4]); // Kolom Tanggal (index 4)
-                        var normalizedDataDate = new Date(dataDate.toDateString());
+                // Custom search function hanya untuk filter tanggal
+                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                    var tableRow = $(table.row(dataIndex).node());
+                    var date = tableRow.find('td:eq(4)').data(
+                        'order'); // Ganti indeks sesuai posisi kolom tanggal
 
-                        var normalizedStartDate = startDate ? new Date(new Date(startDate)
-                        .toDateString()) : null;
-                        var normalizedEndDate = endDate ? new Date(new Date(endDate).toDateString()) :
-                            null;
+                    var minDate = $('#min-date').val();
+                    var maxDate = $('#max-date').val();
 
-                        if (
-                            (!normalizedStartDate || normalizedDataDate >= normalizedStartDate) &&
-                            (!normalizedEndDate || normalizedDataDate <= normalizedEndDate)
-                        ) {
-                            return true;
-                        }
-                        return false;
-                    });
+                    console.log("min:", minDate, "max:", maxDate, "date:", date);
 
-                    table.draw();
-                    $.fn.dataTable.ext.search.pop();
+                    if (
+                        (minDate === '' || date >= minDate) &&
+                        (maxDate === '' || date <= maxDate)
+                    ) {
+                        return true;
+                    }
+                    return false;
                 });
             });
         </script>

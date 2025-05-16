@@ -64,43 +64,89 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                         </div>
                         <div class="modal-body">
-                            <form method="GET" action="{{ route('kehadiran.export') }}">
-                                <div class="mb-3">
-                                    <label for="min_date" class="form-label">Tanggal Mulai:</label>
-                                    <input type="date" id="min_date" name="min_date" class="form-control"
-                                        value="{{ old('min_date') }}">
+                            <!-- Tab navigation -->
+                            <ul class="nav nav-tabs" id="exportTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="absensi-tab" data-bs-toggle="tab" href="#absensi"
+                                        role="tab" aria-controls="absensi" aria-selected="true">Riwayat Absensi</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="total-tab" data-bs-toggle="tab" href="#total" role="tab"
+                                        aria-controls="total" aria-selected="false">Total Pengajuan Izin</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="exportTabContent">
+                                <!-- Riwayat Absensi Tab -->
+                                <div class="tab-pane fade show active" id="absensi" role="tabpanel"
+                                    aria-labelledby="absensi-tab">
+                                    <form method="GET" action="{{ route('kehadiran.export') }}">
+                                        <div class="mb-3">
+                                            <label for="startDate" class="form-label">Tanggal Mulai:</label>
+                                            <input type="date" id="startDate" name="min_ate" class="form-control"
+                                                value="{{ old('min_date') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="endDate" class="form-label">Tanggal Akhir:</label>
+                                            <input type="date" id="endDate" name="max_date" class="form-control"
+                                                value="{{ old('max_date') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="user" class="form-label">Nama Pengguna:</label>
+                                            <select name="user" id="user" class="form-control">
+                                                <option value="">Semua</option>
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="shift" class="form-label">Shift:</label>
+                                            <select name="shift" id="shift" class="form-control">
+                                                <option value="">Semua</option>
+                                                <option value="pagi">Pagi</option>
+                                                <option value="sore">Sore</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="lateness" class="form-label">Keterlambatan:</label>
+                                            <select name="lateness" id="lateness" class="form-control">
+                                                <option value="">Semua</option>
+                                                <option value="tepat_waktu">Tepat Waktu</option>
+                                                <option value="terlambat">Terlambat</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Export</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="max_date" class="form-label">Tanggal Akhir:</label>
-                                    <input type="date" id="max_date" name="max_date" class="form-control"
-                                        value="{{ old('max_date') }}">
+                                <!-- Total Pengajuan Izin Tab -->
+                                <div class="tab-pane fade" id="total" role="tabpanel" aria-labelledby="total-tab">
+                                    <form method="GET" action="{{ route('admin.pengajuan_izin.export') }}">
+                                        <div class="mb-3">
+                                            <label for="user" class="form-label">Nama Pengguna:</label>
+                                            <select name="user" id="user" class="form-control">
+                                                <option value="">Semua</option>
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Export</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="user" class="form-label">Nama Pengguna:</label>
-                                    <select name="user" id="user" class="form-control">
-                                        <option value="">Semua</option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="shift" class="form-label">Shift:</label>
-                                    <select name="shift" id="shift" class="form-control">
-                                        <option value="">Semua</option>
-                                        <option value="pagi">Pagi</option>
-                                        <option value="sore">Sore</option>
-                                    </select>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Export</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <div class="card shadow">
                 <h5 class="card-header text-right">Daftar Kehadiran</h5>
@@ -123,22 +169,28 @@
                                 <tr class="text-center">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $kehadiran->user->name }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($kehadiran->date)->translatedFormat('d F Y') }}</td>
+                                    <td data-order="{{ \Carbon\Carbon::parse($kehadiran->date)->format('Y-m-d') }}">
+                                        {{ \Carbon\Carbon::parse($kehadiran->date)->translatedFormat('d F Y') }}
+                                    </td>
+
                                     <td>{{ ucfirst($kehadiran->shift) }}</td>
                                     <td>
                                         @if ($kehadiran->check_in)
                                             <div class="d-flex justify-content-center align-items-center">
                                                 <!-- Tampilkan Waktu Check-in -->
                                                 <span class="me-2">{{ $kehadiran->check_in->format('H:i') }}</span>
-                                    
+
                                                 <!-- Tampilkan Ikon -->
-                                                @if (($kehadiran->shift === 'pagi' && $kehadiran->check_in->format('H:i') > '08:01') || 
-                                                     ($kehadiran->shift === 'sore' && $kehadiran->check_in->format('H:i') > '15:01'))
-                                                    <div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle" style="width: 20px; height: 20px; font-size: 12px;">
+                                                @if (
+                                                    ($kehadiran->shift === 'pagi' && $kehadiran->check_in->format('H:i') > '08:01') ||
+                                                        ($kehadiran->shift === 'sore' && $kehadiran->check_in->format('H:i') > '15:01'))
+                                                    <div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle"
+                                                        style="width: 20px; height: 20px; font-size: 12px;">
                                                         <i class="fas fa-exclamation-triangle"></i>
                                                     </div>
                                                 @else
-                                                    <div class="d-flex justify-content-center align-items-center bg-success text-white rounded-circle" style="width: 20px; height: 20px; font-size: 12px;">
+                                                    <div class="d-flex justify-content-center align-items-center bg-success text-white rounded-circle"
+                                                        style="width: 20px; height: 20px; font-size: 12px;">
                                                         <i class="fas fa-check"></i>
                                                     </div>
                                                 @endif
@@ -147,7 +199,7 @@
                                             -
                                         @endif
                                     </td>
-                                    
+
                                     <td>{{ $kehadiran->check_out ? $kehadiran->check_out->format('H:i') : '-' }}</td>
                                     <td>
                                         @if ($kehadiran->location === 'kantor')
@@ -158,26 +210,39 @@
                                     </td>
                                     <td>
                                         <!-- Tombol Hapus -->
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteAttendanceModal{{ $kehadiran->id }}" title="Hapus">Hapus</button>
-            
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmDeleteAttendanceModal{{ $kehadiran->id }}"
+                                            title="Hapus">Hapus</button>
+
                                         <!-- Modal Konfirmasi Penghapusan -->
-                                        <div class="modal fade" id="confirmDeleteAttendanceModal{{ $kehadiran->id }}" tabindex="-1" aria-labelledby="confirmDeleteAttendanceModalLabel{{ $kehadiran->id }}" aria-hidden="true">
+                                        <div class="modal fade" id="confirmDeleteAttendanceModal{{ $kehadiran->id }}"
+                                            tabindex="-1"
+                                            aria-labelledby="confirmDeleteAttendanceModalLabel{{ $kehadiran->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content shadow">
-                                                    <div class="modal-header" style="background-color: #f8d7da; color: #721c24;">
-                                                        <h5 class="modal-title" id="confirmDeleteAttendanceModalLabel{{ $kehadiran->id }}">Konfirmasi Penghapusan</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                                    <div class="modal-header"
+                                                        style="background-color: #f8d7da; color: #721c24;">
+                                                        <h5 class="modal-title"
+                                                            id="confirmDeleteAttendanceModalLabel{{ $kehadiran->id }}">
+                                                            Konfirmasi Penghapusan</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Tutup"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p class="text-muted">Setelah Anda hapus, data akan hilang secara permanen.</p>
+                                                        <p class="text-muted">Setelah Anda hapus, data akan hilang secara
+                                                            permanen.</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form action="{{ route('kehadirans.destroy', $kehadiran->id) }}" method="POST">
+                                                        <form action="{{ route('kehadirans.destroy', $kehadiran->id) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                                                            <button type="submit" class="btn btn-danger">Ya,
+                                                                Hapus</button>
                                                         </form>
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Batal</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -189,85 +254,87 @@
                     </table>
                 </div>
             </div>
-            
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 
-        <script>
-            $(document).ready(function() {
-                var table = $('#attendance-table').DataTable({
-                    "paging": true,
-                    "searching": true,
-                    "order": [
-                        [2, 'desc']
-                    ], // Sort by date by default
-                    "responsive": true,
-                    "processing": true,
-                    "serverSide": false,
-                    "columnDefs": [{
-                        "targets": 0,
-                        "orderable": false,
-                    }],
-                    "drawCallback": function(settings) {
-                        var api = this.api();
-                        api.column(0, {
-                            page: 'current'
-                        }).nodes().each(function(cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
-                    }
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+
+            <script>
+                $(document).ready(function() {
+                    var table = $('#attendance-table').DataTable({
+                        "paging": true,
+                        "searching": true,
+                        "order": [
+                            [2, 'desc']
+                        ], // Sort by date by default
+                        "responsive": true,
+                        "processing": true,
+                        "serverSide": false,
+                        "columnDefs": [{
+                            "targets": 0,
+                            "orderable": false,
+                        }],
+                        "drawCallback": function(settings) {
+                            var api = this.api();
+                            api.column(0, {
+                                page: 'current'
+                            }).nodes().each(function(cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }
+                    });
+
+                    var minDate, maxDate;
+
+                    $('#min-date, #max-date').on('change', function() {
+                        minDate = $('#min-date').val() ? new Date($('#min-date').val() + 'T00:00:00') : null;
+                        maxDate = $('#max-date').val() ? new Date($('#max-date').val() + 'T23:59:59') : null;
+                        table.draw();
+                    });
+
+                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                        var dateColumn = table.row(dataIndex).node().querySelector('td[data-order]').getAttribute(
+                            'data-order');
+                        var rowDate = new Date(dateColumn);
+
+
+                        if (
+                            (!minDate || rowDate >= minDate) &&
+                            (!maxDate || rowDate <= maxDate)
+                        ) {
+                            return true;
+                        }
+                        return false;
+                    });
+
+                    $('#shift-filter').on('change', function() {
+                        var selectedShift = $(this).val();
+                        table.column(3).search(selectedShift).draw();
+                    });
+
+                    $('#user-filter').on('change', function() {
+                        var selectedUser = $(this).val();
+                        table.column(1).search(selectedUser).draw();
+                    });
+
+                    $('#user-filter').select2({
+                        placeholder: "Cari Nama Pengguna",
+                        allowClear: true
+                    });
+
+                    $('#reset-button').on('click', function() {
+                        $('#min-date').val('');
+                        $('#max-date').val('');
+                        $('#shift-filter').val('');
+                        $('#user-filter').val(null).trigger('change');
+                        minDate = null;
+                        maxDate = null;
+                        table.columns().search('').draw();
+                    });
                 });
-
-                var minDate, maxDate;
-
-                $('#min-date, #max-date').on('change', function() {
-                    minDate = $('#min-date').val() ? new Date($('#min-date').val() + 'T00:00:00') : null;
-                    maxDate = $('#max-date').val() ? new Date($('#max-date').val() + 'T23:59:59') : null;
-                    table.draw();
-                });
-
-                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    var dateColumn = data[2];
-                    var rowDate = new Date(dateColumn);
-
-                    if (
-                        (!minDate || rowDate >= minDate) &&
-                        (!maxDate || rowDate <= maxDate)
-                    ) {
-                        return true;
-                    }
-                    return false;
-                });
-
-                $('#shift-filter').on('change', function() {
-                    var selectedShift = $(this).val();
-                    table.column(3).search(selectedShift).draw();
-                });
-
-                $('#user-filter').on('change', function() {
-                    var selectedUser = $(this).val();
-                    table.column(1).search(selectedUser).draw();
-                });
-
-                $('#user-filter').select2({
-                    placeholder: "Cari Nama Pengguna",
-                    allowClear: true
-                });
-
-                $('#reset-button').on('click', function() {
-                    $('#min-date').val('');
-                    $('#max-date').val('');
-                    $('#shift-filter').val('');
-                    $('#user-filter').val(null).trigger('change');
-                    minDate = null;
-                    maxDate = null;
-                    table.columns().search('').draw();
-                });
-            });
-        </script>
+            </script>
     </body>
 
 @endsection

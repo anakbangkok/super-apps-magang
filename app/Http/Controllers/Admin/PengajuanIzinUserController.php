@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\PengajuanIzinExport;
+use App\Exports\IzinExport;
 use App\Models\PengajuanIzin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -11,22 +11,18 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Facades\Excel;
 
+
 class PengajuanIzinUserController extends Controller
 {
-    // app/Http/Controllers/PengajuanIzinController.php
-
     public function index(Request $request)
     {
-        // Ambil input status dan tanggal dari request
         $status = $request->get('status');
         $tanggalMulai = $request->get('tanggal_mulai');
         $tanggalSelesai = $request->get('tanggal_selesai');
 
-        // Konversi tanggal dari input (jika ada)
         $tanggalMulai = $tanggalMulai ? Carbon::parse($tanggalMulai)->startOfDay() : null;
         $tanggalSelesai = $tanggalSelesai ? Carbon::parse($tanggalSelesai)->endOfDay() : null;
 
-        // Query data izin dengan filter dinamis
         $pengajuan = PengajuanIzin::with('user')
             ->when($status, function ($query, $status) {
                 return $query->where('status', $status);
@@ -36,24 +32,52 @@ class PengajuanIzinUserController extends Controller
             })
             ->get();
 
-        // Hitung jumlah pengajuan izin yang statusnya 'menunggu'
         $pendingCount = PengajuanIzin::where('status', 'menunggu')->count();
 
-        // Ambil semua data pengguna
         $users = User::all();
 
-        // Pastikan untuk mengirimkan variabel pengajuan, pendingCount, dan users ke view
         return view('admin.pengajuan_izin.index', compact('pengajuan', 'pendingCount', 'users'));
     }
 
 
     public function export(Request $request)
     {
-        // Menyaring atau mengambil semua data
-        $pengajuanIzin = PengajuanIzin::all(); // Ambil semua pengajuan izin tanpa filter
+        $user = $request->input('user');
+        
+        // Ambil data pengajuan izin berdasarkan filter pengguna
+        $query = PengajuanIzin::query();
+        if ($user) {
+            $query->where('user_id', $user);
+        }
+    
+        // Ambil hanya data dengan status 'disetujui'
+        $approvedData = $query->where('status', 'disetujui')->get();
+    
+        // Kelompokkan berdasarkan user dan jenis izin
+        $groupedData = $approvedData->groupBy('user_id')->map(function ($userData) {
+            // Hitung jumlah izin per jenis izin
+            return [
+                'sakit' => $userData->where('jenis_izin', 'sakit')->count(),
+                'keluarga' => $userData->where('jenis_izin', 'keluarga')->count(),
+                'kegiatan_sekolah' => $userData->where('jenis_izin', 'kegiatan sekolah')->count(),
+                'lain-lain' => $userData->where('jenis_izin', 'lain-lain')->count(),
+            ];
+        });
 
-        // Jika Anda ingin mengekspor ke file Excel
-        return Excel::download(new PengajuanIzinExport($pengajuanIzin), 'pengajuan_izin.xlsx');
+        $exportData = [['Nama Pengguna', 'Izin Sakit', 'Izin Keluarga','Izin Kegiatan Sekolah', 'Izin Lain-lain']];
+
+        foreach ($groupedData as $userId => $totals) {
+            $userName = User::find($userId)->name; 
+            $exportData[] = [
+                $userName,
+                $totals['sakit'],
+                $totals['keluarga'],
+                $totals['kegiatan_sekolah'],
+                $totals['lain-lain']
+            ];
+        }
+
+        return Excel::download(new IzinExport($exportData), 'total_izin_per_user.xlsx');
     }
 
 
@@ -62,8 +86,7 @@ class PengajuanIzinUserController extends Controller
         $pengajuanIzin->status = 'disetujui';
         $pengajuanIzin->save();
 
-        // Memperbarui cache setelah persetujuan
-        Cache::forget('pending_count'); // Menghapus cache agar dihitung ulang
+        Cache::forget('pending_count');
 
         return redirect()->back()->with('success', 'Pengajuan izin berhasil disetujui!');
     }
@@ -73,8 +96,7 @@ class PengajuanIzinUserController extends Controller
         $pengajuanIzin->status = 'ditolak';
         $pengajuanIzin->save();
 
-        // Memperbarui cache setelah penolakan
-        Cache::forget('pending_count'); // Menghapus cache agar dihitung ulang
+        Cache::forget('pending_count');
 
         return redirect()->back()->with('success', 'Pengajuan izin berhasil ditolak!');
     }

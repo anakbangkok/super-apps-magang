@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\TimWeb;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+
 
 class TimWebController extends Controller
 {
@@ -46,20 +48,18 @@ class TimWebController extends Controller
     {
         // Validasi data termasuk kolom tanggal dan nama
         $request->validate([
-            'nama' => 'required|string|max:255', // Validasi untuk kolom nama
+            // 'nama' => 'required|string|max:255',
             'jumlah_artikel' => 'required|integer',
             'jumlah_kata' => 'required|integer',
             'keterangan' => 'required|string',
-            'tanggal' => 'required|date', // Validasi tanggal
+            'tanggal' => 'required|date',
         ]);
         
-        // Ambil user_id dari pengguna yang sedang login
-        $user_id = Auth::id(); // Mengambil ID user yang sedang login
-        
-        // Simpan data ke database
+        $user_id = Auth::id(); 
+       
         TimWeb::create([
-            'user_id' => $user_id, // Menyimpan user_id yang sedang login
-            'nama' => $request->nama, // Memastikan nama yang disimpan sesuai dengan yang diterima
+            'user_id' => $user_id,
+            // 'nama' => $request->nama,
             'jumlah_artikel' => $request->jumlah_artikel,
             'jumlah_kata' => $request->jumlah_kata,
             'keterangan' => $request->keterangan,
@@ -69,27 +69,24 @@ class TimWebController extends Controller
         return redirect()->route('tim_web.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
-    // Menampilkan form untuk mengedit data TimWeb
+
     public function edit(TimWeb $tim_web)
     {
         return view('admin.tim_web.edit', compact('tim_web'));
     }
 
-    // Memperbarui data TimWeb
+    // Memperbarui data
     public function update(Request $request, TimWeb $tim_web)
     {
-        // Validasi data termasuk kolom tanggal dan nama
         $request->validate([
-            'nama' => 'required|string|max:255', // Validasi untuk kolom nama
-            'jumlah_artikel' => 'required|integer',
-            'jumlah_kata' => 'required|integer',
-            'keterangan' => 'required|string',
-            'tanggal' => 'required|date', // Validasi tanggal
+            // 'nama' => 'required|string|max:255',
+            'jumlah_artikel' => 'required|integer|min:0',
+            'jumlah_kata' => 'required|integer|min:0',
+            'keterangan' => 'nullable|string',
+            'tanggal' => 'required|date',
         ]);
 
-        // Update data di database
         $tim_web->update([
-            'nama' => $request->nama, // Memastikan nama yang diperbarui sesuai dengan yang diterima
             'jumlah_artikel' => $request->jumlah_artikel,
             'jumlah_kata' => $request->jumlah_kata,
             'keterangan' => $request->keterangan,
@@ -102,9 +99,9 @@ class TimWebController extends Controller
     // Menghapus data TimWeb
     public function destroy(TimWeb $tim_web)
     {
-        // Hapus data
-        $tim_web->delete();
-
-        return redirect()->route('tim_web.index')->with('success', 'Data berhasil dihapus!');
+    
+            $tim_web->delete();
+    
+            return redirect()->route('tim_web.index')->with('success', 'Data successfully deleted!');
     }
 }

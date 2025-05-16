@@ -9,6 +9,8 @@ use App\Models\Penugasan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 
 class MentorController extends Controller
 {
@@ -89,6 +91,9 @@ class MentorController extends Controller
     // Menampilkan daftar pengguna
     public function usersindex(Request $request)
     {
+        $mentorId = Auth::id();
+        $userIds = User::where('mentor_id', $mentorId)->pluck('id');
+
         $searchName = $request->input('searchName');
         $searchEmail = $request->input('searchEmail');
         $searchPenugasan = $request->input('searchPenugasan');
@@ -96,7 +101,8 @@ class MentorController extends Controller
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
 
-        $query = User::with(['instansi', 'penugasan', 'mentor']); // Pastikan relasi sudah didefinisikan
+        $query = User::with(['instansi', 'penugasan', 'mentor'])
+            ->whereIn('id', $userIds); // hanya user yang dibimbing oleh mentor
 
         // Tambahkan kondisi pencarian
         if ($searchName) {
@@ -109,26 +115,26 @@ class MentorController extends Controller
             $query->where('penugasan_id', $searchPenugasan);
         }
         if ($searchStatus) {
-            // Logika untuk pencarian berdasarkan status jika diperlukan
+            $query->where('status', $searchStatus); // sesuaikan kolom status
         }
-        if ($startDate) {
+        // if ($startDate) {
+        //     $query->whereDate('start_date', '>=', $startDate);
+        // }
+        // if ($endDate) {
+        //     $query->whereDate('end_date', '<=', $endDate);
+        // }
+        if ($startDate && $endDate) {
+            $query->whereBetween('start_date', [$startDate, $endDate]);
+        } elseif ($startDate) {
             $query->where('start_date', '>=', $startDate);
-        }
-        if ($endDate) {
+        } elseif ($endDate) {
             $query->where('end_date', '<=', $endDate);
         }
 
-        // Ambil data dengan pagination
-        $users = $query->paginate(10); // Atur jumlah data per halaman di sini
+        $users = $query->paginate(10);
 
-        // Ambil semua penugasan untuk dropdown
         $penugasans = Penugasan::all();
 
         return view('mentor.users.user', compact('users', 'penugasans'));
     }
-
-    
-
 }
-
-

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
-    data-assets-path="assets/" data-template="vertical-menu-template-free">
+
 
 <head>
     <meta charset="utf-8" />
@@ -113,16 +112,6 @@
         </a>
     </li>
 
-
-    <!-- Aktivitas Harian -->
-    <li
-        class="menu-item {{ request()->routeIs('journals.index') || request()->routeIs('journals.create') ? 'active' : '' }}">
-        <a href="{{ route('journals.index') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-notepad"></i>
-            <div>Aktivitas Harian</div>
-        </a>
-    </li>
-
     <!-- Laporan Harian -->
     <li class="menu-item {{ request()->routeIs('tim_webs.index') || request()->routeIs('tim_sosmeds.index') ? 'open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -147,14 +136,21 @@
         </ul>
     </li>
 
+    <!-- Aktivitas Harian -->
+    <li
+        class="menu-item {{ request()->routeIs('aktivitas.index') || request()->routeIs('journals.create') ? 'active' : '' }}">
+        <a href="{{ route('aktivitas.index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-notepad"></i>
+            <div>Aktivitas Harian</div>
+        </a>
+    </li>
 
-    <!-- Profile Settings -->
-    <li class="menu-item {{ request()->is('profile') ? 'active' : '' }}">
+    {{-- <li class="menu-item {{ request()->is('profile') ? 'active' : '' }}">
         <a href="{{ route('profile.update') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-user"></i>
             <div data-i18n="Tables">Pengaturan Profil</div>
         </a>
-    </li>
+    </li> --}}
 
 
     <!-- Pengajuan izin -->
@@ -165,13 +161,22 @@
         </a>
     </li>
 
-    <!-- Feedback -->
-    <li class="menu-item {{ request()->is('feedback') ? 'active' : '' }}">
-        <a href="{{ route('feedback.index') }}" class="menu-link">
+    <!-- Masukan -->
+    <li class="menu-item {{ request()->is('masukan') ? 'active' : '' }}">
+        <a href="{{ route('masukan.index') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
             <div>Masukan</div>
         </a>
     </li>
+
+    <li class="menu-item {{ request()->routeIs('jadwal.index') ? 'active' : '' }}">
+        <a href="{{ route('jadwal.index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+            <div data-i18n="Semua Jadwal">Jadwal Piket</div>
+        </a>
+    </li>
+    
+    
 
 
 
@@ -259,16 +264,16 @@
                         <li>
                             <div class="dropdown-divider"></div>
                         </li>
-                        <!-- <li>
+                        <li>
                       <a class="dropdown-item" href="{{ route('profile.edit') }}">
                         <i class="bx bx-user me-2"></i>
-                        <span class="align-middle">My Profile</span>
+                        <span class="align-middle">Profile Saya</span>
                       </a>
-                    </li> -->
-                        <!-- <li>
+                    </li>
+                    <li>
                       <div class="dropdown-divider"></div>
                     </li>
-                    <li> -->
+                    <li>
                         <a class="dropdown-item" href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="bx bx-power-off me-2"></i>

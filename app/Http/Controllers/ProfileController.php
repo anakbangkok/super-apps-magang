@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
         // Periksa apakah email berubah
         if ($user->isDirty('email')) {
-            $user->email_verified_at = null; // Reset verifikasi email
+            $user->email_verified_at = null;
         }
 
         if ($request->filled('password')) {
@@ -78,12 +78,12 @@ class ProfileController extends Controller
     public function destroy()
     {
 
-
-        $user = Auth()->user();
+        /** @var \App\Models\User $user **/
+        $user = Auth('web')->user();
 
         // Menghapus foto profil jika ada
         if ($user->profile_photo) {
-            \Storage::delete($user->profile_photo);
+            Storage::delete($user->profile_photo);
         }
 
         $user->delete();

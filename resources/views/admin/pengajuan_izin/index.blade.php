@@ -27,15 +27,18 @@
                         <label for="status">Status</label>
                         <select name="status" id="status" class="form-control">
                             <option value="">Semua Status</option>
-                            <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                            <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu
+                            </option>
                             <option value="disetujui" {{ request('status') == 'disetujui' ? 'selected' : '' }}>Disetujui
                             </option>
                             <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-2 mb-4 mt-4 d-flex justify-content-between">
-                        <button type="reset" class="btn btn-secondary d-flex align-items-center" id="reset-button">Reset</button>
-                        <button type="button" class="btn btn-success d-flex align-items-center ms-3" data-bs-toggle="modal" data-bs-target="#exportModal">Export</button>
+                        <button type="reset" class="btn btn-secondary d-flex align-items-center"
+                            id="reset-button">Reset</button>
+                        <button type="button" class="btn btn-success d-flex align-items-center ms-3" data-bs-toggle="modal"
+                            data-bs-target="#exportModal">Export</button>
                     </div>
                 </div>
             </form>
@@ -62,7 +65,8 @@
                                 <td>{{ $izin->jenis_izin }}</td>
                                 <td>{{ $izin->durasi }}</td>
                                 <td>{{ \Carbon\Carbon::parse($izin->tanggal_mulai)->translatedFormat('d F Y') }}</td>
-                                <td>{{ $izin->tanggal_selesai ? \Carbon\Carbon::parse($izin->tanggal_selesai)->translatedFormat('d F Y') : '-' }}</td>
+                                <td>{{ $izin->tanggal_selesai ? \Carbon\Carbon::parse($izin->tanggal_selesai)->translatedFormat('d F Y') : '-' }}
+                                </td>
                                 <td>{{ $izin->keterangan }}</td>
                                 <td>
                                     <span
@@ -88,15 +92,14 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr>
                                 <td colspan="9" class="text-center">Tidak ada pengajuan izin ditemukan</td>
-                            </tr>
                         @endforelse
                     </tbody>
+
                 </table>
             </div>
         </div>
-        
+
 
         <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -107,16 +110,6 @@
                     </div>
                     <div class="modal-body">
                         <form method="GET" action="{{ route('admin.pengajuan_izin.export') }}">
-                            {{-- <div class="mb-3">
-                                <label for="min_date" class="form-label">Tanggal Mulai:</label>
-                                <input type="date" id="min_date" name="min_date" class="form-control"
-                                    value="{{ old('min_date') }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="max_date" class="form-label">Tanggal Akhir:</label>
-                                <input type="date" id="max_date" name="max_date" class="form-control"
-                                    value="{{ old('max_date') }}">
-                            </div>
                             <div class="mb-3">
                                 <label for="user" class="form-label">Nama Pengguna:</label>
                                 <select name="user" id="user" class="form-control">
@@ -126,14 +119,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="shift" class="form-label">Shift:</label>
-                                <select name="shift" id="shift" class="form-control">
-                                    <option value="">Semua</option>
-                                    <option value="pagi">Pagi</option>
-                                    <option value="sore">Sore</option>
-                                </select>
-                             </div> --}}
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Export</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -147,35 +132,28 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-        
+
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 // Fungsi untuk reset form filter
-                $('#reset-button').on('click', function () {
+                $('#reset-button').on('click', function() {
                     // Reset semua nilai input di form
                     $('#filter-form')[0].reset();
-        
+
                     // Hapus query parameter dari URL dan reload halaman
                     window.location.href = "{{ route('admin.pengajuan_izin.index') }}";
                 });
-        
+
                 // Submit otomatis saat filter diubah
-                $('#tanggal_mulai, #tanggal_selesai, #status').on('change', function () {
+                $('#tanggal_mulai, #tanggal_selesai, #status').on('change', function() {
                     $('#filter-form').submit();
                 });
-        
-                // Inisialisasi DataTables
-                $('#pengajuan-izin-table').DataTable({
-                    responsive: true,
-                    autoWidth: false,
-                    language: {
-                        url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json'
-                    }
-                });
+
+
             });
         </script>
-        
-        
+
+
 
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 

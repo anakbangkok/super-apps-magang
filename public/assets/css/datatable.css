@@ -1,5 +1,6 @@
 /* Styling untuk input pencarian DataTables */
 .dataTables_filter input {
+    position: sticky;
     border-radius: 4px;
     padding: 5px 10px;
     font-size: 14px;
@@ -7,7 +8,7 @@
     width: auto;
     margin-left: 15px;
     transition: all 0.3s ease;
-    text-align: center; /* Menambahkan text center */
+    text-align: center; 
 }
 
 .dataTables_filter input:focus {

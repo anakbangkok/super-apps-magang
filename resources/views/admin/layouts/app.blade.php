@@ -112,12 +112,35 @@
         </a>
     </li>
 
-    <!-- Manajemen Pengguna -->
-    <li class="menu-item {{ request()->routeIs('admin.users.index', 'admin.users.create') ? 'active' : '' }}">
-        <a href="{{ route('admin.users.index') }}" class="menu-link">
+    <!-- Manajemen Akun -->
+    <li class="menu-item {{ request()->routeIs('admin.users.*') || request()->routeIs('mentors.*') || request()->routeIs('admin.index*') ? 'open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-group"></i>
-            <div data-i18n="Tables">Manajemen Pengguna</div>
+            <div data-i18n="Manajemen Akun">Manajemen Akun</div>
         </a>
+        <ul class="menu-sub">
+            <!-- Admin -->
+            <li class="menu-item {{ request()->routeIs('admin.index') ? 'active' : '' }}">
+                <a href="{{ route('admin.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                    <div data-i18n="Admin">Admin</div>
+                </a>
+            </li>                       
+            <!-- Mentor -->
+            <li class="menu-item {{ request()->routeIs('mentors.index') ? 'active' : '' }}">
+                <a href="{{ route('mentors.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user"></i>
+                    <div data-i18n="Mentor">Mentor</div>
+                </a>
+            </li>
+            <!-- User Magang -->
+            <li class="menu-item {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
+                <a href="{{ route('admin.users.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-group"></i>
+                    <div data-i18n="Pengguna">Pengguna</div>
+                </a>
+            </li>
+        </ul>
     </li>
 
     <!-- Instansi -->
@@ -169,14 +192,6 @@
         </a>
     </li>
 
-    <!-- Mentor -->
-    <li class="menu-item {{ request()->routeIs('mentors.index', 'mentors.create') ? 'active' : '' }}">
-        <a href="{{ route('mentors.index') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-user"></i>
-            <div data-i18n="Tables">Mentor</div>
-        </a>
-    </li>
-
     <!-- Pengajuan Izin -->
     <li class="menu-item {{ request()->routeIs('pengajuan_izin.index') ? 'active' : '' }}">
         <a href="{{ route('pengajuan_izin.index') }}" class="menu-link">
@@ -187,8 +202,8 @@
     </li>
 
     {{-- feedback --}}
-    <li class="menu-item {{ request()->routeIs('feedback.admin') ? 'active' : '' }}">
-        <a href="{{ route('feedback.admin') }}" class="menu-link d-flex align-items-center position-relative">
+    <li class="menu-item {{ request()->routeIs('masukan.admin') ? 'active' : '' }}">
+        <a href="{{ route('masukan.admin') }}" class="menu-link d-flex align-items-center position-relative">
             <i class="menu-icon tf-icons bx bx-message-square-dots feedback-icon"></i>
 
             @if ($unreadFeedbackCount > 0)
@@ -201,12 +216,31 @@
         </a>
     </li>
 
-
-
-
-
-
+    <!-- Pengumuman & Piket -->
+    <li class="menu-item {{ request()->routeIs('admin.acara.*') || request()->routeIs('jadwal_piket.*') ? 'open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-bell"></i>
+            <div data-i18n="Pengumuman & Piket">Pengumuman & Piket</div>
+        </a>
+        <ul class="menu-sub">
+            <!-- Pengumuman -->
+            <li class="menu-item {{ request()->routeIs('admin.acara.index') ? 'active' : '' }}">
+                <a href="{{ route('admin.acara.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                    <div data-i18n="Pengumuman">Pengumuman</div>
+                </a>
+            </li>
+            <!-- Piket -->
+            <li class="menu-item {{ request()->routeIs('jadwal_piket.index') ? 'active' : '' }}">
+                <a href="{{ route('jadwal_piket.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                    <div data-i18n="Jadwal Piket">Jadwal Piket</div>
+                </a>
+            </li>
+        </ul>
+    </li>
 </ul>
+
 
 <!-- Logout -->
 <div class="logout-container py-2">
@@ -270,7 +304,7 @@
                                     <div class="flex-grow-1">
                                         <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
                                         <small class="text-muted">
-                                            Admin<!-- Dynamic Role -->
+                                            Admin
                                         </small>
                                     </div>
                                 </div>

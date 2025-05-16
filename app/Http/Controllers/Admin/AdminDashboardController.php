@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kehadiran;
+use App\Models\Acara;
 
 class AdminDashboardController extends Controller
 {
@@ -13,10 +14,12 @@ class AdminDashboardController extends Controller
         $aktif = Kehadiran::where('status', 'aktif')->count();
         $selesai = Kehadiran::where('status', 'selesai')->count();
         $belumDiisi = Kehadiran::whereNull('status')->count();
+        
+        $acara = Acara::orderBy('tanggal', 'desc')->get();
 
         
 
-        return view('admin.dashboard', compact('belumMasuk', 'aktif', 'selesai', 'belumDiisi'));
+        return view('admin.dashboard', compact('belumMasuk', 'aktif', 'selesai', 'belumDiisi', 'acara'));
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,6 +51,20 @@ class User extends Authenticatable
     /**
      * Define the relationship to the Instansi model.
      */
+
+     public function getStartDateAttribute($value)
+     {
+         return Carbon::parse($value)->format('Y-m-d H:i:s');
+     }
+ 
+     /**
+      * Accessor untuk end_date
+      */
+     public function getEndDateAttribute($value)
+     {
+         return Carbon::parse($value)->format('Y-m-d H:i:s');
+     }
+ 
     public function instansi() {
         return $this->belongsTo(Instansi::class);
     }
@@ -63,8 +78,8 @@ class User extends Authenticatable
         return $this->belongsTo(Mentor::class);
     }
 
-    public function feedbacks() {
-        return $this->hasMany(Feedback::class);
+    public function masukans() {
+        return $this->hasMany(Masukan::class);
     }
     
 }

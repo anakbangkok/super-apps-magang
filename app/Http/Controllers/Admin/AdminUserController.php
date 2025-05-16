@@ -11,10 +11,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Exports\UsersExport;
+use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TimWeb;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Facades\Log;
+use App\Models\Acara;
+
+
 
 
 class AdminUserController extends Controller
@@ -24,21 +31,22 @@ class AdminUserController extends Controller
     {
         // Mengambil query filter
         $query = $this->applyFilters($request);
-    
+
         $users = $query->get();
-    
+
         // Mendapatkan data penugasan untuk dropdown
-        $penugasans = Penugasan::all();  
-    
+        $penugasans = Penugasan::all();
+        $instansis = Instansi::all();
+        $mentors = Mentor::all();
         // Jika request AJAX, hanya return table fragment
         if ($request->ajax()) {
             return view('admin.users.table', compact('users'));
         }
-    
+
         // Return halaman utama dengan data
-        return view('admin.users.index', compact('users', 'penugasans'));
+        return view('admin.users.index', compact('users', 'penugasans', 'instansis', 'mentors'));
     }
-    
+
 
 
     public function create()
@@ -51,6 +59,7 @@ class AdminUserController extends Controller
         return view('admin.users.create', compact('instansis', 'penugasans', 'mentors'));
     }
 
+    
     public function store(Request $request)
     {
         // Validasi data permintaan yang masuk
@@ -60,20 +69,24 @@ class AdminUserController extends Controller
             'instansi' => 'required|exists:instansis,id',
             'penugasan' => 'required|exists:penugasans,id',
             'mentor' => 'required|exists:mentors,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'start_date' => 'required|date', 
+            'end_date' => 'required|date',  
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Buat pengguna baru dengan data yang divalidasi
+    
+        $startDate = $validatedData['start_date'];
+        $endDate = $validatedData['end_date'];
+
+
         User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'instansi_id' => $validatedData['instansi'],
             'penugasan_id' => $validatedData['penugasan'],
             'mentor_id' => $validatedData['mentor'],
-            'start_date' => $validatedData['start_date'],
-            'end_date' => $validatedData['end_date'],
+            'start_date' => $startDate,
+            'end_date' => $endDate,
             'password' => Hash::make($validatedData['password']),
         ]);
 
@@ -83,7 +96,7 @@ class AdminUserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        // Ambil data terkait untuk form edit
+        
         $instansis = Instansi::all();
         $penugasans = Penugasan::all();
         $mentors = Mentor::all();
@@ -94,32 +107,48 @@ class AdminUserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-
-        // Validasi data permintaan yang masuk
+    
+        // Validasi input form
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|max:255',
             'instansi' => 'required|exists:instansis,id',
             'penugasan' => 'required|exists:penugasans,id',
             'mentor' => 'required|exists:mentors,id',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ]);
-
-        // Perbarui pengguna dengan data yang divalidasi
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'instansi_id' => $request->instansi,
-            'penugasan_id' => $request->penugasan,
-            'mentor_id' => $request->mentor,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-        ]);
-
-        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui!');
+    
+        // Update data pengguna
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->instansi_id = $request->instansi;
+        $user->penugasan_id = $request->penugasan;
+        $user->mentor_id = $request->mentor;
+        $user->start_date = $request->start_date;
+        $user->end_date = $request->end_date;
+    
+        // Periksa status berdasarkan tanggal
+        $currentDate = now(); // Mendapatkan tanggal saat ini
+    
+        if ($currentDate->between($user->start_date, $user->end_date)) {
+            // Jika tanggal saat ini antara tanggal mulai dan selesai, set status aktif
+            $user->status = 'aktif';
+        } elseif ($currentDate->greaterThan($user->end_date)) {
+            // Jika tanggal saat ini lebih besar dari tanggal selesai, set status selesai
+            $user->status = 'selesai';
+        } else {
+            // Jika tanggal saat ini sebelum tanggal mulai, set status belum aktif
+            $user->status = 'belum aktif';
+        }
+    
+        // Simpan perubahan
+        $user->save();
+    
+        // Redirect atau tampilkan pesan sukses
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
-
+    
     public function destroy($id)
     {
         $user = User::findOrFail($id);
@@ -169,7 +198,9 @@ class AdminUserController extends Controller
             }) + 1;
         }
 
-        return view('admin.dashboard', compact('belumMasuk', 'aktif', 'selesai', 'belumDiisi', 'topUsers', 'userRankPosition', 'currentUserTotalKata'));
+        $acara = Acara::latest()->take(3)->get();
+
+        return view('admin.dashboard', compact('belumMasuk', 'aktif', 'selesai', 'belumDiisi', 'topUsers', 'userRankPosition', 'currentUserTotalKata', 'acara'));
     }
 
 
@@ -188,6 +219,7 @@ class AdminUserController extends Controller
         $searchName = $request->input('searchName');
         $searchEmail = $request->input('searchEmail');
         $searchPenugasan = $request->input('searchPenugasan');
+        $searchInstansi = $request->input('searchInstansi');
         $searchStatus = $request->input('searchStatus');
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
@@ -208,6 +240,11 @@ class AdminUserController extends Controller
         // Filter berdasarkan penugasan
         if ($searchPenugasan) {
             $query->where('penugasan_id', $searchPenugasan);
+        }
+
+        // Filter
+        if ($searchInstansi) {
+            $query->where('instansi_id', $searchInstansi);
         }
 
         // Filter berdasarkan status
@@ -246,42 +283,99 @@ class AdminUserController extends Controller
 
     public function export(Request $request)
     {
-        // Terapkan filter ke query
-        $query = $this->applyFilters($request);
-
-        // Ambil data yang sudah difilter dengan kolom yang dibutuhkan
-        $users = $query->get(['name', 'email', 'penugasan_id', 'mentor_id', 'start_date', 'end_date', 'status']);
-
-        // Pastikan bahwa hanya data terfilter yang dikirim ke `UsersExport`
-        if ($users->isEmpty()) {
-            return back()->with('error', 'Tidak ada data yang cocok dengan filter.');
+        // Validasi input filter
+        $request->validate([
+            'instansi_id' => 'nullable|exists:instansis,id', // pastikan instansi_id valid
+            'status' => 'nullable|in:belum_masuk,aktif,selesai',
+            'start_from' => 'nullable|date',
+            'start_to' => 'nullable|date|after_or_equal:start_from',
+        ]);
+        
+        // Mengambil data filter dari request
+        $instansiId = $request->get('instansi_id');
+        $status = $request->get('status');
+        $startFrom = $request->get('start_from') ? Carbon::parse($request->get('start_from')) : null;
+        $startTo = $request->get('start_to') ? Carbon::parse($request->get('start_to')) : null;
+        
+        // Query untuk mendapatkan data berdasarkan filter
+        $query = User::query();
+        
+        // Menerapkan filter berdasarkan input
+        if ($instansiId) {
+            $query->where('instansi_id', $instansiId);
+        }
+        
+        if ($status) {
+            $query->where('status', $status);
+        }
+        
+        if ($startFrom && $startTo) {
+            $query->whereBetween('start_date', [$startFrom, $startTo]);
+        } elseif ($startFrom) {
+            $query->where('start_date', '>=', $startFrom);
+        } elseif ($startTo) {
+            $query->where('start_date', '<=', $startTo);
         }
 
-        return Excel::download(new UsersExport($users), 'users_export.xlsx');
+        // Menjalankan query dan mengambil data pengguna yang sudah difilter
+        $users = $query->get();
+
+        // Mengekspor data yang sudah difilter ke file Excel
+        return Excel::download(new UsersExport($users), 'data_pengguna.xlsx');
     }
 
-public function dataTimWeb()
-{
-    $today = Carbon::today();
+    
 
-    // Hitung jumlah artikel dan kata hari ini
-    $jumlahArtikelHariIni = TimWeb::whereDate('tanggal', $today)->sum('jumlah_artikel');
-    $jumlahKataHariIni = TimWeb::whereDate('tanggal', $today)->sum('jumlah_kata');
+    public function import(Request $request)
+    {
+        // Pastikan file yang dipilih benar dan di-upload
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+    
+        // Proses import file
+        Excel::import(new UsersImport, $request->file('file'));
+    
+        return redirect()->route('admin.users.index')->with('success', 'Data berhasil diimport!');
+    }
+    
 
-    // Hitung total jumlah artikel dan kata semua user
-    $totalJumlahArtikel = TimWeb::sum('jumlah_artikel');
-    $totalJumlahKata = TimWeb::sum('jumlah_kata');
 
-    // Ambil data semua tim web
-    $timWebs = TimWeb::with('user')->get();
+    public function downloadTemplate()
+    {
+        // Path ke file template
+        $path = storage_path('app/templates/user_import_template.xlsx');
 
-    return view('admin.tim_web.index', [
-        'tim_webs' => $timWebs,
-        'jumlahArtikel' => $jumlahArtikelHariIni,
-        'jumlahKata' => $jumlahKataHariIni,
-        'totalJumlahArtikel' => $totalJumlahArtikel,
-        'totalJumlahKata' => $totalJumlahKata,
-    ]);
-}
+        // Cek apakah file ada
+        if (!file_exists($path)) {
+            return abort(404, 'File template tidak ditemukan.');
+        }
 
+        // Return response file
+        return response()->download($path, 'user_import_template.xlsx');
+    }
+
+    public function dataTimWeb()
+    {
+        $today = Carbon::today();
+
+        // Hitung jumlah artikel dan kata hari ini
+        $jumlahArtikelHariIni = TimWeb::whereDate('tanggal', $today)->sum('jumlah_artikel');
+        $jumlahKataHariIni = TimWeb::whereDate('tanggal', $today)->sum('jumlah_kata');
+
+        // Hitung total jumlah artikel dan kata semua user
+        $totalJumlahArtikel = TimWeb::sum('jumlah_artikel');
+        $totalJumlahKata = TimWeb::sum('jumlah_kata');
+
+        // Ambil data semua tim web
+        $timWebs = TimWeb::with('user')->get();
+
+        return view('admin.tim_web.index', [
+            'tim_webs' => $timWebs,
+            'jumlahArtikel' => $jumlahArtikelHariIni,
+            'jumlahKata' => $jumlahKataHariIni,
+            'totalJumlahArtikel' => $totalJumlahArtikel,
+            'totalJumlahKata' => $totalJumlahKata,
+        ]);
+    }
 }
