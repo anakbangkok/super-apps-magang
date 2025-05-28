@@ -39,8 +39,8 @@
                 </div>
                 <div class="col-md-4">
                     <label for="nama-filter" class="form-label">Filter Nama:</label>
-                    <select id="nama-filter" class="form-control select2" placeholder="Cari Nama...">
-                        <option value="">Semua Nama</option>
+                    <select id="nama-filter" class="form-control select2" data-placeholder="Cari Nama...">
+                        <option></option>
                         @foreach ($tim_webs->unique('user_id') as $tim_web)
                             <option value="{{ $tim_web->user->name }}">{{ $tim_web->user->name }}</option>
                         @endforeach
@@ -163,14 +163,16 @@
 
                 var table = $('#tim-web-table').DataTable({
                     responsive: true, // Enable responsive table
-                    language: {
-                        search: "Cari:", // Custom search label
-                        lengthMenu: "Tampilkan _MENU_ data per halaman", // Page length options
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data", // Info about data range
-                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data", // Info when no data is found
-                        paginate: {
-                            previous: "Sebelumnya", // Custom text for previous button
-                            next: "Berikutnya" // Custom text for next button
+                    "language": {
+                        "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                        "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                        "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                        "infoEmpty": "Tidak ada data tersedia",
+                        "infoFiltered": "(disaring dari _MAX_ total entri)",
+                        "search": "Cari:",
+                        "paginate": {
+                            "next": "Berikutnya",
+                            "previous": "Sebelumnya"
                         }
                     },
                     columnDefs: [{

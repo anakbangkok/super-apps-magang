@@ -235,9 +235,9 @@
             <!-- Search -->
             <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
-                    <i class="bx bx-search fs-4 lh-0"></i>
+                    {{-- <i class="bx bx-search fs-4 lh-0"></i>
                     <input type="text" class="form-control border-0 shadow-none" placeholder="Cari..."
-                        aria-label="Cari..." />
+                        aria-label="Cari..." /> --}}
                 </div>
             </div>
             <!-- /Search -->
@@ -250,7 +250,7 @@
                         data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
                             <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                                alt="User Avatar" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" />
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -260,7 +260,7 @@
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar avatar-online">
                                             <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                                alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                                                alt="User Avatar" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;" />
                                         </div>
                                     </div>
 
@@ -351,6 +351,22 @@
 
 <!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll("input[required], textarea[required], select[required]");
+
+        inputs.forEach(function(input) {
+            input.addEventListener("invalid", function () {
+                input.setCustomValidity("Mohon lengkapi bagian ini.");
+            });
+
+            input.addEventListener("input", function () {
+                input.setCustomValidity('');
+            });
+        });
+    });
+</script>
+
 <style>
     .menu-item.active .menu-link {
         background-color: #007bff;

@@ -28,6 +28,9 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:admins,email',
             'password' => 'required|string|min:8|confirmed',
+        ],
+        [
+            'email.unique' => 'Email sudah terdaftar.',
         ]);
 
         // Membuat akun admin baru
@@ -37,7 +40,7 @@ class AdminController extends Controller
         $admin->password = Hash::make($validated['password']);
         $admin->save();
 
-        return redirect()->route('admin.index')->with('success', 'Akun admin berhasil dibuat!');
+        return redirect()->route('admin.index')->with('success', 'Admin berhasil dibuat!');
     }
 
     public function edit($id)
@@ -66,7 +69,7 @@ class AdminController extends Controller
 
         $admin->save();
 
-        return redirect()->route('admin.index')->with('success', 'Akun admin berhasil diperbarui!');
+        return redirect()->route('admin.index')->with('success', 'Admin berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -74,6 +77,6 @@ class AdminController extends Controller
         $admin = Admin::findOrFail($id);
         $admin->delete();
 
-        return redirect()->route('admin.index')->with('success', 'Akun admin berhasil dihapus!');
+        return redirect()->route('admin.index')->with('success', 'Admin berhasil dihapus!');
     }
 }

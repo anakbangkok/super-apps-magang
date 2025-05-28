@@ -16,11 +16,11 @@ class PengajuanIzinController extends Controller
         return view('pengajuan_izin.index', compact('pengajuan'));
     }
 
-    // Menampilkan form pengajuan izin
-    public function create()
-    {
-        return view('pengajuan_izin.create');
-    }
+    // // Menampilkan form pengajuan izin
+    // public function create()
+    // {
+    //     return view('pengajuan_izin.index');
+    // }
 
     // Menyimpan pengajuan izin baru
     public function store(Request $request)

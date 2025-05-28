@@ -84,10 +84,10 @@
             </div>
 
             <!-- Password -->
-            <div class="mb-3">
-                <label for="password" class="form-label">Kata Sandi</label>
+             <div class="mb-3">
+                <label for="password" class="form-label">Kata Sandi (Jika Perlu)</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" id="password" name="password" value="password" readonly>
+                    <input type="password" class="form-control" id="password" name="password" value="">
                     <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                         <i class="fa fa-eye-slash" id="passwordIcon"></i>
                     </button>
@@ -95,10 +95,10 @@
             </div>
 
             <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi</label>
+                <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi (Jika Perlu)</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                        value="password" readonly>
+                        value="">
                     <button type="button" class="btn btn-outline-secondary" id="togglePasswordConfirmation">
                         <i class="fa fa-eye-slash" id="passwordConfirmationIcon"></i>
                     </button>
@@ -144,5 +144,6 @@
             });
         });
     </script>
+    
 
 @endsection

@@ -37,17 +37,18 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::get('/kehadiran/export', [KehadiranController::class, 'export'])->name('kehadiran.export');
 
     Route::resource('admin/users', AdminUserController::class)->except(['show'])->names('admin.users');
+    Route::post('/admin/users/update-statuses', [AdminUserController::class, 'updateAllStatuses'])->name('admin.users.updateStatuses');
     Route::get('admin/users/export', [AdminUserController::class, 'export'])->name('admin.users.export');
     Route::post('/users/import', [AdminUserController::class, 'import'])->name('admin.users.import');
     Route::get('/download-template', [AdminUserController::class, 'downloadTemplate'])->name('admin.users.downloadTemplate');
 
 
 
-    Route::get('/admin/pengajuan-izin', [PengajuanIzinUserController::class, 'index'])->name('pengajuan_izin.index');
-    Route::post('/admin/pengajuan-izin/{pengajuanIzin}/approve', [PengajuanIzinUserController::class, 'approve'])->name('pengajuan_izin.approve');
-    Route::post('/admin/pengajuan-izin/{pengajuanIzin}/reject', [PengajuanIzinUserController::class, 'reject'])->name('pengajuan_izin.reject');
-    Route::get('/admin/pengajuan-izin/notifications', [PengajuanIzinUserController::class, 'notifications'])->name('pengajuan_izin.notifications');
-    Route::get('pengajuan-izin/export', [PengajuanIzinUserController::class, 'export'])->name('admin.pengajuan_izin.export');
+    Route::get('/pengajuan-izin', [PengajuanIzinUserController::class, 'index'])->name('admin.pengajuan_izin.index');
+    Route::post('/pengajuan-izin/{pengajuanIzin}/approve', [PengajuanIzinUserController::class, 'approve'])->name('admin.pengajuan_izin.approve');
+    Route::post('/pengajuan-izin/{pengajuanIzin}/reject', [PengajuanIzinUserController::class, 'reject'])->name('admin.pengajuan_izin.reject');
+    Route::get('/pengajuan-izin/notifications', [PengajuanIzinUserController::class, 'notifications'])->name('pengajuan_izin.notifications');
+    Route::get('/pengajuan-izin/export', [PengajuanIzinUserController::class, 'export'])->name('admin.pengajuan_izin.export');
 
 
     Route::post('masukan/{id}/reply', [MasukanController::class, 'reply'])->name('masukan.reply');

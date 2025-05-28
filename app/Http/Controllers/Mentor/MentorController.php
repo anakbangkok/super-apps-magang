@@ -36,6 +36,9 @@ class MentorController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'nik' => 'nullable|string|max:20',
             'jabatan' => 'nullable|string|max:255',
+        ],
+        [
+            'email.unique' => 'Email sudah terdaftar.',
         ]);
 
         Mentor::create([
@@ -68,17 +71,44 @@ class MentorController extends Controller
     {
         $mentor = Mentor::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:mentors,email,' . $mentor->id,
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
             'nik' => 'nullable|string|max:20',
             'jabatan' => 'nullable|string|max:255',
+        ], [
+            'password.confirmed' => 'Password dan konfirmasi password tidak cocok.',
         ]);
 
-        $mentor->update($request->all());
+        // Update field yang lain
+        if (isset($validated['name'])) {
+            $mentor->name = $validated['name'];
+        }
+        if (isset($validated['email'])) {
+            $mentor->email = $validated['email'];
+        }
+        if (isset($validated['nik'])) {
+            $mentor->nik = $validated['nik'];
+        }
+        if (isset($validated['jabatan'])) {
+            $mentor->jabatan = $validated['jabatan'];
+        }
+
+        // Update password hanya jika ada input password baru
+        if (!empty($validated['password'])) {
+            $mentor->password = Hash::make($validated['password']);
+        }
+        if ($request->filled('password_confirmation') && !$request->filled('password')) {
+            return back()->withErrors(['password' => 'Password harus diisi jika ingin mengisi konfirmasi password.'])->withInput();
+        }
+
+
+        $mentor->save();
+
         return redirect()->route('mentor.index')->with('success', 'Mentor berhasil diperbarui!');
     }
+
 
     // Menghapus mentor
     public function destroy($id)
@@ -117,12 +147,6 @@ class MentorController extends Controller
         if ($searchStatus) {
             $query->where('status', $searchStatus); // sesuaikan kolom status
         }
-        // if ($startDate) {
-        //     $query->whereDate('start_date', '>=', $startDate);
-        // }
-        // if ($endDate) {
-        //     $query->whereDate('end_date', '<=', $endDate);
-        // }
         if ($startDate && $endDate) {
             $query->whereBetween('start_date', [$startDate, $endDate]);
         } elseif ($startDate) {
@@ -131,7 +155,7 @@ class MentorController extends Controller
             $query->where('end_date', '<=', $endDate);
         }
 
-        $users = $query->paginate(10);
+        $users = $query->get();
 
         $penugasans = Penugasan::all();
 

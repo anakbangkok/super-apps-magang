@@ -18,11 +18,17 @@
         <div class="mb-3">
             <label for="jumlah_artikel" class="form-label">Jumlah Artikel</label>
             <input type="number" name="jumlah_artikel" value="{{ $tim_web->jumlah_artikel }}" class="form-control" required>
+            @error('jumlah_artikel')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label for="jumlah_kata" class="form-label">Jumlah Kata</label>
             <input type="number" name="jumlah_kata" value="{{ $tim_web->jumlah_kata }}" class="form-control" required>
+            @error('jumlah_kata')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">

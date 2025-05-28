@@ -19,6 +19,7 @@
                 <small>Pilih lebih dari satu dengan menekan tombol Ctrl (Windows) atau Command (Mac)</small>
             </div>
             <button type="submit" class="btn btn-primary">Simpan</button>
+             <a href="{{ route('jadwal_piket.index') }}" class="btn btn-secondary">Batal</a>
         </form>
     </div>
 @endsection

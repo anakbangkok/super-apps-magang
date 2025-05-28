@@ -14,7 +14,7 @@
                             </div>
                             <div class="card-body px-5">
                                 <div class="mb-4 text-sm text-gray-600">
-                                    {{ __('Lupa kata sandi itu hal yang wajar kok! Jangan panik ya. Untuk meresetnya, kamu bisa langsung hubungi mentor kamu. Mereka siap membantu! Semangat belajarnya!') }}
+                                    {{ __('Lupa kata sandi merupakan hal yang wajar, jadi tidak perlu panik. Untuk melakukan reset silahkan hubungi mentor Anda, mereka siap membantu. Selamat belajar dan tetap semangat!') }}
                                 </div>
 
                                 <!-- Session Status -->

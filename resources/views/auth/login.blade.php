@@ -62,7 +62,7 @@
                                         @if (Route::has('password.request'))
                                             <a class="text-danger font-weight-bold"
                                                 href="{{ route('password.request') }}">
-                                                {{ __('Lupa kata sandi? Segera lapor kepada Mentor') }}
+                                                {{ __('Lupa kata sandi?') }}
                                             </a>
                                         @endif
                                     </p>

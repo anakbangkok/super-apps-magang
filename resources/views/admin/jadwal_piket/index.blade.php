@@ -2,14 +2,20 @@
 
 @section('content')
     <div class="container">
+        <div class="mb-3 text-start">
+            <a href="{{ route('jadwal_piket.create') }}" class="btn btn-danger">
+                Tambah Jadwal Piket
+            </a>
+        </div>
+
         <div class="card shadow">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">Jadwal Piket</h5>
-                    <a href="{{ route('jadwal_piket.create') }}" class="btn btn-danger">
-                        <i class="fas fa-plus"></i> Tambah Jadwal Piket
-                    </a>
-                </div>
+                <h5 class="mb-3">Daftar Jadwal Piket</h5>
+                @if (session('success'))
+                    <div class="alert alert-success dimissible fade show" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
                 <table class="table table-bordered table-striped align-middle">
                     <thead class="table-light">
@@ -30,13 +36,13 @@
                             </td>
                             <td>
                                 <a href="{{ route('jadwal_piket.edit', $jadwal->id) }}" class="btn btn-warning btn-sm me-1">
-                                    <i class="fas fa-edit"></i>
+                                    Edit
                                 </a>
                                 <form action="{{ route('jadwal_piket.destroy', $jadwal->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">
-                                        <i class="fas fa-trash-alt"></i>
+                                        Hapus
                                     </button>
                                 </form>
                             </td>

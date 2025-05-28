@@ -6,12 +6,6 @@
     <div class="container my-5 mx-auto">
         <h1 class="mb-4 text-right" style="font-family: 'Arial', sans-serif;">Edit Profil</h1>
 
-        @if (session('status') === 'profile-updated')
-            <div class="alert alert-success" style="background-color: #d4edda; color: #155724;">
-                Profil berhasil diperbarui.
-            </div>
-        @endif
-
         @if (session('status'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('status') }}
@@ -41,7 +35,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" role="tab">
-                    Ganti Password
+                    Ganti Kata Sandi
                 </button>
             </li>
             <li class="nav-item" role="presentation">

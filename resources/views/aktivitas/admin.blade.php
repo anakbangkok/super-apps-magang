@@ -12,8 +12,6 @@
             align-items: center;
             margin-bottom: 5px !important;
             margin-right: 15px;
-
-     
         }
 
         #instansiFilter {
@@ -58,7 +56,7 @@
                             <div class="mb-3">
                                 <label for="user_name" class="form-label">Nama Peserta</label>
                                 <select class="form-control" id="user_name" name="user_name">
-                                    <option value="">Pilih Nama Peserta</option>
+                                    <option value="">Pilih Semua Peserta</option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->name }}">{{ $user->name }}</option>
                                     @endforeach
@@ -185,7 +183,7 @@
                         }
                     },
                     "responsive": true,
-                    "pagingType": "full_numbers",
+                    "pagingType": "simple_numbers",
                     "autoWidth": false,
                 });
 

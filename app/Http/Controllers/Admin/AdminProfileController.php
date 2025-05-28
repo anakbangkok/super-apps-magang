@@ -27,6 +27,11 @@ class AdminProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ],
+        [
+            'profile_photo.image' => 'File yang diunggah harus berupa gambar.',
+            'profile_photo.mimes' => 'Gambar harus dalam format jpeg, png, jpg, atau gif.',
+            'profile_photo.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
         /** @var \App\Models\Admin $admin */
         $admin = auth('admin')->user();
@@ -46,7 +51,7 @@ class AdminProfileController extends Controller
 
         $admin->save();
 
-        return redirect()->route('admin.profile.edit')->with('status', 'profile-updated');
+        return redirect()->route('admin.profile.edit')->with('status', 'profile berhasil diperbarui!');
     }
 
     public function updatePassword(Request $request)

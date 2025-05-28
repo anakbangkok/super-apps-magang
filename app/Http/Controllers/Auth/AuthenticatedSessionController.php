@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
                 Auth::guard('admin')->login($admin);
                 return redirect()->route('admin.dashboard');
             }
-            return back()->withErrors(['password' => 'Password Kamu salah']);
+            return back()->withErrors(['password' => 'Kata sandi anda salah']);
         }
 
         $mentor = Mentor::where('email', $email)->first();
@@ -51,7 +51,7 @@ class AuthenticatedSessionController extends Controller
                 Auth::guard('mentor')->login($mentor);
                 return redirect()->route('mentor.dashboard');
             }
-            return back()->withErrors(['password' => 'Password Kamu salah']);
+            return back()->withErrors(['password' => 'Kata sandi anda salah']);
         }
 
         $user = User::where('email', $email)->first();
@@ -60,11 +60,11 @@ class AuthenticatedSessionController extends Controller
                 auth()->guard('web')->login($user);
                 return redirect()->route('dashboard');
             }
-            return back()->withErrors(['password' => 'Ups, Ada yang Salah Nih...']);
+            return back()->withErrors(['password' => 'Kata Sandi Anda Salah']);
         }
 
         return back()->withErrors([
-            'email' => 'Ups, Email yang Dimasukin Salah',
+            'email' => 'Email anda salah',
         ]);
     }
 

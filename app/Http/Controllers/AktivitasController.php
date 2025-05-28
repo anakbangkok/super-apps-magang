@@ -131,7 +131,7 @@ class AktivitasController extends Controller
         // Ambil data jurnal hanya dari user yang dibimbing
         $journals = Aktivitas::whereIn('user_id', $userIds)
             ->with('user.instansi') // untuk akses $journal->user->instansi
-            ->paginate(10);
+            ->get();
 
         // Ambil user & instansi untuk ditampilkan jika perlu
         $users = User::whereIn('id', $userIds)->get();

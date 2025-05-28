@@ -18,8 +18,8 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <label for="user-filter" class="form-label">Nama Pengguna:</label>
-                    <select id="user-filter" class="form-control select2">
-                        <option value="">Semua</option>
+                    <select id="user-filter" class="form-control select2" data-placeholder="Cari Nama">
+                        <option></option>
                         @foreach ($users as $user)
                             <option value="{{ $user->name }}">{{ $user->name }}</option>
                         @endforeach
@@ -283,7 +283,19 @@
                             }).nodes().each(function(cell, i) {
                                 cell.innerHTML = i + 1;
                             });
-                        }
+                        },
+                        "language": {
+                            "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                            "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                            "info": "Menampilkan halaman _PAGE_ dari _PAGES_ halaman",
+                            "infoEmpty": "Tidak ada data tersedia",
+                            "infoFiltered": "(disaring dari _MAX_ total entri)",
+                            "search": "Cari:",
+                            "paginate": {
+                                "next": "Berikutnya",
+                                "previous": "Sebelumnya"
+                            }
+                        },
                     });
 
                     var minDate, maxDate;

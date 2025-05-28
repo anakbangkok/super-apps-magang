@@ -59,22 +59,48 @@ class AdminUserController extends Controller
         return view('admin.users.create', compact('instansis', 'penugasans', 'mentors'));
     }
 
-    
+    public function updateAllStatuses()
+    {
+        $users = User::all();
+        $currentDate = now();
+
+        foreach ($users as $user) {
+            if ($user->start_date && $user->end_date) {
+                if ($currentDate->between($user->start_date, $user->end_date)) {
+                    $user->status = 'aktif';
+                } elseif ($currentDate->greaterThan($user->end_date)) {
+                    $user->status = 'selesai';
+                } else {
+                    $user->status = 'belum masuk';
+                }
+                $user->save();
+            }
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'Status semua pengguna berhasil diperbarui.');
+    }
+
+
     public function store(Request $request)
     {
         // Validasi data permintaan yang masuk
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'instansi' => 'required|exists:instansis,id',
-            'penugasan' => 'required|exists:penugasans,id',
-            'mentor' => 'required|exists:mentors,id',
-            'start_date' => 'required|date', 
-            'end_date' => 'required|date',  
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        $validatedData = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'instansi' => 'required|exists:instansis,id',
+                'penugasan' => 'required|exists:penugasans,id',
+                'mentor' => 'required|exists:mentors,id',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
+                'password' => 'required|string|min:8|confirmed',
+            ],
+            [
+                'email.unique' => 'Email sudah terdaftar.',
+            ]
+        );
 
-    
+
         $startDate = $validatedData['start_date'];
         $endDate = $validatedData['end_date'];
 
@@ -96,7 +122,7 @@ class AdminUserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        
+
         $instansis = Instansi::all();
         $penugasans = Penugasan::all();
         $mentors = Mentor::all();
@@ -107,9 +133,9 @@ class AdminUserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-    
-        // Validasi input form
-        $request->validate([
+
+        // Aturan validasi
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'instansi' => 'required|exists:instansis,id',
@@ -117,8 +143,21 @@ class AdminUserController extends Controller
             'mentor' => 'required|exists:mentors,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-    
+        ];
+
+        // Tambahkan validasi password hanya jika diisi
+        if ($request->filled('password')) {
+            $rules['password'] = 'required|string|min:8|confirmed';
+        }
+
+        // Custom pesan error
+        $messages = [
+            'password.confirmed' => 'Password dan konfirmasi password tidak cocok.',
+        ];
+
+        // Validasi input
+        $request->validate($rules, $messages);
+
         // Update data pengguna
         $user->name = $request->name;
         $user->email = $request->email;
@@ -127,28 +166,29 @@ class AdminUserController extends Controller
         $user->mentor_id = $request->mentor;
         $user->start_date = $request->start_date;
         $user->end_date = $request->end_date;
-    
+
+        // Update password jika ada
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
         // Periksa status berdasarkan tanggal
-        $currentDate = now(); // Mendapatkan tanggal saat ini
-    
+        $currentDate = now();
+
         if ($currentDate->between($user->start_date, $user->end_date)) {
-            // Jika tanggal saat ini antara tanggal mulai dan selesai, set status aktif
             $user->status = 'aktif';
         } elseif ($currentDate->greaterThan($user->end_date)) {
-            // Jika tanggal saat ini lebih besar dari tanggal selesai, set status selesai
             $user->status = 'selesai';
         } else {
-            // Jika tanggal saat ini sebelum tanggal mulai, set status belum aktif
-            $user->status = 'belum aktif';
+            $user->status = 'belum masuk';
         }
-    
+
         // Simpan perubahan
         $user->save();
-    
-        // Redirect atau tampilkan pesan sukses
+
+        // Redirect
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
-    
     public function destroy($id)
     {
         $user = User::findOrFail($id);
@@ -286,29 +326,29 @@ class AdminUserController extends Controller
         // Validasi input filter
         $request->validate([
             'instansi_id' => 'nullable|exists:instansis,id', // pastikan instansi_id valid
-            'status' => 'nullable|in:belum_masuk,aktif,selesai',
+            'status' => 'nullable|in:Belum Masuk,Aktif,Selesai',
             'start_from' => 'nullable|date',
             'start_to' => 'nullable|date|after_or_equal:start_from',
         ]);
-        
+
         // Mengambil data filter dari request
         $instansiId = $request->get('instansi_id');
         $status = $request->get('status');
         $startFrom = $request->get('start_from') ? Carbon::parse($request->get('start_from')) : null;
         $startTo = $request->get('start_to') ? Carbon::parse($request->get('start_to')) : null;
-        
+
         // Query untuk mendapatkan data berdasarkan filter
         $query = User::query();
-        
+
         // Menerapkan filter berdasarkan input
         if ($instansiId) {
             $query->where('instansi_id', $instansiId);
         }
-        
+
         if ($status) {
             $query->where('status', $status);
         }
-        
+
         if ($startFrom && $startTo) {
             $query->whereBetween('start_date', [$startFrom, $startTo]);
         } elseif ($startFrom) {
@@ -324,7 +364,7 @@ class AdminUserController extends Controller
         return Excel::download(new UsersExport($users), 'data_pengguna.xlsx');
     }
 
-    
+
 
     public function import(Request $request)
     {
@@ -332,13 +372,13 @@ class AdminUserController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
-    
+
         // Proses import file
         Excel::import(new UsersImport, $request->file('file'));
-    
+
         return redirect()->route('admin.users.index')->with('success', 'Data berhasil diimport!');
     }
-    
+
 
 
     public function downloadTemplate()

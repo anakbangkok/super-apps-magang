@@ -38,7 +38,7 @@
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <div class="input-group">
-                <input type="password" class="form-control" id="password" name="password" required>
+                <input type="password" class="form-control" id="password" name="password" value="password" required>
                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password', this)">
                     <i class="fa fa-eye"></i>
                 </button>
@@ -48,7 +48,7 @@
         <div class="mb-3">
             <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
             <div class="input-group">
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" value="password" required>
                 <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password_confirmation', this)">
                     <i class="fa fa-eye"></i>
                 </button>

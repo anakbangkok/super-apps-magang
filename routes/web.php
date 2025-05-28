@@ -54,8 +54,8 @@ Route::middleware('auth')->group(function () {
 
     // Pengajuan izin user
     Route::get('/pengajuan-izin', [PengajuanIzinController::class, 'index'])->name('pengajuan_izin.index');
-    Route::get('/pengajuan-izin/create', [PengajuanIzinController::class, 'create'])->name('pengajuan_izin.create');
     Route::post('/pengajuan-izin', [PengajuanIzinController::class, 'store'])->name('pengajuan_izin.store');
+        Route::get('/pengajuan-izin/create', [PengajuanIzinController::class, 'create'])->name('pengajuan_izin.create');
 
     Route::get('/masukan/create', [MasukanController::class, 'create'])->name('masukan.create');
     Route::post('/masukan', [MasukanController::class, 'store'])->name('masukan.store');
@@ -130,7 +130,7 @@ Route::middleware(['auth:admin'])->group(function () {
 
     // Rute untuk admin jurnal
 
-    Route::get('/admin/journals', [AktivitasController::class, 'adminIndex'])->name('journal.admin');
+    Route::get('/admin/aktivitas', [AktivitasController::class, 'adminIndex'])->name('aktivitas.admin');
     Route::delete('/admin/aktivitas/{id}', [AktivitasController::class, 'destroy'])->name('aktivitas.admin.destroy');
 
     Route::resource('/admin/admin/tim_web_admin', TimWebController::class);

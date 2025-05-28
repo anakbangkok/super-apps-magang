@@ -18,17 +18,20 @@
         <!-- Tabel Data -->
         <div class="card shadow">
             {{-- <h5 class="card-header text-right">Daftar Tim Sosmed</h5> --}}
-            <div class="d-flex justify-content-between align-items-center mx-3 mb-4 mt-4">
-                <a href="{{ route('tim_sosmeds.create') }}" class="btn btn-primary">Tambah Data Tim Sosmed</a>
+            <div class="container-fluid mt-4 mb-4 px-3">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
 
-                <div class="d-flex gap-2">
-                    <div style="width: 185px;">
-                        <label for="min-date" class="form-label">Tanggal Mulai:</label>
-                        <input type="date" id="min-date" class="form-control">
-                    </div>
-                    <div style="width: 185px;">
-                        <label for="max-date" class="form-label">Tanggal Akhir:</label>
-                        <input type="date" id="max-date" class="form-control">
+                    <a href="{{ route('tim_sosmeds.create') }}" class="btn btn-primary">Tambah Data Tim Sosmed</a>
+
+                    <div class="d-flex flex-column flex-sm-row gap-2">
+                        <div style="width: 185px;">
+                            <label for="min-date" class="form-label">Tanggal Mulai:</label>
+                            <input type="date" id="min-date" class="form-control">
+                        </div>
+                        <div style="width: 185px;">
+                            <label for="max-date" class="form-label">Tanggal Akhir:</label>
+                            <input type="date" id="max-date" class="form-control">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -109,14 +112,16 @@
             $(document).ready(function() {
                 var table = $('#tim-sosmed-table').DataTable({
                     responsive: true,
-                    language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ data per halaman",
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                        paginate: {
-                            previous: "Sebelumnya",
-                            next: "Berikutnya"
+                    "language": {
+                        "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                        "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                        "info": "Menampilkan halaman _PAGE_ dari _PAGES_ halaman",
+                        "infoEmpty": "Tidak ada data tersedia",
+                        "infoFiltered": "(disaring dari _MAX_ total entri)",
+                        "search": "Cari:",
+                        "paginate": {
+                            "next": "Berikutnya",
+                            "previous": "Sebelumnya"
                         }
                     },
                     columnDefs: [{

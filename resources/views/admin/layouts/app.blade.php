@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr">
 
 <head>
@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Tambahkan link Google Fonts di sini -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         .app-brand-text {
             font-family: 'Poppins', sans-serif;
@@ -185,16 +186,16 @@
 
 
     <!-- Aktivitas Harian -->
-    <li class="menu-item {{ request()->routeIs('journal.admin') ? 'active' : '' }}">
-        <a href="{{ route('journal.admin') }}" class="menu-link">
+    <li class="menu-item {{ request()->routeIs('aktivitas.admin') ? 'active' : '' }}">
+        <a href="{{ route('aktivitas.admin') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-notepad"></i>
             <div data-i18n="Tables">Aktivitas Harian</div>
         </a>
     </li>
 
     <!-- Pengajuan Izin -->
-    <li class="menu-item {{ request()->routeIs('pengajuan_izin.index') ? 'active' : '' }}">
-        <a href="{{ route('pengajuan_izin.index') }}" class="menu-link">
+    <li class="menu-item {{ request()->routeIs('admin.pengajuan_izin.index') ? 'active' : '' }}">
+        <a href="{{ route('admin.pengajuan_izin.index') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-user-check"></i>
             <div data-i18n="Pengajuan Izin">Kelola Pengajuan Izin</div>
             <span id="notification-bubble" class="notification-bubble" style="display: none;">0</span>
@@ -272,9 +273,9 @@
             <!-- Search -->
             <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
-                    <i class="bx bx-search fs-4 lh-0"></i>
+                    {{-- <i class="bx bx-search fs-4 lh-0"></i>
                     <input type="text" class="form-control border-0 shadow-none" placeholder="Cari..."
-                        aria-label="Cari..." />
+                        aria-label="Cari..." /> --}}
                 </div>
             </div>
             <!-- /Search -->
@@ -329,7 +330,7 @@
                     </a>
                 </li>
 
-                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                <form id="logout-form-2" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
             </ul>
@@ -510,3 +511,20 @@
     // Panggil pertama kali saat halaman dimuat
     document.addEventListener('DOMContentLoaded', checkNotifications);
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll("input[required], textarea[required], select[required]");
+
+        inputs.forEach(function(input) {
+            input.addEventListener("invalid", function () {
+                input.setCustomValidity("Mohon lengkapi bagian ini.");
+            });
+
+            input.addEventListener("input", function () {
+                input.setCustomValidity('');
+            });
+        });
+    });
+</script>
+@yield('scripts')
+

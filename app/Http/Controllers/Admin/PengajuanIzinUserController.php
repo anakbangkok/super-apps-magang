@@ -24,13 +24,56 @@ class PengajuanIzinUserController extends Controller
         $tanggalSelesai = $tanggalSelesai ? Carbon::parse($tanggalSelesai)->endOfDay() : null;
 
         $pengajuan = PengajuanIzin::with('user')
+            
             ->when($status, function ($query, $status) {
                 return $query->where('status', $status);
-            })
-            ->when($tanggalMulai && $tanggalSelesai, function ($query) use ($tanggalMulai, $tanggalSelesai) {
-                return $query->whereBetween('tanggal_mulai', [$tanggalMulai, $tanggalSelesai]);
-            })
-            ->get();
+             })
+            //sebelumnya
+            // ->when($tanggalMulai && $tanggalSelesai, function ($query) use ($tanggalMulai, $tanggalSelesai) {
+            //     return $query->whereBetween('tanggal_mulai', [$tanggalMulai, $tanggalSelesai]);
+            // })
+            // ->get();
+            ->when(($tanggalMulai || $tanggalSelesai), function ($query) use ($tanggalMulai, $tanggalSelesai) {
+            $query->where(function ($q) use ($tanggalMulai, $tanggalSelesai) {
+                if ($tanggalMulai && $tanggalSelesai) {
+                    // Cek overlap tanggal
+                    $q->where(function ($sub) use ($tanggalMulai, $tanggalSelesai) {
+                        $sub->where(function ($inner) use ($tanggalMulai, $tanggalSelesai) {
+                            $inner->whereNotNull('tanggal_selesai')
+                                ->where('tanggal_mulai', '<=', $tanggalSelesai)
+                                ->where('tanggal_selesai', '>=', $tanggalMulai);
+                        })
+                        ->orWhere(function ($inner) use ($tanggalMulai, $tanggalSelesai) {
+                            $inner->whereNull('tanggal_selesai')
+                                ->whereBetween('tanggal_mulai', [$tanggalMulai, $tanggalSelesai]);
+                        });
+                    });
+                } elseif ($tanggalMulai) {
+                    $q->where(function ($sub) use ($tanggalMulai) {
+                        $sub->where(function ($inner) use ($tanggalMulai) {
+                            $inner->whereNotNull('tanggal_selesai')
+                                ->where('tanggal_selesai', '>=', $tanggalMulai);
+                        })
+                        ->orWhere(function ($inner) use ($tanggalMulai) {
+                            $inner->whereNull('tanggal_selesai')
+                                ->where('tanggal_mulai', '>=', $tanggalMulai);
+                        });
+                    });
+                } elseif ($tanggalSelesai) {
+                    $q->where(function ($sub) use ($tanggalSelesai) {
+                        $sub->where(function ($inner) use ($tanggalSelesai) {
+                            $inner->whereNotNull('tanggal_selesai')
+                                ->where('tanggal_mulai', '<=', $tanggalSelesai);
+                        })
+                        ->orWhere(function ($inner) use ($tanggalSelesai) {
+                            $inner->whereNull('tanggal_selesai')
+                                ->where('tanggal_mulai', '<=', $tanggalSelesai);
+                        });
+                    });
+                }
+            });
+        })
+        ->get();
 
         $pendingCount = PengajuanIzin::where('status', 'menunggu')->count();
 
@@ -43,16 +86,16 @@ class PengajuanIzinUserController extends Controller
     public function export(Request $request)
     {
         $user = $request->input('user');
-        
+
         // Ambil data pengajuan izin berdasarkan filter pengguna
         $query = PengajuanIzin::query();
         if ($user) {
             $query->where('user_id', $user);
         }
-    
+
         // Ambil hanya data dengan status 'disetujui'
         $approvedData = $query->where('status', 'disetujui')->get();
-    
+
         // Kelompokkan berdasarkan user dan jenis izin
         $groupedData = $approvedData->groupBy('user_id')->map(function ($userData) {
             // Hitung jumlah izin per jenis izin
@@ -61,13 +104,14 @@ class PengajuanIzinUserController extends Controller
                 'keluarga' => $userData->where('jenis_izin', 'keluarga')->count(),
                 'kegiatan_sekolah' => $userData->where('jenis_izin', 'kegiatan sekolah')->count(),
                 'lain-lain' => $userData->where('jenis_izin', 'lain-lain')->count(),
+                
             ];
         });
 
-        $exportData = [['Nama Pengguna', 'Izin Sakit', 'Izin Keluarga','Izin Kegiatan Sekolah', 'Izin Lain-lain']];
+        $exportData = [['Nama Pengguna', 'Izin Sakit', 'Izin Keluarga', 'Izin Kegiatan Sekolah', 'Izin Lain-lain']];
 
         foreach ($groupedData as $userId => $totals) {
-            $userName = User::find($userId)->name; 
+            $userName = User::find($userId)->name;
             $exportData[] = [
                 $userName,
                 $totals['sakit'],

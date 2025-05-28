@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $topUsers = $topUsers->map(function ($item) use ($users) {
             $user = $users->where('id', $item->user_id)->first();
             $item->name = $user->name ?? 'Nama tidak ditemukan';
-            $item->profile_photo_path = $user->profile_photo_path ?? null;
+            $item->profile_photo = $user->profile_photo ?? null;
             $item->instansi_name = $user->instansi->nama_instansi ?? 'Tidak Ada Instansi';
             return $item;
         });
@@ -38,7 +38,10 @@ class DashboardController extends Controller
         $currentUserTotalKata = TimWeb::where('user_id', $currentUser->id)->sum('jumlah_kata');
 
         // Tentukan peringkat user
-        $userRankPosition = array_search($currentUser->id, array_column($topUsers->toArray(), 'user_id')) + 1;
+        $userRankIndex = array_search($currentUser->id, array_column($topUsers->toArray(), 'user_id'));
+
+        $userRankPosition = $userRankIndex !== false ? $userRankIndex + 1 : null;
+
 
         // Ambil daftar acara terbaru (misalnya berdasarkan tanggal)
         $acara = Acara::orderBy('tanggal', 'desc')->get();

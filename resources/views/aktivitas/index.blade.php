@@ -45,7 +45,7 @@
                             <p class="text-muted">
                                 Pastikan file Anda sesuai format berikut:
                             <ul>
-                                <li>Kolom 1: <strong>Tanggal</strong> (format: yyyy-mm-dd)</li>
+                                <li>Kolom 1: <strong>Tanggal</strong> (format: dd-mm-yyyy)</li>
                                 <li>Kolom 2: <strong>Nama</strong> (Pastikan Sesuai Dengan Nama pada Akun Anda)</li>
                                 <li>Kolom 3: <strong>Jam Mulai</strong> (format: HH:mm Contoh 15:00)</li>
                                 <li>Kolom 4: <strong>Jam Selesai</strong> (format: HH:mm Contoh 21:00)</li>
@@ -78,7 +78,7 @@
                             <input type="date" id="start_date" name="start_date" class="form-control" style="max-width: 200px;" value="{{ request()->get('start_date') }}">
                         </div>
                         <div class="me-3">
-                            <label for="end_date" class="form-label mb-0">Tanggal Selesai</label>
+                            <label for="end_date" class="form-label mb-0">Tanggal Akhir</label>
                             <input type="date" id="end_date" name="end_date" class="form-control" style="max-width: 200px;" value="{{ request()->get('end_date') }}">
                         </div>
                         <button type="submit" class="btn btn-primary mt-3 me-2">Filter</button>
@@ -169,16 +169,20 @@
 
         <script>
             $(document).ready(function() {
-                var table = $('#journalstable').DataTable({
+                var table = $('#journalsTable').DataTable({
                     responsive: true, // Enable responsive table
-                    language: {
-                        search: "Cari:", // Custom search label
-                        lengthMenu: "Tampilkan _MENU_ data per halaman", // Page length options
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data", // Info about data range
-                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data", // Info when no data is found
-                        paginate: {
-                            previous: "Sebelumnya", // Custom text for previous button
-                            next: "Berikutnya" // Custom text for next button
+                    "language": {
+                        "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                        "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                        "info": "Menampilkan halaman _PAGE_ dari _PAGES_ halaman",
+                        "infoEmpty": "Tidak ada data tersedia",
+                        "infoFiltered": "(disaring dari _MAX_ total entri)",
+                        "search": "Cari:",
+                        "paginate": {
+                            "first": "Pertama",
+                            "last": "Terakhir",
+                            "next": "Berikutnya",
+                            "previous": "Sebelumnya"
                         }
                     },
 

@@ -80,10 +80,14 @@ class TimWebController extends Controller
     {
         $request->validate([
             // 'nama' => 'required|string|max:255',
-            'jumlah_artikel' => 'required|integer|min:0',
-            'jumlah_kata' => 'required|integer|min:0',
+            'jumlah_artikel' => 'required|integer|digits_between:1,2',
+            'jumlah_kata' => 'required|integer|digits_between:1,6',
             'keterangan' => 'nullable|string',
             'tanggal' => 'required|date',
+        ],
+        [
+            'jumlah_artikel.digits_between' => 'Jumlah artikel harus antara 1 hingga 2 digit.',
+            'jumlah_kata.digits_between' => 'Jumlah kata harus antara 1 hingga 6 digit.',
         ]);
 
         $tim_web->update([
@@ -102,6 +106,6 @@ class TimWebController extends Controller
     
             $tim_web->delete();
     
-            return redirect()->route('tim_web.index')->with('success', 'Data successfully deleted!');
+            return redirect()->route('tim_web.index')->with('success', 'Data berhasil dihapus!');
     }
 }

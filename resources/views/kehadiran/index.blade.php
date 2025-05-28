@@ -140,8 +140,8 @@
 
         <script>
 
-            const TARGET_LAT = -7.845969;
-            const TARGET_LNG = 110.362230;
+            const TARGET_LAT = -7.754651;
+            const TARGET_LNG = 110.408798;
 
 
             const RADIUS = 1000;

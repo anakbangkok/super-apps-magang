@@ -24,16 +24,16 @@
 </head>
 
 @section('content')
-    <div class="container my-5">
-        <h1>Aktivitas Harian Peserta Magang yang diBimbing</h1>
+    <div class="container">
+        <h1>Aktivitas Harian Peserta Magang</h1>
 
         <div class="card shadow">
-            <h5 class="card-header text-right mt-2">Daftar Aktivitas Harian</h5>
+            <div class="d-flex justify-content-between align-items-center m-3">
+                <h5 class="mb-0">Daftar Aktivitas Harian</h5>
 
-            <!-- Filter Instansi dan Search Field -->
-            <div>
-                <div id="filterContainer">
-                    <select id="instansiFilter" class="form-select custom-select">
+                <!-- Filter Instansi -->
+                <div style="width: 250px; margin-right: -69px;">
+                    <select id="instansiFilter" class="form-select">
                         <option value="">Semua Instansi</option>
                         @foreach ($instansis as $instansi)
                             <option value="{{ $instansi->nama_instansi }}">{{ $instansi->nama_instansi }}</option>
@@ -81,21 +81,21 @@
                 // Inisialisasi DataTables
                 var table = $('#journalsTable').DataTable({
                     "language": {
-                        "lengthMenu": "Tampilkan _MENU_ entri",
-                        "zeroRecords": "Tidak ditemukan data",
-                        "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                        "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                        "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                        "info": "Menampilkan halaman _PAGE_ dari _PAGES_ halaman",
                         "infoEmpty": "Tidak ada data tersedia",
                         "infoFiltered": "(disaring dari _MAX_ total entri)",
                         "search": "Cari:",
                         "paginate": {
                             "first": "Pertama",
                             "last": "Terakhir",
-                            "next": "Selanjutnya",
+                            "next": "Berikutnya",
                             "previous": "Sebelumnya"
                         }
                     },
                     "responsive": true,
-                    "pagingType": "full_numbers",
+                    "pagingType": "simple_numbers",
                     "autoWidth": false,
                 });
 

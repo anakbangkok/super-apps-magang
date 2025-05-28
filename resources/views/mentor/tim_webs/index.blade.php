@@ -70,12 +70,11 @@
                     </div>
                     <div class="col-md-4">
                         <label for="nama-filter" class="form-label">Filter Nama:</label>
-                        <select id="nama-filter" class="form-control select2" placeholder="Cari Nama...">
-                            <option value="">Pilih Nama</option>
+                        <select id="nama-filter" class="form-control select2" data-placeholder="Cari Nama...">
+                            <option></option>
                             @foreach ($tim_webs->unique('user_id') as $tim_web)
                                 <option value="{{ $tim_web->user->name }}">{{ $tim_web->user->name }}</option>
                             @endforeach
-
                         </select>
                     </div>
                 </div>
@@ -192,14 +191,16 @@
 
                 var table = $('#tim-web-table').DataTable({
                     responsive: true,
-                    language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ data per halaman",
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                        paginate: {
-                            previous: "Sebelumnya",
-                            next: "Berikutnya"
+                    "language": {
+                        "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                        "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                        "info": "Menampilkan halaman _PAGE_ dari _PAGES_ halaman",
+                        "infoEmpty": "Tidak ada data tersedia",
+                        "infoFiltered": "(disaring dari _MAX_ total entri)",
+                        "search": "Cari:",
+                        "paginate": {
+                            "next": "Berikutnya",
+                            "previous": "Sebelumnya"
                         }
                     },
                     columnDefs: [{

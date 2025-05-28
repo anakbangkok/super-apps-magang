@@ -26,19 +26,21 @@
 
     <div class="container my-4">
         <h3 class="text-center">Peringkat SEO Teratas</h3>
-        @if ($userRankPosition > 3)
+        @if ($userRankPosition !== null && $userRankPosition > 3)
             <div class="alert alert-info alert-dismissible fade show mt-4 text-center" role="alert">
                 <strong>Pesan!</strong> Kamu berada di peringkat {{ $userRankPosition }}. Ayo lebih semangat lagi untuk
                 mencapai 3 besar!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @elseif ($userRankPosition <= 3)
+        @elseif ($userRankPosition !== null && $userRankPosition <= 3)
             <div class="alert alert-info alert-dismissible fade show mt-4 text-center" role="alert">
-                <strong>Selamat</strong> Kamu berada di peringkat <strong>{{ $userRankPosition }} ! Terus pertahankan posisi
-                    ini!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>Selamat</strong> Kamu berada di peringkat <strong>{{ $userRankPosition }}!</strong> Terus
+                pertahankan posisi
+                ini!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+
 
         <div class="row">
             @foreach ($topUsers->take(3) as $index => $user)

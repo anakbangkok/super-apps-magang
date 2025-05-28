@@ -38,8 +38,6 @@
         @endif
 
 
-
-
         <ul class="nav nav-tabs mb-4" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
@@ -49,7 +47,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" role="tab">
-                    Ganti Password
+                    Ganti Kata Sandi
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -81,12 +79,22 @@
                         <label for="name" class="form-label">Nama</label>
                         <input type="text" class="form-control" id="name" name="name"
                             value="{{ auth()->user()->name }}" required>
+                        @error('name')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email"
                             value="{{ auth()->user()->email }}" required>
+                        @error('name')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <!-- Instansi Field -->
@@ -159,9 +167,9 @@
                         <label for="password" class="form-label">KATA SANDI BARU</label>
                         <div class="input-group">
                             <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                id="password" name="password" required>
+                                id="new_password" name="password" required>
                             <button type="button" class="btn btn-outline-secondary"
-                                onclick="togglePassword('password', this)">
+                                onclick="togglePassword('new_password', this)">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </div>

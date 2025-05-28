@@ -58,17 +58,19 @@ class TimWebUserController extends Controller
         // Validasi data termasuk kolom tanggal dan nama
         $request->validate([
             'name' => 'required|string|max:255',
-            'jumlah_artikel' => 'required|integer',
-            'jumlah_kata' => 'required|integer',
+            'jumlah_artikel' => 'required|integer|digits_between:1,2',
+            'jumlah_kata' => 'required|integer|digits_between:1,6',
             'keterangan' => 'required|string',
             'tanggal' => 'required|date',
+        ],
+        [
+            'jumlah_artikel.digits_between' => 'Jumlah artikel harus antara 1 hingga 2 digit.',
+            'jumlah_kata.digits_between' => 'Jumlah kata harus antara 1 hingga 6 digit.',
         ]);
 
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
-        // Simpan data ke database
-        // Simpan data ke database
         TimWeb::create($data);
 
         // Redirect ke halaman index dengan pesan sukses
@@ -87,11 +89,15 @@ class TimWebUserController extends Controller
         // Validasi data termasuk kolom tanggal dan nama
         $request->validate([
             'name' => 'required|string|max:255',
-            'jumlah_artikel' => 'required|integer',
-            'jumlah_kata' => 'required|integer',
+            'jumlah_artikel' => 'required|integer|digits_between:1,2',
+            'jumlah_kata' => 'required|integer|digits_between:1,6',
             'keterangan' => 'required|string',
-            'tanggal' => 'required|date',  // Pastikan format tanggal valid
-        ]);
+            'tanggal' => 'required|date', 
+        ],
+            [
+            'jumlah_artikel.digits_between' => 'Jumlah artikel harus antara 1 hingga 2 digit.',
+            'jumlah_kata.digits_between' => 'Jumlah kata harus antara 1 hingga 6 digit.',
+            ]);
 
         // Update data di database
         $tim_web->update($request->all());

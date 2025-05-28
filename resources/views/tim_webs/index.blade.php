@@ -28,20 +28,25 @@
 
         <div class="card shadow">
 
-            <div class="d-flex justify-content-between align-items-center mx-3 mb-4 mt-4">
-                <a href="{{ route('tim_webs.create') }}" class="btn btn-primary">Tambah Data Tim Web</a>
+            <div class="container-fluid mt-4 mb-4 px-3">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
 
-                <div class="d-flex gap-2">
-                    <div style="width: 185px;">
-                        <label for="min-date" class="form-label">Tanggal Mulai:</label>
-                        <input type="date" id="min-date" class="form-control">
-                    </div>
-                    <div style="width: 185px;">
-                        <label for="max-date" class="form-label">Tanggal Akhir:</label>
-                        <input type="date" id="max-date" class="form-control">
+                    <a href="{{ route('tim_webs.create') }}" class="btn btn-primary">Tambah Data Tim Web</a>
+
+                    <div class="d-flex flex-column flex-sm-row gap-2">
+                        <div style="width: 185px;">
+                            <label for="min-date" class="form-label">Tanggal Mulai:</label>
+                            <input type="date" id="min-date" class="form-control">
+                        </div>
+                        <div style="width: 185px;">
+                            <label for="max-date" class="form-label">Tanggal Akhir:</label>
+                            <input type="date" id="max-date" class="form-control">
+                        </div>
                     </div>
                 </div>
             </div>
+
+
 
             <div class="table-responsive text-nowrap">
                 <table id="tim-web-table" class="table">
@@ -113,14 +118,16 @@
         $(document).ready(function() {
             var table = $('#tim-web-table').DataTable({
                 responsive: true, // Enable responsive table
-                language: {
-                    search: "Cari:", // Custom search label
-                    lengthMenu: "Tampilkan _MENU_ data per halaman", // Page length options
-                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data", // Info about data range
-                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data", // Info when no data is found
-                    paginate: {
-                        previous: "Sebelumnya", // Custom text for previous button
-                        next: "Berikutnya" // Custom text for next button
+                "language": {
+                    "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                    "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                    "info": "Menampilkan halaman _PAGE_ dari _PAGES_ halaman",
+                    "infoEmpty": "Tidak ada data tersedia",
+                    "infoFiltered": "(disaring dari _MAX_ total entri)",
+                    "search": "Cari:",
+                    "paginate": {
+                        "next": "Berikutnya",
+                        "previous": "Sebelumnya"
                     }
                 },
                 columnDefs: [{

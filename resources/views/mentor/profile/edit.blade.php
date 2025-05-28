@@ -42,7 +42,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" role="tab">
-                    Ganti Password
+                    Ganti Kata Sandi
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -63,11 +63,9 @@
                     <div class="text-center mb-4">
                         <label for="profile_photo" class="form-label">Foto Profil</label>
                         <div class="mt-2">
-                            @php
-                                $user = auth()->user();
-                            @endphp
-                            <img src="{{ asset($user && $user->profile_photo ? 'storage/' . $user->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                alt="User Avatar" class="w-px-150 h-auto rounded-circle shadow" />
+                            <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
+                                alt="User Avatar" class="avatar-img"
+                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;" />
                         </div>
                         <input type="file" class="form-control mt-3" id="profile_photo" name="profile_photo"
                             accept="image/*">
@@ -75,7 +73,8 @@
 
                     <div class="mb-3">
                         <label for="name" class="form-label">NIK</label>
-                        <input type="text" class="form-control" id="nik" name="nik" value="{{ auth()->user()->nik }}" readonly>
+                        <input type="text" class="form-control" id="nik" name="nik"
+                            value="{{ auth()->user()->nik }}" readonly>
                     </div>
 
                     <div class="mb-3">

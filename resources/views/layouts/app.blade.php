@@ -84,68 +84,70 @@
                                 style="text-transform: capitalize;">Super Apps</span>
                         </body>
 
-</html>
-</a>
+                        </html>
+                    </a>
 
-<a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-    <i class="bx bx-chevron-left bx-sm align-middle"></i>
-</a>
-</div>
+                    <a href="javascript:void(0);"
+                        class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                    </a>
+                </div>
 
-<div class="menu-inner-shadow"></div>
+                <div class="menu-inner-shadow"></div>
 
-<ul class="menu-inner py-1">
-    <!-- Dashboard -->
-    <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-        <a href="{{ route('dashboard') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-            <div data-i18n="Analytics">Halaman Utama</div>
-        </a>
-    </li>
+                <ul class="menu-inner py-1">
+                    <!-- Dashboard -->
+                    <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('dashboard') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Halaman Utama</div>
+                        </a>
+                    </li>
 
-    <li class="menu-header small text-uppercase"><span class="menu-header-text">Pages</span></li>
-    <!-- Kehadiran (Attendance) -->
-    <li class="menu-item {{ request()->routeIs('kehadirans.index') ? 'active' : '' }}">
-        <a href="{{ route('kehadirans.index') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-task"></i>
-            <div data-i18n="Tables">Absensi</div>
-        </a>
-    </li>
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Pages</span></li>
+                    <!-- Kehadiran (Attendance) -->
+                    <li class="menu-item {{ request()->routeIs('kehadirans.index') ? 'active' : '' }}">
+                        <a href="{{ route('kehadirans.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-task"></i>
+                            <div data-i18n="Tables">Absensi</div>
+                        </a>
+                    </li>
 
-    <!-- Laporan Harian -->
-    <li class="menu-item {{ request()->routeIs('tim_webs.index') || request()->routeIs('tim_sosmeds.index') ? 'open' : '' }}">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons bx bx-folder"></i>
-            <div data-i18n="Laporan Harian">Laporan Harian</div>
-        </a>
-        <ul class="menu-sub">
-            <!-- Tim Web -->
-            <li class="menu-item {{ request()->routeIs('tim_webs.index') ? 'active' : '' }}">
-                <a href="{{ route('tim_webs.index') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-book-content"></i>
-                    <div data-i18n="Tim Web">Tim Web</div>
-                </a>
-            </li>
-            <!-- Tim Sosmed -->
-            <li class="menu-item {{ request()->routeIs('tim_sosmeds.index') ? 'active' : '' }}">
-                <a href="{{ route('tim_sosmeds.index') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-book-content"></i>
-                    <div data-i18n="Tim Sosmed">Tim Sosmed</div>
-                </a>
-            </li>
-        </ul>
-    </li>
+                    <!-- Laporan Harian -->
+                    <li
+                        class="menu-item {{ request()->routeIs('tim_webs.index') || request()->routeIs('tim_sosmeds.index') ? 'open' : '' }}">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-folder"></i>
+                            <div data-i18n="Laporan Harian">Laporan Harian</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <!-- Tim Web -->
+                            <li class="menu-item {{ request()->routeIs('tim_webs.index') ? 'active' : '' }}">
+                                <a href="{{ route('tim_webs.index') }}" class="menu-link">
+                                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                                    <div data-i18n="Tim Web">Tim Web</div>
+                                </a>
+                            </li>
+                            <!-- Tim Sosmed -->
+                            <li class="menu-item {{ request()->routeIs('tim_sosmeds.index') ? 'active' : '' }}">
+                                <a href="{{ route('tim_sosmeds.index') }}" class="menu-link">
+                                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                                    <div data-i18n="Tim Sosmed">Tim Sosmed</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-    <!-- Aktivitas Harian -->
-    <li
-        class="menu-item {{ request()->routeIs('aktivitas.index') || request()->routeIs('journals.create') ? 'active' : '' }}">
-        <a href="{{ route('aktivitas.index') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-notepad"></i>
-            <div>Aktivitas Harian</div>
-        </a>
-    </li>
+                    <!-- Aktivitas Harian -->
+                    <li
+                        class="menu-item {{ request()->routeIs('aktivitas.index') || request()->routeIs('journals.create') ? 'active' : '' }}">
+                        <a href="{{ route('aktivitas.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-notepad"></i>
+                            <div>Aktivitas Harian</div>
+                        </a>
+                    </li>
 
-    {{-- <li class="menu-item {{ request()->is('profile') ? 'active' : '' }}">
+                    {{-- <li class="menu-item {{ request()->is('profile') ? 'active' : '' }}">
         <a href="{{ route('profile.update') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-user"></i>
             <div data-i18n="Tables">Pengaturan Profil</div>
@@ -153,34 +155,34 @@
     </li> --}}
 
 
-    <!-- Pengajuan izin -->
-    <li class="menu-item {{ request()->is('pengajuan-izin') ? 'active' : '' }}">
-        <a href="pengajuan-izin" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-calendar"></i>
-            <div>Pengajuan Izin</div>
-        </a>
-    </li>
+                    <!-- Pengajuan izin -->
+                    <li class="menu-item {{ request()->is('pengajuan-izin') ? 'active' : '' }}">
+                        <a href="pengajuan-izin" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-calendar"></i>
+                            <div>Pengajuan Izin</div>
+                        </a>
+                    </li>
 
-    <!-- Masukan -->
-    <li class="menu-item {{ request()->is('masukan') ? 'active' : '' }}">
-        <a href="{{ route('masukan.index') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
-            <div>Masukan</div>
-        </a>
-    </li>
+                    <!-- Masukan -->
+                    <li class="menu-item {{ request()->is('masukan') ? 'active' : '' }}">
+                        <a href="{{ route('masukan.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-message-square-dots"></i>
+                            <div>Masukan</div>
+                        </a>
+                    </li>
 
-    <li class="menu-item {{ request()->routeIs('jadwal.index') ? 'active' : '' }}">
-        <a href="{{ route('jadwal.index') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-calendar-check"></i>
-            <div data-i18n="Semua Jadwal">Jadwal Piket</div>
-        </a>
-    </li>
-    
-    
+                    <li class="menu-item {{ request()->routeIs('jadwal.index') ? 'active' : '' }}">
+                        <a href="{{ route('jadwal.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                            <div data-i18n="Semua Jadwal">Jadwal Piket</div>
+                        </a>
+                    </li>
 
 
 
-    {{-- <!-- Misc -->
+
+
+                    {{-- <!-- Misc -->
               <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
               <li class="menu-item">
                   <a href="https://github.com/anakbangkok/super-apps-magang/issues" target="_blank" class="menu-link">
@@ -188,213 +190,232 @@
                       <div data-i18n="Support">Dukungan</div>
                   </a>
               </li> --}}
-</ul>
-<!-- Misc -->
-<div class="logout-container py-2">
-    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-        class="menu-link d-flex align-items-center">
-        <i class="menu-icon tf-icons bx bx-power-off"></i>
-        <div data-i18n="Logout" class="ms-2">Keluar</div>
-    </a>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-        @csrf
-    </form>
-</div>
-</aside>
-
-
-
-<!-- / Menu -->
-
-<!-- Layout container -->
-<div class="layout-page">
-    <!-- Navbar -->
-
-    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-        id="layout-navbar">
-        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                <i class="bx bx-menu bx-sm"></i>
-            </a>
-        </div>
-
-        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-            <!-- Cari -->
-            <div class="navbar-nav align-items-center">
-                <div class="nav-item d-flex align-items-center">
-                    <i class="bx bx-search fs-4 lh-0"></i>
-                    <input type="text" class="form-control border-0 shadow-none" placeholder="Cari..."
-                        aria-label="Cari..." />
-                </div>
-            </div>
-            <!-- /Cari -->
-
-            <ul class="navbar-nav flex-row align-items-center ms-auto">
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
-                        data-bs-toggle="dropdown">
-                        <div class="avatar avatar-online">
-                            <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                alt="User Avatar" class="avatar-img" />
-
-                        </div>
+                </ul>
+                <!-- Misc -->
+                <div class="logout-container py-2">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        class="menu-link d-flex align-items-center">
+                        <i class="menu-icon tf-icons bx bx-power-off"></i>
+                        <div data-i18n="Logout" class="ms-2">Keluar</div>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('profile.update') }}">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="avatar avatar-online">
-                                            <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
-                                                alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
-                                        </div>
-                                    </div>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+            </aside>
 
-                                    <div class="flex-grow-1">
-                                        <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
-                                        <small class="text-muted">
-                                            {{ auth()->user()->is_admin ? 'Admin' : 'User' }}
-                                            <!-- Dynamic Role -->
-                                        </small>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <div class="dropdown-divider"></div>
-                        </li>
-                        <li>
-                      <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                        <i class="bx bx-user me-2"></i>
-                        <span class="align-middle">Profile Saya</span>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider"></div>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bx bx-power-off me-2"></i>
-                            <span class="align-middle">Keluar</span>
+
+
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+
+                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                    id="layout-navbar">
+                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                            <i class="bx bx-menu bx-sm"></i>
                         </a>
-                </li>
+                    </div>
 
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
+                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                        <!-- Cari -->
+                        <div class="navbar-nav align-items-center">
+                            <div class="nav-item d-flex align-items-center">
+                                {{-- <i class="bx bx-search fs-4 lh-0"></i>
+                    <input type="text" class="form-control border-0 shadow-none" placeholder="Cari..."
+                        aria-label="Cari..." /> --}}
+                            </div>
+                        </div>
+                        <!-- /Cari -->
 
-            </ul>
-            </li>
-            <!--/ User -->
-            </ul>
+                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                            <!-- User -->
+                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                    data-bs-toggle="dropdown">
+                                    <div class="avatar avatar-online">
+                                        <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
+                                            alt="User Avatar" class="avatar-img" />
+
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('profile.update') }}">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar avatar-online">
+                                                        <img src="{{ asset(auth()->user()->profile_photo ? 'storage/' . auth()->user()->profile_photo : 'assets/img/avatars/default.jpg') }}"
+                                                            alt="User Avatar" class="avatar-img" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex-grow-1">
+                                                    <span
+                                                        class="fw-semibold d-block">{{ auth()->user()->name }}</span>
+                                                    <small class="text-muted">
+                                                        {{ auth()->user()->is_admin ? 'Admin' : 'User' }}
+                                                        <!-- Dynamic Role -->
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                            <i class="bx bx-user me-2"></i>
+                                            <span class="align-middle">Profile Saya</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="bx bx-power-off me-2"></i>
+                                            <span class="align-middle">Keluar</span>
+                                        </a>
+                                    </li>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
+
+                                </ul>
+                            </li>
+                            <!--/ User -->
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- / Navbar -->
+
+                <!-- Content -->
+                <main class="py-4">
+                    @yield('content')
+                </main>
+                <!-- / Content -->
+
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
         </div>
-    </nav>
+        <!-- / Layout page -->
+    </div>
 
-    <!-- / Navbar -->
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
 
-    <!-- Content -->
-    <main class="py-4">
-        @yield('content')
-    </main>
-    <!-- / Content -->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="assets/vendor/libs/popper/popper.js"></script>
+    <script src="assets/vendor/js/bootstrap.js"></script>
+    <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
+    <script src="assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
 
-    <div class="content-backdrop fade"></div>
-</div>
-<!-- Content wrapper -->
-</div>
-<!-- / Layout page -->
-</div>
+    <!-- Vendors JS -->
+    <script src="assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-<!-- Overlay -->
-<div class="layout-overlay layout-menu-toggle"></div>
-</div>
-<!-- / Layout wrapper -->
+    <!-- Main JS -->
+    <script src="assets/js/main.js"></script>
 
-<!-- Core JS -->
-<!-- build:js assets/vendor/js/core.js -->
-<script src="assets/vendor/libs/jquery/jquery.js"></script>
-<script src="assets/vendor/libs/popper/popper.js"></script>
-<script src="assets/vendor/js/bootstrap.js"></script>
-<script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ asset('assets/js/custom-script.js') }}"></script>
 
-<script src="assets/vendor/js/menu.js"></script>
-<!-- endbuild -->
+    <!-- Page JS -->
+    <script src="assets/js/dashboards-analytics.js"></script>
 
-<!-- Vendors JS -->
-<script src="assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <style>
+        .menu-item.active .menu-link {
+            background-color: #ffffff;
+            /* Change this to your desired color */
+            color: #697a8d;
+            /* Text color */
+        }
 
-<!-- Main JS -->
-<script src="assets/js/main.js"></script>
+        .menu-item.active .menu-icon {
+            color: #F4473A;
+            /* Change icon color when active */
+        }
 
-<!-- Custom JS -->
-<script src="{{ asset('assets/js/custom-script.js') }}"></script>
+        .logout-container {
+            border-top: 1px solid #ddd;
+            /* Optional: add a top border for separation */
+            padding: 1rem;
+            /* Add padding for spacing */
+            margin-top: auto;
+            /* Push the logout button to the bottom */
+        }
 
-<!-- Page JS -->
-<script src="assets/js/dashboards-analytics.js"></script>
+        .logout-container .menu-link {
+            color: #f00;
+            /* Change the color of the logout link */
+        }
 
-<!-- Place this tag in your head or just before your close body tag. -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-<style>
-    .menu-item.active .menu-link {
-        background-color: #ffffff;
-        /* Change this to your desired color */
-        color: #697a8d;
-        /* Text color */
-    }
+        .logout-container .menu-icon {
+            color: #f00;
+            /* Change icon color */
+        }
 
-    .menu-item.active .menu-icon {
-        color: #F4473A;
-        /* Change icon color when active */
-    }
-
-    .logout-container {
-        border-top: 1px solid #ddd;
-        /* Optional: add a top border for separation */
-        padding: 1rem;
-        /* Add padding for spacing */
-        margin-top: auto;
-        /* Push the logout button to the bottom */
-    }
-
-    .logout-container .menu-link {
-        color: #f00;
-        /* Change the color of the logout link */
-    }
-
-    .logout-container .menu-icon {
-        color: #f00;
-        /* Change icon color */
-    }
-
-    .avatar-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        /* Membuat foto bundar */
-        object-fit: cover;
-        /* Memastikan foto menyesuaikan container tanpa terdistorsi */
-    }
-</style>
-<!-- Select2 JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Inisialisasi Select2
-        $('.select2').select2({
-            placeholder: "Pilih Penugasan", // Placeholder jika ingin ditambahkan
-            allowClear: true // Memungkinkan user untuk menghapus pilihan
+        .avatar-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            /* Membuat foto bundar */
+            object-fit: cover;
+            /* Memastikan foto menyesuaikan container tanpa terdistorsi */
+        }
+    </style>
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Inisialisasi Select2
+            $('.select2').select2({
+                placeholder: "Pilih Penugasan", // Placeholder jika ingin ditambahkan
+                allowClear: true // Memungkinkan user untuk menghapus pilihan
+            });
         });
-    });
-</script>
+    </script>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll("input[required], textarea[required], select[required]");
+
+            inputs.forEach(function(input) {
+                input.addEventListener("invalid", function() {
+                    input.setCustomValidity("Mohon lengkapi bagian ini.");
+                });
+
+                input.addEventListener("input", function() {
+                    input.setCustomValidity('');
+                });
+            });
+        });
+    </script>
+
 
 
 </body>

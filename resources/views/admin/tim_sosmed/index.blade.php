@@ -16,21 +16,21 @@
         <div class="card shadow">
             <div class="container row mb-4 mt-4">
                 <div class="col-md-4">
-                    <label for="nama-filter" class="form-label">Filter Nama:</label>
-                    <select id="nama-filter" class="form-control select2" placeholder="Cari Nama...">
-                        <option value="">Semua Nama</option>
-                        @foreach ($tim_sosmeds->unique('user_id') as $tim_sosmed)
-                            <option value="{{ $tim_sosmed->user->name }}">{{ $tim_sosmed->user->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-4">
                     <label for="min-date" class="form-label">Tanggal Mulai:</label>
                     <input type="date" id="min-date" class="form-control">
                 </div>
                 <div class="col-md-4">
                     <label for="max-date" class="form-label">Tanggal Akhir:</label>
                     <input type="date" id="max-date" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label for="nama-filter" class="form-label">Filter Nama:</label>
+                    <select id="nama-filter" class="form-control select2" data-placeholder="Cari Nama...">
+                        <option></option>
+                        @foreach ($tim_sosmeds->unique('user_id') as $tim_sosmed)
+                            <option value="{{ $tim_sosmed->user->name }}">{{ $tim_sosmed->user->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="table-responsive text-nowrap">
@@ -121,14 +121,16 @@
 
                 var table = $('#tim-sosmed-table').DataTable({
                     responsive: true, // Enable responsive table
-                    language: {
-                        search: "Cari:", // Custom search label
-                        lengthMenu: "Tampilkan _MENU_ data per halaman", // Page length options
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data", // Info about data range
-                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data", // Info when no data is found
-                        paginate: {
-                            previous: "Sebelumnya", // Custom text for previous button
-                            next: "Berikutnya" // Custom text for next button
+                    "language": {
+                        "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                        "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                        "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                        "infoEmpty": "Tidak ada data tersedia",
+                        "infoFiltered": "(disaring dari _MAX_ total entri)",
+                        "search": "Cari:",
+                        "paginate": {
+                            "next": "Berikutnya",
+                            "previous": "Sebelumnya"
                         }
                     },
                     columnDefs: [{

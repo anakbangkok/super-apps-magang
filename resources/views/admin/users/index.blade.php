@@ -18,66 +18,93 @@
             </div>
         @endif
 
-        <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Tambah Pengguna</a>
-        <!-- Tombol Toggle Filter dengan Ikon Eye Slash -->
-        <button type="button" class="btn btn-primary mb-3" onclick="toggleFilter()" id="filterButton">
-            <i id="filterIcon" class="fas fa-eye-slash"></i> Filter
-        </button>
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                Tambah Pengguna
+            </a>
+
+            <button type="button" class="btn btn-primary" onclick="toggleFilter()" id="filterButton">
+                <i id="filterIcon" class="fas fa-eye-slash"></i> Filter
+            </button>
+
+            <form action="{{ route('admin.users.updateStatuses') }}" method="POST"
+                onsubmit="return confirm('Yakin ingin update semua status pengguna?')" class="mb-0">
+                @csrf
+                <button type="submit" class="btn btn-warning">
+                    Perbarui Status
+                </button>
+            </form>
+        </div>
+
+
 
         <!-- Form Filter (default: hidden, tampil jika ada filter aktif) -->
-        <div id="filterForm"
+        <div class="card mb-4" id="filterForm"
             style="{{ request()->anyFilled(['searchName', 'searchEmail', 'searchPenugasan', 'searchInstansi', 'searchStatus', 'startDate', 'endDate']) ? '' : 'display: none;' }}">
-            <form method="GET" action="{{ route('admin.users.index') }}" class="mb-4">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <input type="text" name="searchName" class="form-control" placeholder="Cari Nama"
-                            value="{{ request('searchName') }}">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" name="searchEmail" class="form-control" placeholder="Cari Email"
-                            value="{{ request('searchEmail') }}">
-                    </div>
-                    <div class="col-md-3">
-                        <select name="searchPenugasan" class="form-select">
-                            <option value="">Semua Penugasan</option>
-                            @foreach ($penugasans as $penugasan)
-                                <option value="{{ $penugasan->id }}"
-                                    {{ request('searchPenugasan') == $penugasan->id ? 'selected' : '' }}>
-                                    {{ $penugasan->nama_unit_bisnis }}
+            <div class="card-body">
+                <form method="GET" action="{{ route('admin.users.index') }}">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" name="searchName" class="form-control" placeholder="Cari Nama"
+                                value="{{ request('searchName') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" name="searchEmail" class="form-control" placeholder="Cari Email"
+                                value="{{ request('searchEmail') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Penugasan</label>
+                            <select name="searchPenugasan" class="form-select">
+                                <option value="">Semua Penugasan</option>
+                                @foreach ($penugasans as $penugasan)
+                                    <option value="{{ $penugasan->id }}"
+                                        {{ request('searchPenugasan') == $penugasan->id ? 'selected' : '' }}>
+                                        {{ $penugasan->nama_unit_bisnis }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Instansi</label>
+                            <select name="searchInstansi" class="form-select">
+                                <option value="">Semua Instansi</option>
+                                @foreach ($instansis as $instansi)
+                                    <option value="{{ $instansi->id }}"
+                                        {{ request('searchInstansi') == $instansi->id ? 'selected' : '' }}>
+                                        {{ $instansi->nama_instansi }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Status</label>
+                            <select name="searchStatus" class="form-select">
+                                <option value="">Semua Status</option>
+                                <option value="Aktif" {{ request('searchStatus') == 'Aktif' ? 'selected' : '' }}>Aktif
                                 </option>
-                            @endforeach
-                        </select>
+                                <option value="Belum Masuk"
+                                    {{ request('searchStatus') == 'Belum Masuk' ? 'selected' : '' }}>Belum Masuk</option>
+                                <option value="Selesai" {{ request('searchStatus') == 'Selesai' ? 'selected' : '' }}>
+                                    Selesai</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Tanggal Mulai</label>
+                            <input type="date" name="startDate" class="form-control" value="{{ request('startDate') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Tanggal Selesai</label>
+                            <input type="date" name="endDate" class="form-control" value="{{ request('endDate') }}">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end gap-2">
+                            <button type="submit" class="btn btn-primary w-100">Cari</button>
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary w-100">Reset</a>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <select name="searchInstansi" class="form-select">
-                            <option value="">Semua Instansi</option>
-                            @foreach ($instansis as $instansi)
-                                <option value="{{ $instansi->id }}"
-                                    {{ request('searchInstansi') == $instansi->id ? 'selected' : '' }}>
-                                    {{ $instansi->nama_instansi }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select name="searchStatus" class="form-select">
-                            <option value="">Semua Status</option>
-                            <option value="Aktif" {{ request('searchStatus') == 'Aktif' ? 'selected' : '' }}>Aktif
-                            </option>
-                            <option value="Belum Masuk" {{ request('searchStatus') == 'Belum Masuk' ? 'selected' : '' }}>
-                                Belum Masuk</option>
-                            <option value="Selesai" {{ request('searchStatus') == 'Selesai' ? 'selected' : '' }}>Selesai
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 d-flex gap-2">
-                        <input type="date" name="startDate" class="form-control" value="{{ request('startDate') }}">
-                        <input type="date" name="endDate" class="form-control" value="{{ request('endDate') }}">
-                        <button type="submit" class="btn btn-primary">Cari</button>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Reset</a>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
 
@@ -87,7 +114,7 @@
                 <div class="modal-content">
                     <!-- Header -->
                     <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="importModalLabel">Import Data Pengguna</h5>
+                        <h5 class="modal-title" id="importModalLabel">Impor Data Pengguna</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -101,8 +128,8 @@
                             <li><strong>name</strong>: Nama pengguna.</li>
                             <li><strong>email</strong>: Alamat email pengguna.</li>
                             <li><strong>password</strong>: Kata sandi pengguna.</li>
-                            <li><strong>start_date</strong>: Tanggal mulai (format: YYYY-MM-DD).</li>
-                            <li><strong>end_date</strong>: Tanggal selesai (format: YYYY-MM-DD).</li>
+                            <li><strong>start_date</strong>: Tanggal mulai (format: DD-MM-YYYY).</li>
+                            <li><strong>end_date</strong>: Tanggal selesai (format: DD-MM-YYYY).</li>
                         </ul>
                         <p class="mt-3">
                             Anda dapat menggunakan file template yang telah disediakan untuk mempermudah proses import.
@@ -116,8 +143,8 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="file" class="form-label">Pilih File Excel</label>
-                                <input type="file" name="file" id="file" class="form-control" accept=".xls,.xlsx"
-                                    required>
+                                <input type="file" name="file" id="file" class="form-control"
+                                    accept=".xls,.xlsx" required>
                                 <small class="form-text text-muted">File yang didukung: .xls, .xlsx</small>
                             </div>
                     </div>
@@ -138,7 +165,7 @@
                 <form action="{{ route('admin.users.export') }}" method="GET">
                     <div class="modal-content shadow">
                         <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title text-white" id="exportModalLabel">Export Data Pengguna</h5>
+                            <h5 class="modal-title text-white" id="exportModalLabel">Ekspor Data Pengguna</h5>
                             <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
                                 aria-label="Tutup"></button>
                         </div>
@@ -163,7 +190,6 @@
                                         <option value="Belum Masuk">Belum Masuk</option>
                                         <option value="Aktif">Aktif</option>
                                         <option value="Selesai">Selesai</option>
-                                        <option value="tidak_lengkap">Data Tidak Lengkap</option>
                                     </select>
                                 </div>
 
@@ -193,15 +219,16 @@
 
         <div class="card shadow">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-header text-right">Daftar Pengguna</h5>
+                <h5 class="card-header text-right">Pengguna Terdaftar</h5>
                 <div>
                     <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal"
-                        data-bs-target="#exportModal">Export</a>
+                        data-bs-target="#exportModal">Ekspor</a>
                     <a href="javascript:void(0)" class="btn btn-danger me-3" data-bs-toggle="modal"
-                        data-bs-target="#importModal">Import</a>
+                        data-bs-target="#importModal">Impor</a>
                 </div>
+
             </div>
-            <div class="table-responsive text-nowrap">
+            <div class="table-responsive">
                 <table id="usersTable" class="table table-striped table-bordered nowrap" style="width:100%">
                     <thead class="table-light">
                         <tr class="text-center">
@@ -229,83 +256,72 @@
                                 <td>{{ $user->end_date ? \Carbon\Carbon::parse($user->end_date)->translatedFormat('d F Y') : 'N/A' }}
                                 </td>
                                 <td>
-                                    @php $now = now()->toDateString(); @endphp
-                                    @if (!$user->start_date || !$user->end_date)
-                                        <span data-bs-toggle="tooltip" title="Data tidak ditemukan"
-                                            class="badge bg-warning">
+                                    @if (!$user->status)
+                                        <span class="badge bg-warning" title="Status tidak tersedia">
                                             <i class="fas fa-exclamation-triangle"></i>
                                         </span>
-                                    @elseif ($now < $user->start_date)
-                                        <span data-bs-toggle="tooltip" title="Belum masuk" class="badge bg-secondary">
+                                    @elseif ($user->status === 'Belum Masuk')
+                                        <span class="badge bg-secondary" title="Belum Masuk">
                                             <i class="fas fa-clock"></i>
                                         </span>
-                                    @elseif ($now >= $user->start_date && $now <= $user->end_date)
-                                        <span data-bs-toggle="tooltip" title="Aktif" class="badge bg-success">
+                                    @elseif ($user->status === 'Aktif')
+                                        <span class="badge bg-success" title="Aktif">
                                             <i class="fas fa-check-circle"></i>
                                         </span>
-                                    @else
-                                        <span data-bs-toggle="tooltip" title="Selesai" class="badge bg-danger">
+                                    @elseif ($user->status === 'Selesai')
+                                        <span class="badge bg-danger" title="Selesai">
                                             <i class="fas fa-flag-checkered"></i>
                                         </span>
                                     @endif
                                 </td>
-                                <td class="d-flex justify-content-start gap-2">
-                                    <!-- Edit button -->
+                                <td class="d-flex justify-content-start gap-2 align-items-center" style="height: 100%;">
                                     <a href="{{ route('admin.users.edit', $user->id) }}"
-                                        class="btn btn-warning btn-sm mb-2"
-                                        style="padding: 0.375rem 0.75rem; height: 28px;">Edit</a>
+                                        class="btn btn-warning btn-sm px-3 py-1">
+                                        Edit
+                                    </a>
 
-                                    <!-- Delete button inside a form -->
-                                    <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#confirmUserDeletionModal{{ $user->id }}">
-                                            Hapus
-                                        </button>
-
-                                        <!-- Modal content for delete confirmation -->
-                                        <div class="modal fade" id="confirmUserDeletionModal{{ $user->id }}"
-                                            tabindex="-1"
-                                            aria-labelledby="confirmUserDeletionModalLabel{{ $user->id }}"
-                                            aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content shadow">
-                                                    <div class="modal-header"
-                                                        style="background-color: #f8d7da; color: #721c24;">
-                                                        <h5 class="modal-title"
-                                                            id="confirmUserDeletionModalLabel{{ $user->id }}">
-                                                            Apakah Anda yakin ingin menghapus?</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Tutup"></button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-                                                        <p class="text-muted">
-                                                            Setelah Anda hapus, semua data akan hilang secara permanen.
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <button type="button" class="btn btn-danger btn-sm px-3 py-1" data-bs-toggle="modal"
+                                        data-bs-target="#confirmUserDeletionModal{{ $user->id }}">
+                                        Hapus
+                                    </button>
                                 </td>
 
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="9" class="text-center">Tidak ada data ditemukan</td>
-                            </tr>
                         @endforelse
                     </tbody>
                 </table>
+                @foreach ($users as $user)
+                    <div class="modal fade" id="confirmUserDeletionModal{{ $user->id }}" tabindex="-1"
+                        aria-labelledby="confirmUserDeletionModalLabel{{ $user->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content shadow">
+                                <div class="modal-header" style="background-color: #f8d7da; color: #721c24;">
+                                    <h5 class="modal-title" id="confirmUserDeletionModalLabel{{ $user->id }}">
+                                        Apakah Anda yakin ingin menghapus {{ $user->name }}?
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Tutup"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="text-muted">
+                                        Setelah Anda hapus, semua data akan hilang secara permanen.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Batal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
             </div>
         </div>
     </div>
@@ -315,27 +331,38 @@
     <script>
         $(document).ready(function() {
             $('#usersTable').DataTable({
-                responsive: true, // Agar tabel responsif pada perangkat mobile
+                responsive: true,
                 columnDefs: [{
-                        className: "text-center",
-                        targets: "_all"
-                    } // Semua kolom diatur ke text-center
-                ],
-                language: {
-                    search: "Cari:",
-                    lengthMenu: "Tampilkan _MENU_ data per halaman",
-                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                    paginate: {
-                        previous: "Sebelumnya",
-                        next: "Berikutnya"
+                    scrollX: true,
+                    className: "text-center",
+                    targets: "_all"
+                }],
+                "language": {
+                    "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                    "zeroRecords": "Tidak ada hasil untuk pencarian Anda",
+                    "info": "Menampilkan halaman _PAGE_ dari _PAGES_ halaman",
+                    "infoEmpty": "Tidak ada data tersedia",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "search": "Cari:",
+                    "paginate": {
+                        "next": "Berikutnya",
+                        "previous": "Sebelumnya"
                     }
                 },
+                dom: '<"d-flex justify-content-between align-items-center mb-2"lf>' +
+                    // length + filter di atas
+                    '<"table-responsive"t>' + // table scroll
+                    '<"d-flex justify-content-between align-items-center mt-2"ip>', // info + pagination
                 initComplete: function() {
-                    // Menambahkan gaya CSS setelah DataTable dimuat
                     $('.table th, .table td').css({
-                        'padding': '10px', // Mengatur padding tabel
-                        'height': '15px' // Mengatur tinggi baris
+                        'padding': '10px',
+                        'height': '15px'
+                    });
+                },
+                initComplete: function() {
+                    $('.table th, .table td').css({
+                        'padding': '10px',
+                        'height': '15px'
                     });
                 }
             });
